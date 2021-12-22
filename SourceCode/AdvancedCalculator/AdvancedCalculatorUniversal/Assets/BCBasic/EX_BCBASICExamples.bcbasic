@@ -1,0 +1,225 @@
+## EX: BC BASIC Quick Samples
+A set of the most common programs people need.  Includes a tip program, money conversion, miles per gallon, and more.
+### Colorful Countdown
+A bright countdown display.  Will count down for the number of seconds in the calculator window.  The minimum countdown is 5 seconds, and the maximum is 60 seconds.
+**Default Key**: Colorful Countdown
+```BASIC
+value = Calculator.Value
+IF value < 5 THEN value = 5
+IF value > 60 THEN value = 60
+
+PRINT "Count down!"
+
+REM anitime sets the speed of the color changes
+REM when set low (like 5), the colors really flash quickly
+REM when set to 50, the color changes with the display
+anitime = 25
+
+ctime = 0
+display = value
+FOR i=0 TO (value*50) STEP anitime
+color = color + 1
+IF color >= 7 THEN color = 1
+CLS color
+PrintTitle (1, "Colorful Countdown")
+PrintCenter (display)
+PAUSE anitime
+ctime = ctime + anitime
+IF ctime < 50 THEN NEXT i
+ctime = ctime - 50
+display = display - 1
+NEXT i
+PrintCenter ("Countdown Complete")
+
+FUNCTION PrintTitle(row, str)
+lmargin = 1+INT (( Screen.W - LEN str) / 2)
+IF (lmargin < 1) THEN lmargin = 1
+PRINT AT row,lmargin str
+RETURN
+
+FUNCTION PrintCenter (str)
+lmargin = 1+INT (( Screen.W - LEN str) / 2)
+IF (lmargin < 1) THEN lmargin = 1
+row = INT ((Screen.H) / 2)
+PRINT AT row,lmargin str
+RETURN
+
+REM No tests are needed for this sample
+FUNCTION TEST_NoTestsNeeded()
+    ASSERT (1=1)
+RETURN
+```
+### Grams of Fat to Calories
+Takes the value already in the calculator and converts it from grams of fat to calories.  This program assumes that all fat is 9 calories per gram.
+**Default Key**: Grams of Fat to Calories
+```BASIC
+value = Calculator.Value
+retval=value * 9
+Calculator.Message = "Converted " + value + " grams of fat to calories"
+
+CLS BLUE
+PRINT "Convert Grams of Fat to Calories"
+PRINT "Input="; value
+PRINT " "
+PRINT "There are 9 calorie per gram of fat"
+PRINT " "
+PRINT "Calories="; retval
+STOP retval
+
+REM No tests are needed for this sample
+FUNCTION TEST_NoTestsNeeded()
+    ASSERT (1=1)
+RETURN
+```
+### Miles per Gallon
+Calculates mile per gallon given number of miles driven and total gallons of gas.
+**Default Key**: Miles per Gallon
+```BASIC
+CLS
+PRINT "Calculating Miles Per Gallon"
+PRINT " "
+miles = INPUT DEFAULT 100 PROMPT "How many miles were driven?"
+gallons = INPUT DEFAULT 4 PROMPT "How many gallons did you need?"
+retval = mpg(miles, gallons)
+
+PRINT "Miles driven="; miles
+PRINT "Gallons used="; gallons
+PRINT "MPG="; retval
+
+IF NOT Memory.IsSet ("PreviousMpg") THEN GOTO 40
+lastMpg = Memory.PreviousMpg
+deltaMpg = retval - lastMpg
+PRINT "Last time="; lastMpg
+IF ABS (deltaMpg) > 1.5 THEN GOTO 10 
+PAPER GREEN
+PRINT "MPG is about the same"
+GOTO 40
+
+10 IF deltaMpg >= 1.5 THEN GOTO 20
+
+PAPER RED
+PRINT "MPG has decreased!"
+GOTO 40
+
+20 PAPER GREEN
+PRINT "MPG has increased!"
+GOTO 40
+
+40 REM
+Memory.PreviousMpg = retval
+STOP retval
+
+FUNCTION mpg (Miles, Gallons)
+Retval = Miles / Gallons
+RETURN Retval
+
+FUNCTION TEST_Simple()
+    ASSERT (mpg(10, 1) = 10)
+    ASSERT(mpg(0, 10) = 0)
+    ASSERT(mpg(50, 5) = 10)
+    ASSERT(mpg(10, 100) = 0.1)
+RETURN
+
+FUNCTION TEST_EdgeCases()
+    ASSERT(mpg(3, 0)  = ∞)
+    ASSERT(Math.IsNaN(mpg(0, 0)) = 1)
+RETURN
+```
+### Right Triangle calculator
+Uses the Pythagorean theorem to calculate the hypotenuse of a right triangle based on the other two sides.
+**Default Key**: Right Triangle calculator
+```BASIC
+REM Calculate the hypotenuse of a triangle
+CLS BLUE
+PRINT "Right triangle calculator"
+PRINT " "
+
+A = INPUT DEFAULT 3 PROMPT “Enter the first side”
+B = INPUT DEFAULT 4 PROMPT “Enter the second side”
+C = hypotenuse (A, B) 
+
+PRINT "First side=";A
+PRINT "Second side=";B
+PRINT "Hypotenuse=";C
+PRINT " "
+PRINT "Calculation is  √ (A**2 + B**2)"
+STOP C
+
+REM Calculate the hypotenuse from A and B
+FUNCTION hypotenuse (A, B)
+C= √ (A**2 + B**2)
+RETURN C
+
+FUNCTION TEST_Simple()
+    ASSERT (hypotenuse (3,4) = 5)
+    ASSERT (hypotenuse (5,12) = 13)
+
+    ASSERT (hypotenuse (0,0) = 0)
+    ASSERT (hypotenuse (0,3) = 3)
+    ASSERT (hypotenuse (4,0) = 4)
+RETURN
+
+
+FUNCTION TEST_EdgeCases()
+    ASSERT (hypotenuse (-3,-4) = 5)
+RETURN
+```
+### Tip Calculator
+A new program for you to edit
+**Default Key**: Tip Calculator
+```BASIC
+value = Calculator.Value
+CLS GREEN
+
+TEST()
+PRINT "Tip Calculator"
+PRINT " "
+PRINT "  5% tip of "; value; " is "; Tip(value, 5)
+PRINT " 10% tip of "; value; " is "; Tip(value, 10)
+PRINT " 15% tip of "; value; " is "; Tip(value, 15)
+PRINT " 18% tip of "; value; " is "; Tip(value, 18)
+PRINT " 20% tip of "; value; " is "; Tip(value, 20)
+PRINT " "
+Calculator.Message = "15% tip of " + value + " is " + Tip(value, 15)
+STOP 0+Tip(value, 15)
+
+REM We need a fancy function because we need to format the number
+REM nice and neat.  It should be calculated to the nearest penny exactly.
+FUNCTION Tip(value, percent)
+raw = value * (percent/100)
+round = Math.Round (raw * 100) / 100
+fraction = round - Math.Truncate(round)
+fraction = Math.Round (fraction * 100)
+IF (fraction < 10) THEN fraction = "0" + fraction
+top = "" + Math.Truncate(round) + "." + fraction
+RETURN top
+
+
+FUNCTION TEST ()
+    REM Tip returns a string, not a number
+    ASSERT (Tip(100, 5) = "5.00")
+    ASSERT (Tip(76, 15) = "11.40")
+    ASSERT (Tip(140, 15) = "21.00")
+RETURN nerror
+```
+### Welcome to BC BASIC
+Describes BC BASIC for new users
+**Default Key**: Welcome to BC BASIC
+```BASIC
+CLS BLUE
+PRINT "WELCOME TO BC BASIC!"
+PRINT " "
+PRINT "You can program the P1 to P5 keys"
+PRINT "to perform ANY function you want"
+PRINT "using Best Calculator BASIC"
+PRINT " "
+PRINT "Tap the BC BASIC button to get started"
+PRINT " - there is full help available"
+PRINT " - there are lots of samples"
+PRINT " - you can get started right away"
+
+REM No tests are needed for this sample
+FUNCTION TEST_NoTestsNeeded()
+    ASSERT (1=1)
+RETURN
+```

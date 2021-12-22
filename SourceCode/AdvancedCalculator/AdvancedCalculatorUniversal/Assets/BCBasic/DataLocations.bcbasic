@@ -1,0 +1,125 @@
+## EX: Data Locations
+Demonstrates how to use the Data location routines. You can look up cities and get information on their population and location. Data.PickLocation() will let the user select a single city; Data.GetLocations ("name") will return a list of all cities that match the input name ("york" will match New York city as well as York, UK and several others).
+### Demonstrate Data.GetLocations
+A very simple program that demonstrates the Data.GetLocations method. The Data.GetLocations method takes in a string and returns a list of city objects whose Name contain the string. This program just shows the FullName and Population properties on the individual city objects in the returned list. If no cities match the input string, then the list is a list with no objects.
+```BASIC
+CLS BLUE WHITE
+PRINT "Demonstrate Data.GetLocations"
+PRINT "Selects multiple locations and show useful information"
+cities = Data.GetLocations("york")
+IF (cities.Count = 0)
+    PRINT "No locations were found"
+    STOP
+END IF
+
+PRINT " "
+FOR i = 1 TO cities.Count
+    city = cities[i]
+    PRINT city.FullName; " has a population of "; city.Population
+NEXT i
+```
+### Demonstrate Data.PickLocation
+A very simple program that demonstrates the Data.PickLocation method. PickLocation lets a user select a location and returns a single variable with useful geographical information like population, location, and elevation. Shows how to get every field that the city object exposes.
+```BASIC
+CLS BLUE WHITE
+PRINT "Demonstrate Data.PickLocation"
+PRINT "Select a location and show useful information"
+city = Data.PickLocation()
+IF (city.IsError)
+    PRINT "No location was selected"
+    STOP
+END IF
+
+PRINT " "
+PRINT "Name", city.Name
+PRINT "Elevation", city.Elevation
+PRINT "Population", city.Population
+PRINT "Latitude", city.LatitudeDD
+PRINT "Longitude", city.LongitudeDD
+PRINT " "
+PRINT "Name Details"
+PRINT "GeoNameId", city.GeoNameId
+PRINT "FullName", city.FullName
+PRINT "Admin1", city.Admin1
+PRINT "Country", city.Country
+```
+### Interactive Data Location
+Complete interactive program lists cities by name. Uses the Data.GetLocations combined with the INKEY$ function to read the keyboard and query the location Data extension.
+```BASIC
+CLS BLUE WHITE
+PRINT "Enter the name of a city"
+name = ""
+
+REM
+REM User Interface main loop. Reads in characters and either
+REM jumps to a city OR adds to the city name
+REM
+10 REM loop top
+    PAUSE 10
+    cmd = INKEY$
+    IF (cmd = "") THEN GOTO 10
+
+    Screen.ClearLines (2, 20)
+
+    REM Short circuit; the user has picked a city by number
+    IF (cmd >= 1 AND cmd <= 9)
+        city = list[cmd]
+        PrintCity (city)
+        GOTO 10
+    END IF
+
+    REM Handle a few editing keys and be prepared
+    REM to show the new string as edited.
+    IF (cmd = "Delete")
+        name = ""
+        cmd = ""
+    END IF
+    IF (cmd = "Back")
+        name = LEFT (name, LEN(name)-1)
+        cmd = ""
+    END IF
+    REM Show the string as-is
+    name = name + cmd
+    PRINT AT 3,1 "City: " + name
+    PRINT " "
+    list = Data.GetLocations (name)
+    PrintLocation (name, list)
+GOTO 10
+
+REM Based on the size of the list of results, print out
+REM different (useful) things. Assumes that there's
+REM already a space prepared (it doesn't do a CLS
+REM or PRINT AT)
+FUNCTION PrintLocation (name, list)
+    list = Data.GetLocations (name)
+    IF (list.Count = 0)
+        PRINT "Unknown city " + name
+        RETURN
+    END IF
+    IF (list.Count = 1)
+        city = list[1]
+        PrintCity (city)
+        RETURN
+    END IF
+    PRINT "Found " + list.Count + " cities for " + name
+    FOR i = 1 TO list.Count
+        IF (i >= 10) THEN RETURN
+        city = list[i]
+        PRINT i, city.Name
+    NEXT i
+    PRINT "Type a number to pick a city or DEL to delete the string"
+RETURN
+
+REM Print information for a city. There must already be
+REM a space ready; this just prints without ding positioning
+REM or clearing the screen.
+FUNCTION PrintCity (city)
+    PRINT "City data for " + city.Name + " (" + city.FullName + ")"
+    PRINT "Population", city.Population
+    PRINT "Latitude", city.LatitudeDD
+    PRINT "Longitude", city.LongitudeDD
+    PRINT "Elevation", city.Elevation
+    PRINT "Country", city.Country
+    PRINT "Admin1", city.Admin1
+RETURN
+```

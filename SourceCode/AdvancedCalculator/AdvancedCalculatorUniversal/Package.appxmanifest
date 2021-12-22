@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="48425ShipwreckSoftware.BestCalculator" Publisher="CN=9A3276B6-661B-463D-9598-EFFF0974120A" Version="3.20.54.0" />
+  <mp:PhoneIdentity PhoneProductId="963d1c1a-daac-4102-9678-9df7e597f679" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Best Calculator</DisplayName>
+    <PublisherDisplayName>Shipwreck Software</PublisherDisplayName>
+    <Logo>Assets\Icons\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="AdvancedCalculatorUniversal.App">
+      <uap:VisualElements DisplayName="Best Calculator from Shipwreck Software" Description="Designed for tablets, handles simple calculations easily but includes advanced solvers for Enginering, Science, and Finance.  A simple BASIC programming environment lets you design your own calculations.  A complete programming manual is included (alos available from Amazon)" Square150x150Logo="Assets\Icons\Square150x150Logo.png" Square44x44Logo="Assets\Icons\Square44x44Logo.png" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Icons\Wide310x150Logo.png" Square310x310Logo="Assets\Icons\Square310x310Logo.png" Square71x71Logo="Assets\Icons\Square71x71Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo" />
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="Assets\Icons\SplashScreen.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

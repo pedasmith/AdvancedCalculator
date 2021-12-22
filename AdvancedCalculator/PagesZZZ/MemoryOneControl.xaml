@@ -1,0 +1,55 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.MemoryOneControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Grid.Row="1" Grid.Column="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <local:MemoryRegisterControl Grid.Row="0" x:Name="uiMemory0" MemoryTag="memory0" />
+        <local:MemoryRegisterControl Grid.Row="1" x:Name="uiMemory1" MemoryTag="memory1" />
+        <local:MemoryRegisterControl Grid.Row="2" x:Name="uiMemory2" MemoryTag="memory2" />
+        <local:MemoryRegisterControl Grid.Row="3" x:Name="uiMemory3" MemoryTag="memory3" />
+        <local:MemoryRegisterControl Grid.Row="4" x:Name="uiMemory4" MemoryTag="memory4" />
+        <local:MemoryRegisterControl Grid.Row="5" x:Name="uiMemory5" MemoryTag="memory5" />
+        <local:MemoryRegisterControl Grid.Row="6" x:Name="uiMemory6" MemoryTag="memory6" />
+        <local:MemoryRegisterControl Grid.Row="7" x:Name="uiMemory7" MemoryTag="memory7" />
+        <local:MemoryRegisterControl Grid.Row="8" x:Name="uiMemory8" MemoryTag="memory8" />
+        <local:MemoryRegisterControl Grid.Row="9" x:Name="uiMemory9" MemoryTag="memory9" />
+    </Grid>
+</UserControl>

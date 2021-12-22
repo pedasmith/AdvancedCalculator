@@ -1,0 +1,74 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.KeyboardAdvancedControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <Grid Grid.Row="1" Grid.Column="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Trig functions Col 0..1 Row 1..4 -->
+        <Button Tag="#KEYmathtrig|adegrees" Content="degrees" Grid.Column="0" Grid.Row="1" ToolTipService.ToolTip="Numbers are in degrees" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathtrig|aradians" Content="radians" Grid.Column="1" Grid.Row="1" ToolTipService.ToolTip="Number are in radians" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathtrig|od→r" Content="d→r" Grid.Column="0" Grid.Row="2" ToolTipService.ToolTip="Convert degrees to radians" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathtrig|or→d" Content="r→d" Grid.Column="1" Grid.Row="2" ToolTipService.ToolTip="Convert radians to degrees" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathtrig|osin" Content="sin" Grid.Column="0" Grid.Row="3" ToolTipService.ToolTip="Sine" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathtrig|oasin" Content="sin⁻¹" Grid.Column="1" Grid.Row="3" ToolTipService.ToolTip="Inverse Sine" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathtrig|ocos" Content="cos" Grid.Column="0" Grid.Row="4" ToolTipService.ToolTip="Cosine" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathtrig|oacos" Content="cos⁻¹" Grid.Column="1" Grid.Row="4" ToolTipService.ToolTip="Inverse cosine" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathtrig|otan" Content="tan" Grid.Column="0" Grid.Row="5" ToolTipService.ToolTip="Tangent" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathtrig|oatan" Content="tan⁻¹" Grid.Column="1" Grid.Row="5" ToolTipService.ToolTip="Inverse Tangent" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+
+        <!-- Logs functions col 2..3 Row 1..3 -->
+        <Button Tag="#KEYmathlog|olog10" Content="log" Grid.Column="2" Grid.Row="1" ToolTipService.ToolTip="Logarithm (base 10)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathlog|oalog10" Content="10ˣ" Grid.Column="3" Grid.Row="1" ToolTipService.ToolTip="Inverse logarithm (base 10)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathlog|ologE" Content="ln" Grid.Column="2" Grid.Row="2" ToolTipService.ToolTip="Natural logarithm (base e)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathlog|oalogE" Content="eˣ" Grid.Column="3" Grid.Row="2" ToolTipService.ToolTip="Inverse natural logarithm (base e)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathlog|olog2" Content="log₂" Grid.Column="2" Grid.Row="3" ToolTipService.ToolTip="Logarithm (base 2)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathlog|oalog2" Content="2ˣ" Grid.Column="3" Grid.Row="3" ToolTipService.ToolTip="Inverse logarithm (base 2)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+
+        <!-- floor functions Col 4 Row 1..5 -->
+        <Button Tag="#KEYmathfloor|ofloor" Content="floor" Grid.Column="4" Grid.Row="1" ToolTipService.ToolTip="Round down" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathfloor|oceil" Content="ceil" Grid.Column="4" Grid.Row="2" ToolTipService.ToolTip="Round up" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" />
+        <Button Tag="#KEYmathfloor|oround" Content="round" Grid.Column="4" Grid.Row="3" ToolTipService.ToolTip="Round to closest" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathfloor|ointeger" Content="integer" Grid.Column="4" Grid.Row="4" ToolTipService.ToolTip="Truncate" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathfloor|ofrac" Content="frac" Grid.Column="4" Grid.Row="5" ToolTipService.ToolTip="Fraction" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathfloor|oabs" Content="abs" Grid.Column="4" Grid.Row="6" ToolTipService.ToolTip="Absolute value" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+
+        <!-- Random keys Col 0..2 Row 4 -->
+        <Button Tag="#KEYmathrand|cRandDouble" Content="rnd" Grid.Column="0" Grid.Row="6" ToolTipService.ToolTip="Random number" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathrand|oRandN" Content="rnd N" Grid.Column="1" Grid.Row="6" ToolTipService.ToolTip="Integer random number (out of N)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+
+        <!-- Misc functions Col 0..3 Row 5 & 6 -->
+        <Button Tag="#KEYmathpow|ox**3" Content="x³" Grid.Column="2" Grid.Row="5" ToolTipService.ToolTip="Cube" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathpow|o3√" Content="∛x" Grid.Column="3" Grid.Row="5" ToolTipService.ToolTip="Cube root" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathpow|ox!" Content="x!" Grid.Column="2" Grid.Row="4" ToolTipService.ToolTip="Factorial" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathpow|pmod" Content="mod" Grid.Column="3" Grid.Row="4" ToolTipService.ToolTip="Modulo" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathpow|px**y" Content="xʸ" Grid.Column="2" Grid.Row="6" ToolTipService.ToolTip="Power" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+        <Button Tag="#KEYmathpow|py√x" Content="ʸ√x" Grid.Column="3" Grid.Row="6" ToolTipService.ToolTip="Root" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidthWide}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton" />
+    </Grid>
+
+</UserControl>

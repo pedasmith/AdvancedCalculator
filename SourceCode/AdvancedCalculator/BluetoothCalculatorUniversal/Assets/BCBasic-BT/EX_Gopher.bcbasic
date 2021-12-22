@@ -1,0 +1,246 @@
+## Gopher and Gopher-of-Things
+Demonstrates using BC BASIC as a Gopher Server. Examples range from the very simple to a full IOT (or Gopher-of-things) sample. By using the Gopher protocol, you can write programs on one computer and control it using an ordinary Gopher clients. Gopher clients are available for most platforms including Windows, iOS and Android.
+### A simple GOPHER Program
+Best Calculator can act as a Gopher server, serving up Gopher pages that you design in code. This simple example shows the most simple Gopher program with a few sub-pages that show the current system settings.
+```BASIC
+CLS
+PRINT "Gopher all the things!"
+PRINT "Start a Gopher server on port 70"
+PRINT " "
+
+REM Routes connect the incoming Gopher requests to functions
+REM that you define. Each function should return a Gopher Menu
+REM with the data you want filled in.
+REM The first string is the incoming selector (which defaults to "")
+REM The second string is the function to call
+Gopher.AddRoute ("", "GOPHER_MAIN")
+Gopher.AddRoute ("/time", "GOPHER_TIME")
+
+REM Start the Gopher server
+REM The Gopher server will be available via DNS-SD using the name in Gopher Start.
+status = Gopher.Start("motd")
+PRINT status
+
+FOREVER WAIT
+
+REM Data passed in by the user.
+FUNCTION GOPHER_MAIN(selector, ids, search)
+    Screen.ClearLines (4,10)
+    PRINT "Selector " + selector
+
+    REM Create the menu to return
+    REM The parameters are
+    REM 1. type.  "i" is information and "1" is a menu (directory)
+    REM 2. user.  A string that is displayed to the user
+    REM 3. selector. For type "1", the selector (route) that determines which function is called
+    REM 4. host. The host to go to for the menu. Default is the current host
+    REM 5. port. The port number to go to. Default is the current port
+    REM 6. options. Common options are INLINE and TITLE
+    REM 
+    REM Be sure to return the menu from your function
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "Hello gopher world!")
+    menu.Add ("1", "Get current time (not inline)", "/time")
+    menu.Add ("1", "Get current time (inlined)", "/time", "", "", "INLINE")
+    menu.Add ("i", "<<unknown current time>>")
+    menu.Add ("1", "GOTO MAIN", "")
+RETURN menu
+
+REM Called when a Gopher program asks for a /time selector
+REM selector will be the Gopher selector (/time) based on Gopher.AddRoute
+REM selector will be /time
+REM ids will be blank, as will search
+FUNCTION GOPHER_TIME(selector, ids, search)
+    now = DateTime.GetNow()
+
+    Screen.ClearLines (4,10)
+    PRINT "Selector " + selector + " at " + now.Iso8601
+
+    REM Create the menu to return
+    REM Type "i" is information
+    REM Type "1" is a new directory (menu)
+    REM The Time menu is sometimes called as inline,
+    REM so make sure that the first line returned
+    REM is useful information.
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "ISO: " + now.Iso8601)
+    menu.Add ("i", "RFC 1123: " + now.Rfc1123)
+    menu.Add ("i", "Seconds: " + now.AsTotalSeconds)
+    menu.Add ("i", "")
+    menu.Add ("1", "GOTO MAIN", "")
+
+RETURN menu
+```
+### GOPHER of things
+Demonstrates how a single program can connect to two different IOT devices via Bluetooth (TI SensorTag and a Bluetooth-enable light) and enable the user to control the devices using a GOPHER menu system
+```BASIC
+CLS
+PRINT "Gopher of things!"
+PRINT "Start a Gopher server on port 70 connected to a DOTTI device"
+PRINT " "
+
+REM Make an array of devices to control
+device = Bluetooth.PickDevicesName(“*Dotti”)
+
+IF (device.IsError)
+    PRINT "No device was picked"
+    STOP
+END IF
+
+REM Make a global array of the devices
+DIM devices()
+devices.Add (device.As (“DOTTI”))
+
+
+REM Routes connect the incoming Gopher requests to functions
+REM that you define. Each function should return a Gopher Menu
+REM with the data you want filled in.
+REM The first string is the incoming selector (which defaults to "")
+REM The selector can include values ("{id}") which match anything anything.
+REM The "ids" array will include all of the values.
+REM The second string is the function to call
+Gopher.AddRoute ("", "GOPHER_MAIN")
+Gopher.AddRoute ("/setRGB/{id}/{red}/{green}/{blue}", "GOPHER_LIGHT")
+
+REM List all of the lights 
+
+REM Start the Gopher server
+REM The Gopher server will be available via DNS-SD using the name in Gopher Start.
+status = Gopher.Start("dotti-gopher")
+PRINT status
+
+FOREVER WAIT
+
+REM Create the main menu. This will list each of the devices that will be
+REM controlled via the GOPHER program
+FUNCTION GOPHER_MAIN(selector, ids, search)
+    Screen.ClearLines (4,10)
+    GLOBAL devices
+
+    REM Create a menu with all devices to control
+    REM Be sure to return the menu from your function
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "DOTTI CONTROL", "TITLE")
+    menu.Add ("i", " ")
+
+    FOR i = 1 TO devices.Count
+        REM For each device, make an info line and four color set lines
+        dotti = devices[i]
+        menu.Add ("i", "Device " + i + " Name=" + dotti.GetName())
+        menu.Add ("1", "RED", "/setRGB/" + i + "/255/0/0")
+        menu.Add ("1", "GREEN", "/setRGB/" + i + "/0/255/0")
+        menu.Add ("1", "BLUE", "/setRGB/" + i + "/0/0/255")
+        menu.Add ("1", "OFF", "/setRGB/" + i + "/0/0/0")
+    NEXT i
+RETURN menu
+
+REM Handle a set light request
+REM The route was /setRGB/{id}/{red}/{green}/{blue} so the
+REM ids array will have 4 values which you can pull out by name
+REM (e.g., ids.red is the {red} value and is expected to be a number 0..255)
+FUNCTION GOPHER_LIGHT(selector, ids, search)
+    now = DateTime.GetNow()
+
+    REM For debugging and tracing, print out some useful values.
+    Screen.ClearLines (4,10)
+    PRINT "Device ", ids.id
+    PRINT "R", ids.red
+    PRINT "G", ids.green
+    PRINT "B", ids.blue
+
+    REM Use the id value to pick the right device
+    REM and then call the Dotti.SetPanel method to set the r/g/b values
+    GLOBAL devices
+    dotti = devices[ids.id]
+    dotti.SetPanel (ids.red, ids.green, ids.blue)
+
+    REM Create the menu to return. Add in handy debugging values.
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "Set DOTTI panel " + dotti.GetName())
+    menu.Add ("i", "R=" + ids.red + " G=" + ids.green + " B=" + ids.blue)
+    menu.Add ("1", "GOTO MAIN", "")
+
+RETURN menu
+```
+### Gopher program with changing responses
+This GOPHER program demonstrates how you can provide access to selectable data. The GOPHER_MESSAGE function returns a GOPHER menu with one of four different values depending on the selector that's passed in. The GOPHER_SEARCH function returns data based on the search string (it returns population statistics for different cities)
+```BASIC
+CLS
+PRINT "Gopher all the things!"
+PRINT "Start a Gopher server on port 70"
+PRINT " "
+
+Gopher.AddRoute ("", "GOPHER_MAIN")
+Gopher.AddRoute ("/message/{msg}", "GOPHER_MESSAGE")
+Gopher.AddRoute ("/search/{item}", "GOPHER_SEARCH")
+
+REM Start the Gopher server
+REM The Gopher server will be available via DNS-SD using the name in Gopher Start.
+status = Gopher.Start("message")
+PRINT status
+startTime = DateTime.GetNow()
+
+FOREVER WAIT
+
+REM Data passed in by the user.
+FUNCTION GOPHER_MAIN(selector, ids, search)
+    Screen.ClearLines (4,10)
+    PRINT "Selector " + selector
+
+    REM Create the menu to return
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "Messages from GOPHER")
+    menu.Add ("1", "Uptime", "/message/uptime")
+    menu.Add ("1", "Current time", "/message/time")
+    menu.Add ("1", "Current date", "/message/date")
+    menu.Add ("1", "Version", "/message/version")
+    menu.Add ("7", "Search", "/search/main")
+
+    menu.Add ("1", "GOTO MAIN", "")
+RETURN menu
+
+REM Called when a Gopher program asks for a /message selector
+FUNCTION GOPHER_MESSAGE(selector, ids, search)
+    now = DateTime.GetNow()
+    GLOBAL startTime
+    delta = now.Subtract (startTime)
+
+    Screen.ClearLines (4,10)
+    PRINT "Selector " + selector + " message " + ids.msg
+
+    REM Create the menu to return
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "Information about the server")
+    IF (ids.msg = "uptime") THEN menu.Add ("i", "Uptime: " + delta)
+    IF (ids.msg = "time") THEN menu.Add ("i", "Time: " + now.Time)
+    IF (ids.msg = "date") THEN menu.Add ("i", "Date: " + now.Date)
+    IF (ids.msg = "version") THEN menu.Add ("i", "Version: " + System.Version)
+    menu.Add ("i", "")
+    menu.Add ("1", "GOTO MAIN", "")
+
+RETURN menu
+
+REM Called when a Gopher program asks for a /search selector
+FUNCTION GOPHER_SEARCH(selector, ids, search)
+    now = DateTime.GetNow()
+
+    Screen.ClearLines (4,10)
+    PRINT "Search  " + selector + " item " + ids.item
+    PRINT "Search for: " + search
+    cities = Data.GetLocations (search)
+    FOR i = 1 TO cities.Count
+        PRINT cities[i]
+    NEXT i
+    REM Create the menu to return
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "Search results")
+    FOR i = 1 TO cities.Count
+        city = cities[i]
+        menu.Add ("i", city.FullName + " " + city.Population)
+    NEXT i
+    menu.Add ("i", "")
+
+    menu.Add ("1", "GOTO MAIN", "")
+
+RETURN menu
+```

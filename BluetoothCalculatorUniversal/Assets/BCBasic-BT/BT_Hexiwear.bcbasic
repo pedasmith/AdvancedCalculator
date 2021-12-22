@@ -1,0 +1,239 @@
+## BT: Hexiwear
+The Hexiwear is a small hexagonal "wearable" IOT device from http://www.hexiwear.com/.  It includes a number of sensors including heart rate, steps, weather and the normal accelerometer and gyroscope.  The Hexiwear device.As("Hexiwear") specialization gives you easy access to all of the Hexiwear data.
+### Accelerometer
+This program provides a constant stream of accelerometer updates from the device.  In the program, all of the Hexiwear devices are listed (a device is known to be a Hexiwear device if it's name is HEXIWEAR).  For each device found, the device.As("Hexiwear") specialization is created.  Then the program goes into a loop, getting the data and printing it to the screen.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate Hexiwear Accelerometer"
+
+device = Bluetooth.PickDevicesName(“HEXIWEAR”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“Hexiwear”)
+    PRINT AT 6,1 "Got a device", device.Name
+
+
+    REM Now poll for data.
+    FOR time = 1 TO 10
+        Screen.ClearLine (3)
+        PRINT AT 3, 1 "TIME", time
+
+        Screen.ClearLine(1)
+        data = tag.GetAccelerometer()
+        PRINT AT 1,1 data.Get(1), data.Get(2), data.Get(3)
+
+        PAUSE 50
+    NEXT time
+
+    PRINT  AT 9, 1 "FINISH", status
+    tag.Close()
+END IF
+```
+### Compass
+This program provides a constant stream of compass updates from the device.  In the program, all of the Hexiwear devices are listed (a device is known to be a Hexiwear device if it's name is HEXIWEAR).  For each device found, the device.As("Hexiwear") specialization is created.  Then the program goes into a loop, getting the data and printing it to the screen.
+```BASIC
+CLS BLUE
+PRINT AT 7,1 "Demonstrate Hexiwear Magnetometer"
+
+device = Bluetooth.PickDevicesName(“HEXIWEAR”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“Hexiwear”)
+    PRINT AT 8,1 "Got a device", device.Name
+
+    data = tag.GetMagnetometer()
+    REM Now poll for data.
+    FOR time = 1 TO 99
+        Screen.ClearLine(11)
+        PRINT AT 11, 1 "TIME", time
+        data = device.ReadRawBytes("2000", "2003")
+        FOR  i=1 TO 6
+            Screen.ClearLine(1)
+            PRINT AT i,1 data.Get(i)
+        NEXT i
+
+        GOTO 90
+        data = tag.GetMagnetometer()
+        PRINT AT 1,1 INT (data.Heading)
+        Screen.ClearLine(3)
+        PRINT AT 3,1 data.X, data.Y
+        Screen.ClearLine(4)
+        PRINT AT 4,1 data.Z
+90 REM bottom
+        PAUSE 10
+    NEXT time
+
+    PRINT  AT 11, 1 "FINISH", status
+    tag.Close()
+END IF
+```
+### List Information
+The List Information program provides information about each Hexiwear device.  For each device, a device.As("Hexiwear") specialization is created.  The program then prints the device name, battery power level, manufacturer name and firmware revision.
+
+To see all of kinds of data you can read from a Hexiwear device, look at the ReadAll program.  It prints all of the data that a Hexiwear is capable of producing.
+```BASIC
+CLS BLUE
+PRINT "Available Bluetooth devices"
+
+devices = Bluetooth.DevicesName ("HEXIWEAR")
+
+
+FOR i = 1 TO devices.Count
+    device = devices.Get(i)
+    PRINT “NAME”, device.Name
+    tag = device.As("Hexiwear")
+    PRINT tag.GetName()
+    PRINT tag.GetPower()
+    PRINT tag.GetManufacturerName()
+    REM does not work. PRINT tag.GetHardwareRevision()
+    PRINT tag.GetFirmwareRevision()
+
+NEXT i
+
+n = devices.Count
+PRINT " "
+PRINT "" + n + " devices were found"
+```
+### Raw Access to Hexiwear
+The Raw Access program demonstrates how you can get information from a Hexiwear device without using the specialization.  To do this, you will need know the different Bluetooth services and characteristics that a Hexiwear device exposes and how to read the resulting data.  This documentation is available at https://www.dropbox.com/s/92tphuymsv0n5kx/HEXIWEAR%20Bluetooth%20Specifications.pdf?dl=0 
+
+In this program the accelerometer data is read.  The acceleration service is server "2000" and the acceleration data is characteristic "2001".  The data is read using the ReadRawBytes() method; that method returns an array of 6 bytes.  The array starts at index 1.  The bytes of the array must be interpreted as 3 16-bit integers.  To interpret the bytes, you can use the built-in GetValue() method on the data array; that method takes in two parameters.  The first parameter is the index to start reading at and the second is the interpretation type. Use "int16-le" to interpret the data as a 16-bit signed integer, little endian.
+```BASIC
+CLS BLUE
+ACCSERVICE ="2000"
+ACCDATA ="2001"
+
+
+device = Bluetooth.PickDevicesName(“HEXIWEAR”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    PRINT "DEVICE", device.Name
+
+    address= device.Init()
+    PRINT "Address", address
+
+    REM Don't have to tell the device to turn on accelerometer
+
+    PRINT "X", "Y", "Z"
+    FOR time = 1 TO 15
+        PAUSE 50
+        data = device.ReadRawBytes(ACCSERVICE, ACCDATA)
+        x = data.GetValue (1, "int16-le") / 100
+        y = data.GetValue(3, "int16-le") / 100
+        z = data.GetValue(5, "int16-le") / 100
+        PRINT x, y, z
+    NEXT time
+
+    PRINT "Done"
+END IF
+```
+### Read All
+The Read All program demonstrates all of the different sensors in the Hexiwear IOT device. In the program, all of the Hexiwear devices are listed and a specialization created.  Then the Hexiwear mode is read. Depending on the mode, the heart rate, pedometer or sensor data will be printed.
+```BASIC
+CLS BLUE
+PRINT AT 12,1 "Demonstrate Hexiwear sensors"
+
+device = Bluetooth.PickDevicesName(“HEXIWEAR”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“Hexiwear”)
+    PRINT AT 1,1 "Got a device", device.Name
+
+
+    REM Now poll for data.
+    FOR time = 1 TO 4
+        Screen.ClearLine(2)
+        PRINT AT 2, 1 "TIME", time
+
+        mode = tag.GetMode()
+        PRINT AT 3,1 "MODE", mode
+
+        IF (mode = 2) THEN ShowSensors(tag)
+        IF (mode = 5) THEN ShowHeart(tag)
+        IF (mode = 6) THEN ShowPedometer(tag)
+
+        PAUSE 50
+    NEXT time
+
+    PRINT  AT 11, 1 "FINISH", status
+    tag.Close()
+END IF
+
+FUNCTION ShowHeart(tag)
+    Screen.ClearLine(4)
+    PRINT AT 4,1 "Heart", tag.GetHeart()
+END
+
+FUNCTION ShowPedometer(tag)
+    Screen.ClearLine(4)
+    Screen.ClearLine(5)
+    PRINT AT 4,1 "Steps", tag.GetSteps()
+    PRINT AT 5,1 "Calorie", tag.GetCalories()
+END
+
+FUNCTION ShowSensors(tag)
+    value = tag.GetAccelerometer()
+    Screen.ClearLine(4)
+    PRINT AT 4,1 "Accel.", "" + value.X + " " + value.Y + " "  + value.Z
+
+    value = tag.GetGyroscope()
+    Screen.ClearLine(5)
+    PRINT AT 5,1 "Gyro.", "" + value.X + " " + value.Y + " "  + value.Z
+
+    value = tag.GetMagnetometer()
+    Screen.ClearLine(6)
+    PRINT AT 6,1 "Mag.", "" + value.X + " " + value.Y + " "  + value.Z
+
+    Screen.ClearLine(7)
+    PRINT AT 7,1 "Temp", tag.GetTemperature()
+    Screen.ClearLine(8)
+    PRINT AT 8,1 "Humidity", tag.GetHumidity()
+    Screen.ClearLine(9)
+    PRINT AT 9,1 "Pressure", tag.GetPressure()
+    Screen.ClearLine(10)
+    PRINT AT 10,1 "Light", tag.GetLight()
+
+END
+```
+### Set notification count
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT "Demonstrate Hexiwear SetNotificationCount"
+
+device = Bluetooth.PickDevicesName(“HEXIWEAR”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“Hexiwear”)
+    PRINT "Got a device", device.Name
+
+    REM Now set the notification
+    REM 2=missed call 4=social 6=email
+    REM second value is the count to set.
+    status = tag.SetNotificationCount(6, 17)
+    PRINT   ".   status", status
+END IF
+```
+### SetTime
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT "Demonstrate Hexiwear SetTimeNow"
+
+device = Bluetooth.PickDevicesName(“HEXIWEAR”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“Hexiwear”)
+    PRINT "Got a device", device.Name
+
+    REM Now set the time
+    status = tag.SetTimeNow()
+    PRINT   ".   status", status
+END IF
+```

@@ -1,0 +1,41 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.KeyboardAdvancedWideFourPanelControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanelViewbox x:Name="uiMain" VerticalScrollBarVisibility="Disabled">
+        <local:FourPanelViewbox.ItemTop>
+            <local:ResultControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+        </local:FourPanelViewbox.ItemTop>
+
+        <local:FourPanelViewbox.ItemMain>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <local:KeyboardAdvancedControl Grid.Column="0" />
+                <local:KeyboardCalculatorControl Grid.Column="1" Margin="50,0,0,0" />
+            </Grid>
+        </local:FourPanelViewbox.ItemMain>
+
+        <local:FourPanelViewbox.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/Blank.jpg"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanelViewbox.ItemRight>
+
+        <local:FourPanelViewbox.ItemBottom>
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+            </Grid>
+        </local:FourPanelViewbox.ItemBottom>
+
+    </local:FourPanelViewbox>
+</UserControl>

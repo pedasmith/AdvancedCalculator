@@ -1,0 +1,127 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.GeometryRightTriangleControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Right Triangle Calculations</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Hypotenuse</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Hypotenuse" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Hypotenuse" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Hypotenuse" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Bottom Side</TextBlock>
+                <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Bottom" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Bottom" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Bottom" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Far side</TextBlock>
+                <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1Far" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1Far" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1Far" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Area</TextBlock>
+                <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1Area" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1Area" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1Area" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Bottom Angle (degrees)</TextBlock>
+                <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1BottomAngleDegrees" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1BottomAngleDegrees" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1BottomAngleDegrees" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Far Side Angle (degrees)</TextBlock>
+                <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1FarAngleDegrees" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1FarAngleDegrees" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1FarAngleDegrees" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">Bottom Angle (radians)</TextBlock>
+                <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1BottomAngleRadians" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1BottomAngleRadians" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1BottomAngleRadians" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Far Side Angle (radians)</TextBlock>
+                <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1FarAngleRadians" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1FarAngleRadians" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1FarAngleRadians" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/RightTriangle.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                    <Bold FontSize="20" >About Right Triangles</Bold>
+                    <LineBreak />
+                    All right triangles have one angle which is exactly 90 degrees (PI/2 Radians); it's marked with a little square.
+                    They are commonly drawn so that one side is flat (horizontal) and the other straight up and down (vertical).  In 
+                    the diagram, these are marked as the 'Bottom Side' and the 'Far Side'.
+                    <LineBreak />
+                    The <Bold>Hypotenuse</Bold> is the longest side; it's the slanted side in the diagram.  To calculate the length of the 
+                    hypotenuse, add up the squares of the other two sizes, and then take the square-root of that.  For example, if
+                    the bottom side is '3' long and the far side is '4' long, then you calculate the square root of (bottom*bottom) + (far*far).
+                    Working out the numbers, 3 times 3 = 9 and 4 time 4 is 16; 9 + 16 is 25; the square root of 25 is 5.  Therefore, the 
+                    hypotenuse is 25 long.
+                    <LineBreak />
+                    The <Bold>Area</Bold> of a right triangle is simply the height * base, divided by 2.  If the bottom side is 4, and the 
+                    far side is 5, then the area is 4 times 5 = 20; divided by 2 = 10.
+                    <LineBreak />
+                    The <Bold>Angles</Bold> are calcuated with a function called "ArcTan2".  It takes in the far side and right side,
+                    and directly calculates the bottom or far side angles depending on the order these are given.  
+                        <LineBreak />
+                    <Italic>Note: for simplicity, you cannot set the Area or the Angles. </Italic>
+                        <!-- You can calculate these with the <Bold>Angle</Bold>
+                    calculator. -->
+
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

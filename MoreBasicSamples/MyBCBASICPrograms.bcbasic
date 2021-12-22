@@ -1,0 +1,1190 @@
+## My BCBASIC Programs
+Quick programs that you have created
+### My Program
+Quick program that you can edit.
+```BASIC
+CLS BLUE
+PRINT "Demonstrate text rotation"
+g = Screen.Graphics (50, 50, 200, 400)
+slider = g.Slider (0, 0, g.W, 50, "Rotation", "RotateNow")
+slider.Max = 2*PI*10
+g.Stroke = YELLOW
+g.Fill = WHITE
+
+FOR x = 0 TO g.W STEP 20
+    g.Line (x, 0, x, g.H)
+NEXT x
+FOR y = 0 TO g.H STEP 20
+    g.Line (0, y, g.W, y)
+NEXT y
+g.Fill = NONE
+g.Stroke = WHITE
+g.Rectangle (80, 80, 200, 120)
+
+g.Fill = WHITE
+t0 = g.Text (80, 80, 200, 120, "----0----", 30)
+t0.CYD = .55
+t0.Alignment  = "CC"
+
+FOREVER
+
+FUNCTION RotateNow(slider, value)
+    GLOBAL t0
+    t0.Rotate = value / 10
+    CONSOLE value
+RETURN
+```
+### NewProgram
+A new program for you to edit
+```BASIC
+value = Calculator.Value
+retval=value * value
+STOP retval
+```
+### _ARC
+A new program for you to edit
+```BASIC
+CLS GREEN
+PRINT "ARC DEMO"
+g = Screen.Graphics (50, 50, 200, 200)
+arc = g.Arc (50, 50, 28, 50, 0, 2*PI-.04)
+arc.Fill = RED
+arc.Stroke = YELLOW
+g.Line (50, 50, 200, 50)
+
+
+FOR x = 1 TO 200 STEP 3
+    arc.CX = x
+    arc.CY = x
+    arc.Ang1  = (x/200) * Math.PI * 2
+    arc.Ang2 = arc.Ang1 +  (x /200) * Math.PI*2
+    arc.OuterR = (x / 200) * 20 + 40
+    arc.InnerR = arc.OuterR - 10
+    arc.Fill = Math.Mod (x, 7)
+    PAUSE 5
+NEXT x
+```
+### _INKEY$ Demonstration
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT "Type characters and they will show up on the screen!"
+10 REM Top of loop
+LET a = INKEY$
+IF (a="")
+    PAUSE 10
+    GOTO 10
+END IF
+PRINT a ;
+GOTO 10
+```
+### _Steering Wheel
+Demonstrates how to use the Inclinometer as a steering wheel!
+```BASIC
+REM
+REM Connects the Inclinometer to a graphic
+REM steering wheel and speed indicator.
+REM You can use these for your own racing games.
+REM
+CLS GREEN
+
+g = Screen.Graphics (20, 100, 100, 400)
+DIM Spokes(3)
+DrawWheel (g, 200, 20, 50)
+DIM SpeedBars(6)
+DrawSpeedBars(g, 250, 0, 350, 50)
+SetSpeed (2)
+
+PRINT "Inclinometer"
+PRINT "(not all computers have these)"
+PRINT AT 2,1 "Roll", "Pitch", "Yaw"
+
+PRINT "Connecting to the Robot"
+bt = Bluetooth.PickDevicesSppName (“HC-06”)
+ok = bt.ReceiveString (“BtRecv”)
+IF (ok.IsError)
+    PRINT "Error connecting"
+    PRINT ok
+    CONSOLE ok
+    STOP
+ELSE
+    PRINT "Status", ok
+END IF
+
+
+sensor = Sensor.Inclinometer()
+sensor.Start ("Inclinometer")
+
+FOREVER
+FUNCTION BtRecv (device, data)
+    CONSOLE “RECV:” + data
+END
+
+FUNCTION SetSpeed(idx)
+    GLOBAL SpeedBars
+    FOR i = 1 TO LEN (SpeedBars)
+        bar = SpeedBars(i)
+        bar.Fill = GRAY
+    NEXT i
+    bar = SpeedBars(idx)
+    IF (idx  < 3) THEN bar.Fill = RED
+    IF (idx >= 3 AND idx < 4) THEN bar.Fill = YELLOW
+    IF (idx >= 4) THEN bar.Fill = GREEN
+RETURN
+
+FUNCTION DrawSpeedBars (g, x1, y1, x2, y2)
+    GLOBAL SpeedBars
+    nbar = 6
+    nspace = nbar - 1
+    barratio = 3
+    deltay = (y2-y1) / (nbar*barratio+nspace)
+    barh = deltay*barratio
+    totbarh = barh+deltay
+
+    cx = ((x2 - x1) / 2) + x1
+    hw = (x2 - x1)/2
+    y = y1
+    SpeedBars(1) = g.Rectangle (cx-hw*.5, y, cx+hw*.5, y+barh)
+
+    y = y+totbarh
+    SpeedBars(2) = g.Rectangle (cx-hw*.66, y, cx+hw*.66, y+barh)
+
+    y = y+totbarh
+    SpeedBars(3) = g.Rectangle (cx-hw, y, cx+hw, y+barh)
+
+    y = y+totbarh
+    SpeedBars(4) = g.Rectangle (cx-hw*.8, y, cx+hw*.8, y+barh)
+
+    y = y+totbarh
+    SpeedBars(5) = g.Rectangle (cx-hw*.6, y, cx+hw*.6, y+barh)
+
+    y = y+totbarh
+    SpeedBars(6) = g.Rectangle (cx-hw*.4, y, cx+hw*.4, y+barh)
+RETURN
+
+FUNCTION Inclinometer (pitch, roll, yaw, accuracy)
+    Screen.ClearLine (3)
+    PRINT Math.Round(roll), Math.Round(pitch), Math.Round(yaw)
+    angle = -Math.DtoR (roll) * 2
+    DrawWheelAngle (200, 20, 50, angle)
+
+    REM Pitch is for acceleration
+    REM 45=neutral
+    REM 20=full forward
+    REM 75=pull back
+    speed = 0
+    bar = 3
+    IF (pitch < 75)
+        speed = -20
+        bar = 1
+    END IF
+    IF (pitch < 70)
+        speed = -10
+        bar = 2
+    END IF
+    IF (pitch < 60)
+        speed = 0
+        bar = 3
+    END IF
+    IF (pitch < 50)
+        speed = 10
+        bar = 4
+    END IF
+    IF (pitch < 40)
+        speed = 20
+        bar = 5
+    END IF
+    IF (pitch <= 30)
+        speed = 30
+        bar = 6
+    END IF 
+    SetSpeed (bar)
+
+    REM
+    REM Now control the wheels!
+    REM
+    left = speed
+    right = speed
+    reduction = Math.Abs (roll)
+    IF (roll < -5) THEN left = INT(left - reduction)
+    IF (roll > 5) THEN right = INT(right - reduction)
+    Screen.ClearLine (6)
+    cmd = "1 " + left + " "  + right + " 0\r\n"
+    PRINT cmd, speed, reduction
+    GLOBAL bt
+    bt.Send (cmd)
+END
+
+FUNCTION DrawWheel(g, cx, cy, radius)
+    third = PI * 2  / 3
+    sa = third / 2
+    g.Arc (cx, cy, radius-10, radius, sa, sa+third)
+    g.Arc (cx, cy, radius-10, radius, sa+third, sa+2*third)
+    g.Arc (cx, cy, radius-10, radius, sa+2*third, sa)
+
+    REM
+    REM spoke1..3 are the spokes of the steering wheel.
+    REM they are the only bit that actualy move.
+    REM
+    GLOBAL Spokes
+    Spokes(1) = g.Polygon()
+    Spokes(2) = g.Polygon()
+    Spokes(3) = g.Polygon()
+RETURN
+
+FUNCTION DrawWheelAngle(cx, cy, radius, angle)
+    GLOBAL Spokes
+    FOR i = 1 TO 3
+        DrawSpoke (Spokes(i), cx, cy, radius, angle + PI*1/6 + i*PI*4/6)
+    NEXT i
+RETURN
+
+FUNCTION DrawSpoke (spoke, cx, cy, radius, angle)
+    angleDelta = 0.25
+    angInner1 = angle - angleDelta
+    angInner2 = angle + angleDelta
+    innerr = radius / 6
+    angOuter1 = angle - angleDelta/6
+    angOuter2 = angle + angleDelta/6
+
+    spoke.SetPoints (↲
+        cx+Math.Cos (angInner1)*innerr, ↲
+        cy+Math.Sin (angInner1)*innerr, ↲
+
+        cx+Math.Cos (angOuter1)*radius, ↲
+        cy+Math.Sin (angOuter1)*radius, ↲
+
+        cx+Math.Cos (angOuter2)*radius, ↲
+        cy+Math.Sin (angOuter2)*radius, ↲
+
+        cx+Math.Cos (angInner2)*innerr, ↲
+        cy+Math.Sin (angInner2)*innerr)
+RETURN
+```
+### 10 PRINT version
+A BC BASIC Version of the 10 PRINT classic!
+```BASIC
+REM 10print.org 10 PRINT CHR$(205.5+RND(1)); : GOTO 10
+CLS GREEN
+FOR i = 1 TO 24*80
+REM 9585 = U+2571
+10 PRINT CHR$(9585.5+RND) ;
+NEXT i
+```
+### Compare IR data from two SensorTags
+A new program for you to edit
+```BASIC
+CLS BLUE
+device = Bluetooth.PickDevicesName(“SensorTag”)
+IF (device.IsError)
+  PRINT "No device was picked"
+ELSE
+   tag1 = device.As(“SensorTag2541”)
+END IF
+ 
+
+REM device = Bluetooth.PickDevicesName (“CC1350 SensorTag*, SensorTag 2.0”)
+device = Bluetooth.PickDevicesName(“SensorTag”)
+IF (device.IsError)
+   PRINT "No device was picked"
+ELSE
+    REM tag2 = device.As(“SensorTag1350”)
+    tag2 = device.As(“SensorTag2541”)
+END IF
+
+REM
+REM Set up the graph
+REM
+DIM deltaValues()
+deltaValues.MaxCount = 10
+deltaValues.RemoveAlgorithm = "First" 
+g = Screen.Graphics (0, 100, 200, 500)
+g.GraphY (deltaValues)
+g.Title = "Delta Temperature"
+
+REM
+REM Set up temperature globals
+REM
+temp1 = -999
+temp2 = -999
+tag1setup = tag1.IRSetup(1, 100, “IR1”)
+tag2setup = tag2.IRSetup(1, 100, “IR2”)
+
+time = 0
+tag1.ButtonSetup(1, "Button")
+tag2.ButtonSetup(1, "Button")
+
+PRINT AT 1,1 "tag1=" + tag1setup
+PRINT AT 1,20 "tag2=" + tag2setup
+
+REM
+REM Wait and then shut down the tags
+REM
+
+FOR time = 1 TO 9999
+    PRINT AT 1,50 time
+    PAUSE 50
+NEXT time
+
+tag1.IRSetup (0, 100, "IR1")
+tag2.IRSetup (0, 100, "IR2")
+tag1.ButtonSetup(0, "Button")
+tag2.ButtonSetup(0, "Button")
+
+
+REM
+REM
+REM
+
+REM called when tag1's IR changes
+FUNCTION IR1(device, temp, amb)
+    Screen.ClearLine(2)
+    PRINT "IR1", Math.Round (temp, 1), Math.Round (amb, 1)
+    GLOBAL temp1
+    temp1 = temp
+    Update()
+END
+
+REM called when tag2's IR changes
+FUNCTION IR2(device, temp, amb)
+    Screen.ClearLine(3)
+    PRINT "IR2", Math.Round (temp, 1), Math.Round (amb, 1)
+    GLOBAL temp2
+    temp2 = temp
+    Update()
+END
+
+REM called with any button on any tag changes
+FUNCTION Button(device, left, right, side)
+    CONSOLE "BUTTON! " + value
+    GLOBAL time
+    time = 9999999
+END
+
+FUNCTION Update()
+    GLOBAL temp1
+    GLOBAL temp2
+    IF (temp1 = -999 OR temp2 = -999) THEN RETURN
+    GLOBAL delta
+    delta = temp1 - temp2
+    Screen.ClearLine (4)
+    PRINT  "Delta", delta
+    GLOBAL deltaValues
+    deltaValues.Add (delta)
+END
+```
+### CSV Test
+A new program for you to edit
+```BASIC
+value = Calculator.Value
+a=3
+b=4
+🚩 retval=√(a²+b²)
+
+CLS BLACK WHITE
+PRINT "Demonstrate CSV Values"
+PRINT String.Escape (“csv”, 1.2)
+PRINT String.Escape (“csv”, "simple")
+PRINT String.Escape (“csv”, "1,3")
+PRINT String.Escape (“csv”, “testing "quotes" in strings”)
+
+DIM list()
+list.AddRow(“data”, 12.34)
+list.AddRow(“sensor”, “ambient”)
+list.AddRow(“index”, 33)
+json = String.Escape(“json”, list)
+PRINT json
+
+
+STOP retval
+```
+### DateTime examples
+Examples of using the DateTime object to get the current time and date
+```BASIC
+CLS WHITE BLUE
+REM INK BLUE
+now = DateTime.GetNow()
+
+now = DateTime.GetNow()
+
+PRINT AT 1,1 “YEAR”, now.Year
+PRINT AT 2,1 “MONTH”, now.Month
+PRINT AT 3,1 “DAY”, now.Day
+PRINT AT 4,1 “DAY OF WEEK”, now.DayOfWeek
+PRINT AT 5,1 “HOUR”, now.Hour
+PRINT AT 6,1 “MINUTE”, now.Minute
+PRINT AT 7,1 “SECOND”, now.Second
+PRINT AT 8,1 “DATE”, now.Date
+PRINT AT 9,1 “TIME”, now.Time
+PRINT AT 10,1 “UNIX”, now.AsTotalSeconds
+PRINT AT 11,1 "Iso8601", now.Iso8601
+PRINT AT 12,1 "Rfc1123", now.Rfc1123
+```
+### DIM array and then AddRow() to add a new row
+Demonstrates how to use the AddRow() method of an array (a DIM'd value) to make a two-dimensional array.  This can use used to make JSON values more easily.
+```BASIC
+DIM list()
+list.AddRow (“data”, 82)
+list.AddRow (“sensor”, “Metawear”)
+json = String.Escape (“json”, list)
+PRINT json
+```
+### DPS310
+A new program for you to edit
+```BASIC
+bt = Bluetooth.PickDevicesRfcommName (“IFX_NANOHUB”)
+dps310 = bt.As (“DPS310”, “Dps310Recv”)
+FOREVER
+
+FUNCTION BtRecv (dps310, type, value)
+    PRINT type, value
+END
+```
+### From Harmut
+A new program for you to edit
+```BASIC
+CLS GREEN
+DIM data()
+lat = 0
+long= 0
+volume = 0
+leftpressed = 0
+rightpressed = 0
+DIM line()
+line.Add("Data")
+line.Add("Time")
+line.Add("Lat")
+line.Add("Long")
+line.Add("Volume")
+line.Add("Delta")
+csv = String.Escape ("csv", line)
+⚑file = File.AppendPicker("CSV file", “.csv”, "test.csv") 
+device = Bluetooth.PickDevicesName(“SensorTag”)
+IF (device.IsError)
+  PRINT "No device was picked"
+ELSE
+   tag1 = device.As(“SensorTag2541”) 
+   device = Bluetooth.PickDevicesName (“CC1350 SensorTag*, SensorTag 2.0”)
+   IF (device.IsError)
+      PRINT "No device was picked"
+   ELSE
+       tag2 = device.As(“SensorTag1350”)
+
+      REM
+      REM Set up the graph
+      REM
+
+      ⚑Screen.RequestActive()
+
+      DIM deltaValues()
+      ⚑deltaValues.MaxCount = 60
+      deltaValues.RemoveAlgorithm = "First"
+      g = Screen.Graphics (0, 100, 200, 500)
+      g.GraphY (deltaValues)
+      g.Title = "Delta Temperature"
+ 
+     REM
+     REM Set up temperature globals
+     REM
+     temp1 = -999
+     temp2 = -999
+     tag1setup = tag1.IRSetup(1, 100, “IR1”)
+     tag2setup = tag2.IRSetup(1, 100, “IR2”)
+
+     time = 0
+     tag1.ButtonSetup(1, "Button")
+     REM tag2.ButtonSetup(1, "Button")
+ 
+     PRINT AT 1,1 "tag1=" + tag1setup
+     PRINT AT 1,20 "tag2=" + tag2setup
+
+     mic = Sensor.Microphone()
+     mic.Start(“microphone”)
+
+     loc = Sensor.Location()
+     loc.Start(“location”)
+ 
+     REM
+     REM Wait and then shut down the tags
+     REM
+ 
+     FOR time = 1 TO 200000
+       IF (leftpressed>0)
+         leftpressed =leftpressed -1
+         rightpressed =0
+         now = DateTime.GetNow()
+         ⚑REM Screen.ClearLine (2)
+         ⚑Screen.ClearLine(5)
+         ⚑PRINT "LeftPressed", leftpressed
+         DIM line()
+         line.Add (now.Date)
+         line.Add (now.Time)
+         line.Add (lat)
+         line.Add (long)
+         line.Add (volume)
+         line.Add (delta)
+         csvline = String.Escape ("csv", line)
+      END IF
+
+      IF(rightpressed=1)
+        ⚑time= 200000    
+         ⚑CONSOLE "RIGHT PRESSED"
+      END IF
+
+  🚩csv   = csv + csvline
+      ⚑csvline = ""
+      IF (LEN (csv) > 100) 
+        file.AppendText (csv)
+        csv = ""
+        n = n + 1
+        PRINT AT 12,1 "NDUMP", n
+      END IF
+      PAUSE 10
+    NEXT time
+
+  file.AppendText (csv)
+  csv = ""
+
+  tag1.IRSetup (0, 100, "IR1")
+  tag2.IRSetup (0, 100, "IR2")
+  tag1.ButtonSetup(0, "Button")
+  REM tag2.ButtonSetup(0, "Button")
+
+  mic.Stop()
+  loc.Stop()
+
+  END IF
+END IF 
+ 
+REM
+REM
+REM
+ 
+REM called when tag1's IR changes
+FUNCTION IR1(device, amb, temp)
+    Screen.ClearLine(2)
+    PRINT "IR1", temp
+    GLOBAL temp1
+    temp1 = temp
+    Update()
+END
+ 
+REM called when tag2's IR changes
+FUNCTION IR2(device, amb, temp)
+    Screen.ClearLine(3)
+    PRINT "IR2", temp
+    GLOBAL temp2
+    temp2 = temp
+    Update()
+END
+ 
+FUNCTION Update()
+    GLOBAL temp1
+    GLOBAL temp2
+    IF (temp1 = -999 OR temp2 = -999) THEN RETURN
+    GLOBAL delta
+    delta = temp1 - temp2
+    ⚑Screen.ClearLine (4)
+    ⚑PRINT  "Delta", delta
+    GLOBAL deltaValues
+    deltaValues.Add (delta)
+END
+
+FUNCTION Button(tag, left, right, side)
+    GLOBAL leftpressed
+    GLOBAL rightpressed
+    IF (left) 
+      leftpressed =100
+      ⚑BEEP 0.1,1
+   ⚑END IF 
+   IF (right) 
+     rightpressed =1
+   ⚑END IF
+END
+
+FUNCTION location(latitude, longitude, altitude, accuracy)
+    GLOBAL lat
+    GLOBAL long
+    lat = latitude
+    long = longitude
+    REM Screen.ClearLine (4)
+    REM PRINT latitude, longitude, accuracy 
+END
+
+FUNCTION microphone (data)
+    GLOBAL volume
+    v = data.SumOfSquares / data.Count
+    v = SQR(v)
+    volume.Add (v)
+    Screen.ClearLine (4)
+    PRINT “Volume”, v
+    GLOBAL maxVolume
+    maxVolume = Math.Max(maxVolume, v)
+    REM Screen.ClearLine (5)
+    REM PRINT “Max”, maxVolume
+END
+```
+### GE Question sqrt x+15 + sqrtx = 15
+Solves a GE puzzle: sqt(x+15) + sqr(x) = 15
+```BASIC
+CLS 
+PRINT "STarting"
+goal = 15
+x = 2100000000000
+step = x/2
+
+10 REM top of loop
+actual = eqn(x)
+
+IF step < 1 THEN PRINT x, actual, goal
+IF actual = goal THEN GOTO 20
+IF actual < goal
+    x = x + step
+ELSE
+    x = x - step
+END IF
+step = step / 2
+IF (step > 0.001) THEN GOTO 10
+
+20 REM done
+REM CLS 
+PRINT x, step, actual
+
+FUNCTION eqn(x)
+value = SQR(x+15) + SQR(X)
+RETURN  value
+```
+### GraphXY simple
+A new program for you to edit
+```BASIC
+CLS WHITE BLACK
+PRINT "Display some XY data"
+DIM data()
+data.AddRow(1,1)
+data.AddRow(2,10)
+data.AddRow(3,15)
+data.AddRow(6,15)
+data.AddRow(7,3)
+data.AddRow(10,-1)
+
+g = Screen.Graphics()
+g.Title = "My data looks like a chopped-off mountain"
+g.GraphXY (data)
+```
+### GraphXY time
+A new program for you to edit
+```BASIC
+CLS WHITE BLACK
+PRINT "Display some XY data"
+DIM data()
+
+g = Screen.Graphics()
+g.Title = "My data is random"
+g.GraphXY (data)
+
+FOR i = 1 TO 10
+    now = DateTime.GetNow()
+    y = RND
+    data.AddRow(now, y)
+    PAUSE 10
+NEXT i
+```
+### IFX_NANOHUB
+A new program for you to edit
+```BASIC
+CLS GREEN
+PRINT "IFX_NANOHUB"
+bt = Bluetooth.PickDevicesRfcommName (“IFX_NANOHUB”)
+PRINT bt
+bt.ReceiveString (“BtRecv”)
+bt.Send (“$hello\n”)
+FOREVER
+
+FUNCTION BtRecv (device, data)
+    PRINT “RECV:”, data
+    CONSOLE data
+END
+```
+### Infinite loop
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT "Starting my loop///"
+devices = Bluetooth.DevicesName (“MetaWear”)
+IF (devices.Count < 1)
+    CLS RED
+    PRINT "ERROR: no MetaWear devices found"
+    RETURN
+END IF
+
+PAUSE 1
+device = devices[1]
+meta = device.As ("MetaMotion")
+PRINT "META"
+REM result = meta.ButtonSetup (1, "Button")
+PRINT "button", result
+
+PAPER CYAN
+i = 1
+10 REM loop top
+    PRINT "Hello", i
+    i = i + 1
+    PAUSE 50
+GOTO 10
+
+FUNCTION Button(meta, value)
+PRINT "BUTTON!", value
+END
+```
+### LittleBot
+A new program for you to edit
+```BASIC
+CLS GREEN
+PRINT "Connect to LittleBot"
+
+bt = Bluetooth.PickDevicesRfcommName (“HC-06”)
+bt.ReceiveString (“BtRecv”)
+PRINT "About to sent to motors"
+bt.Send (“1 200 200 0\r\n”)
+PAUSE 50
+REM 222 means stop
+PRINT "Stopping now"
+bt.Send (“222\r\n”)
+REM speak doesn't actually do anything! bt.Send ("100\r\n")
+
+PAUSE 50
+
+PRINT "Ending now..."
+
+FUNCTION BtRecv (device, data)
+    PRINT “RECV:”, data
+END
+```
+### LittleBot Program
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT "Connecting to the Robot"
+bt = Bluetooth.PickDevicesSppName (“HC-06”)
+IF (bt.IsError)
+    PRINT "Error finding Bluetooth to connect to"
+    STOP
+END IF
+
+ok = bt.ReceiveString (“BtRecv”)
+IF (ok.IsError)
+    PRINT "Error connecting"
+    PRINT ok
+    CONSOLE ok
+    STOP
+ELSE
+    PRINT "Status", ok
+END IF
+PRINT "Commands are s f b l r a x"
+10 REM top
+
+cmd = INKEY$
+REM Original: cmd  = INPUT DEFAULT "" PROMPT "command (s f b l r a x)  "
+cmd = String.ToLower (cmd)
+cmd = LEFT(cmd, 1)
+send = ""
+REM Why these amounts?  Because they
+REM seem to work for me!  
+IF (cmd = "s") THEN send = “222\r\n”
+IF (cmd = "f") THEN send = "1 20 20\r\n"
+IF (cmd = "b") THEN send = "1 -10 -10\r\n"
+IF (cmd = "l") THEN send = "1 20 -20\r\n"
+IF (cmd = "r") THEN send = "1 -20 20\r\n"
+IF (cmd = "a") THEN send = "256\r\n"
+IF (cmd = "x") THEN GOTO 20
+IF (send = "")
+    IF (cmd <> "") THEN PRINT "I didn't understand that command"
+ELSE
+    PRINT "Sending:", send
+    ok = bt.Send (send)
+    CONSOLE ok
+END IF
+GOTO 10
+
+20 REM all stop
+PRINT "Stopping now!"
+bt.Send (“222\r\n”)
+PRINT "All done!"
+
+FUNCTION BtRecv (device, data)
+    CONSOLE “RECV:” + data
+END
+```
+### My Sigma
+Quick program that you can edit.
+```BASIC
+=n
+```
+### Pressure
+A new program for you to edit
+```BASIC
+REM
+CLS BLUE
+PRINT "Looking for a MetaWear.."
+devices = Bluetooth.DevicesName (“MetaWear”)
+IF (devices.Count < 1)
+    CLS RED
+    PRINT "ERROR: no MetaWear devices found"
+END IF
+CLS BLACK
+
+device = devices[1]
+meta = device.As ("MetaMotion")
+
+REM The program will stop when this is set to > 0
+exitRequested = 0
+
+REM Set up the curr and full data arrays and graph
+DIM currData()
+currData.MaxCount = 100
+currData.RemoveAlgorithm = "First"
+
+currGraph = Screen.Graphics()
+currGraph.Title = "Current Pressure"
+currGraph.SetPosition (60,60)
+currGraph.SetSize(100, 275)
+currGraph.GraphY(currData)
+currGraph.Background = BLACK
+currGraph.Stroke =WHITE
+
+DIM fullData()
+fullData.MaxCount = 200
+fullData.RemoveAlgorithm = "Random"
+
+fullGraph = Screen.Graphics()
+fullGraph.Title = "Prrssure History"
+fullGraph.SetPosition (60,185)
+fullGraph.SetSize(100, 275)
+fullGraph.GraphY(fullData)
+fullGraph.Background = BLACK
+fullGraph.Stroke =WHITE
+
+REM
+REM Set up the altimeter
+REM
+meta.BarometerSetup (1, "Barometer", 0.5)
+meta.ButtonSetup (1, "Button")
+
+REM
+REM Main loop
+REM
+Screen.RequestActive()
+
+10 REM LOOP_TOP
+
+    IF (exitRequested > 0) THEN GOTO 20
+    PAUSE 60
+    dt = DateTime.GetNow()
+     Screen.ClearLine (1)
+    PRINT AT 1, 1 "TIME", dt.Time
+
+GOTO 10
+20 REM LOOP_BOTTOM
+
+REM
+REM All done; undo the setup
+REM
+Screen.RequestRrlease()
+
+msg="done!"
+meta.BarometerSetup (0, "Barometer", 0.5)
+meta.ButtonSetup (0, "Button")
+
+
+REM
+REM Barometer is called whenever pressure data comes in.
+REM
+FUNCTION Barometer(meta, pressure)
+    REM The main loop only exits about once per minute.  When the 
+    REM user presses the button to exit, they don't want to see the
+    REM graph keep on updating.
+    GLOBAL exitRequested
+    IF (exitRequested > 0) THEN RETURN
+
+    REM
+    REM Just Add'ing data to the arrays and doing a PAUSE
+    REM will upate the graphs on the screen.
+    REM
+    GLOBAL currData
+    GLOBAL fullData
+    currData.Add (pressure)
+    fullData.Add (pressure)
+    PAUSE 1
+
+    REM
+    REM Display some basis data on the screen.
+    REM
+    Screen.ClearLine (2)
+    Screen.ClearLine (3)
+    Screen.ClearLine (6)
+    Screen.ClearLine (8)
+    Screen.ClearLine (12)
+
+    PRINT AT 2,1 "Current", Math.Round (pressure, 1)
+    PRINT AT 3,1 Math.Round(currData.Max) 
+    PRINT AT 6,1 Math.Round(currData.Min)
+    PRINT AT 8,1 Math.Round(fullData.Max)
+    PRINT AT 12,1 Math.Round(fullData.Min)
+
+END
+
+FUNCTION Button(meta, value)
+    GLOBAL exitRequested
+    IF (value = 1) THEN exitRequested = 1
+END
+```
+### Temperature Graph
+A new program for you to edit
+```BASIC
+CLS GREEN
+device = Bluetooth.PickDevicesName("MetaWear")
+meta = device.As ("MetaMotion")
+
+DIM data()
+data.MaxCount = 100
+data.RemoveAlgorithm = "First"
+
+graph = Screen.Graphics()
+graph.SetSize(100, 300)
+graph.SetPosition(100, 75)
+graph.GraphY (data)
+graph.Title = "Inches"
+
+
+meta.BarometerSetup(1, "Barometer", 1)
+
+MAXTIME = 10
+FOR time = 1 TO MAXTIME
+    now = DateTime.GetNow()
+    Screen.ClearLine(2)
+    PRINT "TIME", now.Time    
+    PAUSE 50
+NEXT time
+
+meta.BarometerSetup(0, "Barometer", 1)
+
+FUNCTION Barometer (meta, pascal)
+inches = pascal * 0.000295299830714
+Screen.ClearLine (3)
+PRINT "inches", inches
+GLOBAL data
+data.Add(inches)
+END
+```
+### Test solver
+Sovles the GE puzzle: sqrt(x+15) + sqrt(x) = 15
+```BASIC
+CLS BLUE
+x = 0
+step = 2000000
+FOR i = 1 TO 500
+    value  = Equation(x)
+    IF (value < 0) 
+        Screen.ClearLine (5)
+        PRINT AT 5, 1 x, value
+         x = x + step
+    ELSE
+        Screen.ClearLine (9)
+        PRINT AT 9, 1 x, value
+        x = x - step
+    END IF
+    step = step / 2
+NEXT i
+result = x
+
+
+
+FUNCTION Equation(x)
+    Retval = SQR (x+15) + SQR(x) - 15
+END Retval
+```
+### TI Button
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag Buttons"
+PRINT AT 6,1 "Count", devices.Count
+NLeft = 0
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    setup = tag.ButtonSetup(1,  “Button”)
+    PRINT AT 7,1 "SETUP", setup
+
+     FOREVER
+
+    PRINT AT 8,1 "CLOSE", tag.ButtonSetup(0, "Button")
+END IF
+
+FUNCTION Button(tag, left, right, side)
+    IF (left)
+        GLOBAL NLeft
+        NLeft = NLeft + 1
+        PRINT AT 1,1 "LEFT", NLeft
+    END IF
+    IF (right) 
+        PRINT AT 1,8 "RIGHT"
+        FOREVER STOP
+    END IF
+    IF (side) THEN PRINT AT 1,16 "SIDE"
+END
+```
+### Weather Station with a TI SensorTag 1350
+Creates a weather station from the humidity, pressure+temperature and lux sensor included in the TI SensorTag 1350.
+```BASIC
+CLS WHITE BLACK
+
+REM Different versions of Windows have different names
+device = Bluetooth.PickDevicesName ("CC1350 SensorTag,SensorTag 2.0")
+
+IF (device.IsError)
+    CLS RED
+    PRINT "No SensorTag device found"
+    PRINT device
+    STOP
+END IF
+tag = device.As ("SensorTag1350")
+IF (tag.IsError)
+    CLS RED
+    PRINT "Unable to connect to device"
+    PRINT tag
+END IF
+
+REM
+REM Set up the arrays and graph
+REM
+X=50
+Y=1
+DY=50
+H=40
+W=250
+
+
+DIM humidityData()
+humidityData.MaxCount = 100
+humidityGraph = Screen.Graphics()
+humidityGraph.GraphXY (humidityData)
+humidityGraph.Title = "Humidity"
+humidityGraph.SetPosition (X,Y)
+Y=Y+DY
+humidityGraph.SetSize(H,W)
+
+DIM tempData()
+tempData.MaxCount = 100
+tempGraph = Screen.Graphics()
+tempGraph.GraphXY (tempData)
+tempGraph.Title = "Temperature"
+tempGraph.SetPosition (X,Y)
+Y=Y+DY
+tempGraph.SetSize(H,W)
+
+DIM temp2Data()
+temp2Data.MaxCount = 100
+temp2Graph = Screen.Graphics()
+temp2Graph.GraphXY (temp2Data)
+temp2Graph.Title = "Temperature2"
+temp2Graph.SetPosition (X,Y)
+Y=Y+DY
+temp2Graph.SetSize(H,W)
+
+DIM pressureData()
+pressureData.MaxCount = 100
+pressureGraph = Screen.Graphics()
+pressureGraph.GraphXY (pressureData)
+pressureGraph.Title = "Pressure"
+pressureGraph.SetPosition (X,Y)
+Y=Y+DY
+pressureGraph.SetSize(H,W)
+
+DIM luxData()
+luxData.MaxCount = 100
+luxGraph = Screen.Graphics()
+luxGraph.GraphXY (luxData)
+luxGraph.Title ="Light"
+luxGraph.SetPosition (X,Y)
+Y=Y+DY
+luxGraph.SetSize(H,W)
+
+REM
+REM Set up the SensorTag for humidity, pressure, lux
+REM
+tag.ButtonSetup (1, "Button")
+tag.HumiditySetup (1, 100, "Humidity")
+tag.BarometerSetup(1, 100, "Pressure")
+tag.OpticalSetup(1, 100, "Lux")
+StopRequested = 0
+Screen.RequestActive()
+10 REM LOOP TOP
+
+    now = DateTime.GetNow()
+    PRINT AT 1, 1 "Time", now.Time
+
+   PRINT AT 1,1 Math.Round(humidityData.MaxOf (2),1)
+   PRINT AT 3,1 Math.Round(humidityData.MinOf (2),1)
+
+   PRINT AT 4,1 Math.Round(tempData.MaxOf (2),1)
+   PRINT AT 6,1 Math.Round(tempData.MinOf (2),1)
+
+   PRINT AT 7,1 Math.Round(temp2Data.MaxOf (2),1)
+   PRINT AT 9,1 Math.Round(temp2Data.MinOf (2),1)
+
+   PRINT AT 10,1 Math.Round(pressureData.MaxOf (2),1)
+   PRINT AT 12,1 Math.Round(pressureData.MinOf (2),1)
+
+   PRINT AT 13,1 Math.Round(luxData.MaxOf (2),1)
+   PRINT AT 15,1 Math.Round(luxData.MinOf (2),1)
+
+    IF (StopRequested) THEN GOTO 20
+
+    PAUSE 20
+    GOTO 10
+20 REM LOOP BOTTOM
+
+REM
+REM Turn off all of the sensors
+REM
+Screen.RequestRrlease()
+tag.ButtonSetup (0, "Button")
+tag.HumiditySetup (0, 100, "Humidity")
+tag.BarometerSetup(0, 100, "Pressure")
+tag.OpticalSetup(0, 100, "Lux")
+
+
+REM Called when a button is pressed.
+FUNCTION Button (tag, value)
+    GLOBAL StopRequested
+    StopRequested = 1
+END
+
+REM Called when the humidity sensor data changes
+FUNCTION Humidity (tag, temp, humidity)
+    GLOBAL humidityData
+    GLOBAL tempData
+    now = DateTime.GetNow()
+    humidityData.AddRow (now, humidity)
+    tempData.AddRow (now, temp)
+END
+
+REM Called when the Barometer sensor data changes
+FUNCTION Pressure (tag, temp, pressure)
+    GLOBAL pressureData
+    GLOBAL temp2Data
+    now = DateTime.GetNow()
+    pressureData.AddRow (now, pressure)
+    temp2Data.AddRow (now, temp)
+END
+
+REM CAlled when the Optical (LUX) sensor data changes
+FUNCTION Lux (tag, lux)
+    GLOBAL luxData
+    now = DateTime.GetNow()
+    luxData.AddRow (now, lux)
+END
+```

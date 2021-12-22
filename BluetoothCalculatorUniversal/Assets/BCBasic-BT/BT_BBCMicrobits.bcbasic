@@ -1,0 +1,233 @@
+## BT: BBC Microbit
+Demonstrates how to use the BBC micro:bit device.  The micro_bit is a small, battery-powered computer, programmable in Python and other languages; it can be configured to send data over Bluetooth.  The sensors include an accelerometer, magnetometer, temperature sensor.  It also includes buttons for input, can control IO pins directly and has a 5x5 LED output that can be set as a bitmap or can have scrolling text.
+### Accelerometer
+Demonstrates the basics of the AccelometerSetup and using a callback routine.  The callback routine will be called with the device and an X, Y and Z acceleration values.  The units are in terms of G, where 1.0 is normal gravity.
+**Default Key**: 🄰
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate micro:bit Accelerometer"
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 6,1 "Got a device", device.Name
+    REM 1=turn on the on-device accelerometer
+    REM 20=accelerometer update speed (in milliseconds)
+    period = INPUT DEFAULT 100 PROMPT "Period (in millisecond) 1, 2, 5, 10, 20, 80, 160 and 640"
+    PRINT AT 7,1 "SETUP", tag.AccelerometerSetup(1, period, “Accelerometer”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The Accelerometer routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        Screen.ClearLine(3)
+        PRINT "TIME", time
+        PAUSE 50
+    NEXT time
+
+    PRINT  AT 9, 1 "FINISH", status
+    tag.AccelerometerSetup(0, period, "Accelerometer")
+END IF
+
+FUNCTION Accelerometer(tag, x, y, z)
+    Screen.ClearLine(1)
+    PRINT x, y, z
+END
+```
+### Button
+The micro:bit includes two buttons, A and B.  This program demonstrates how to set up a callback routine that will be called with the state of either the A or B button changes.
+**Default Key**: 🠿
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate microbit Buttons"
+PRINT AT 6,1 "Count", devices.Count
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 7,1 "SETUP", tag.ButtonSetup(1,  “Button”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.ButtonSetup(0, "Button")
+END IF
+
+FUNCTION Button(tag, A, B)
+    Screen.ClearLine(1)
+    IF (A) THEN PRINT AT 1,1 "A"
+    IF (B) THEN PRINT AT 1,8 "B"
+END
+```
+### Compass
+Demonstrates the basics of the CompassSetup and using a callback routine.  The micro:bit, in addition to the raw magnetometer data also includes an easy way to get a magnetic compass heading.  The callback will be called with the device and with the heading in degrees where 0 and 360 both mean magnetic north.
+**Default Key**: ⎋
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate micro:bit Compass"
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 6,1 "Got a device", device.Name
+    period = INPUT DEFAULT 100 PROMPT "Period (in millisecond) 1, 2, 5, 10, 20, 80, 160 and 640"
+    PRINT AT 7,1 "SETUP", tag.CompassSetup(1, period, “Compass”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The Compass routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        Screen.ClearLine(3)
+        PRINT "TIME", time
+        PAUSE 50
+    NEXT time
+
+    PRINT  AT 9, 1 "FINISH", status
+    tag.CompassSetup(0, period, "Compass")
+END IF
+
+FUNCTION Compass(tag, bearing)
+    Screen.ClearLine(1)
+    PRINT "bearing", bearing
+END
+```
+### Magnetometer
+Demonstrates the basics of the MagnetometerSetup and using a callback routine.
+**Default Key**: 🅃
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate micro:bit Magnetometer"
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 6,1 "Got a device", device.Name
+    REM 1=turn on the on-device magnetometer
+    period = INPUT DEFAULT 100 PROMPT "Period (in millisecond) 1, 2, 5, 10, 20, 80, 160 and 640"
+    PRINT AT 7,1 "SETUP", tag.MagnetometerSetup(1, period, “Magnetometer”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The Magnetometer routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        Screen.ClearLine(3)
+        PRINT "TIME", time
+        PAUSE 50
+    NEXT time
+
+    PRINT  AT 9, 1 "FINISH", status
+    tag.MagnetometerSetup(0, period, "Magnetometer")
+END IF
+
+FUNCTION Magnetometer(tag, x, y, z)
+    Screen.ClearLine(1)
+    PRINT x, y, z
+END
+```
+### SetLed
+Demonstrates how to set the LED 'screen' of the device.  The method takes 5 values, one for each row in the screen.
+**Default Key**: ⠿
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate micro:bit Write (text, speed)"
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 6,1 "Got a device", device.Name
+    REM Draws a diagonal line.  the top row has a couple
+    REM more LEDs turned on.
+    REM 0x07==3 bits, on the right, top row
+    REM 0x02==second row, etc.
+   PRINT "status",  tag.SetLed (0x07, 0x02, 0x04, 0x08, 0x10)
+END IF
+```
+### Status
+Shows how to get some basic information out of the device.
+**Default Key**: ✓
+```BASIC
+CLS BLUE
+PRINT "An introduction to the Microbits specialization"
+
+device = Bluetooth.PickDevicesName(“*BBC*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    PRINT "BBC Device"
+    PRINT "Name", device.Name
+    tag  = device.As (“microbit”)
+    PRINT "Methods", tag.Methods
+    PRINT "GetName()", tag.GetName()
+    PRINT " "
+END IF
+```
+### Temperature
+Demonstrates the TemperatureSetup method which sets up a callback function that will be called when the temperature data changes.  The callback function will be called with the device and the temperature in degrees Celsius.
+**Default Key**: 🌡
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate micro:bit temperature"
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 6,1 "Got a device", device.Name
+    REM 1=turn on the on-device temperature sensor
+    period = INPUT DEFAULT 100 PROMPT "Period (in millisecond) 1, 2, 5, 10, 20, 80, 160 and 640"
+    PRINT AT 7,1 "SETUP", tag.TemperatureSetup(1, period, “Temperature”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The temperature routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        Screen.ClearLine(3)
+        PRINT "TIME", time
+        PAUSE 50
+    NEXT time
+
+    PRINT  AT 9, 1 "FINISH", status
+    tag.TemperatureSetup(0, period, "Temperature")
+END IF
+
+
+FUNCTION Temperature(tag, degreesC)
+    Screen.ClearLine(1)
+    PRINT "TEMP", degreesC
+END
+```
+### Write (text, speed)
+Demonstrates how to write text on the LED 'screen' of the device.  The method takes two parameters: a string to display and a speed.  The speed says how fast the text will scroll on the screen.  A good value is 100.
+**Default Key**: 🖹
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate micro:bit Write (text, speed)"
+
+device = Bluetooth.PickDevicesName(“BBC micro:bit*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As("microbit")
+    PRINT AT 6,1 "Got a device", device.Name
+    text = INPUT DEFAULT "hello" PROMPT "Text to write"
+    speed  = INPUT DEFAULT 100 PROMPT "Scroll speed"
+   PRINT "status",  tag.Write (text, speed)
+END IF
+```

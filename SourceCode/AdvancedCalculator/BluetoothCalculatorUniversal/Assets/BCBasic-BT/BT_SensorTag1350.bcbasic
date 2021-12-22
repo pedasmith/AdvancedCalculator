@@ -1,0 +1,279 @@
+## BT: SensorTag 1350
+Demonstrates how to use the TI SensorTag 1350 (a V2 version released in late 2016).  The model 1350 SensorTag from Texas Instruments is a small, battery-powered sensor platform from TI.  The sensors include an accelerometer, gyroscope, IR contactless thermometer, humidity sensor, magnetometer, barometer and on-chip temperature sensor.  It also includes a light sensor and a magnetic switch detector (reed relay).
+### Accelerometer Gyroscope and Magnetometer
+Demonstrates the basics of the AccelometerSetup and using a callback routine.  The V2 SensorTag has a combined accelerometer/gyroscope/magnetometer chip that provides XYZ data for all three sensors at once.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Accelerometer"
+
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    PRINT AT 6,1 "Got a device", device.Name
+    REM TABLE: Bits to turn on different position sensors
+    REM   1 = Gyro Z axis
+    REM   2 = Gyro Y axis
+    REM   4 = Gyro X axis   [7==Gyro ALL axis]
+    REM   8 = Acc X axis
+    REM  16 = Acc Y axis
+    REM  32 = Acc Z axis    [56==Acc ALL axis]
+    REM  64 = Mag ALL axis
+    REM 128 = Wake-on-motion enabled
+    REM   0 =   2G range on acc
+    REM 256 =   4G range on acc
+    REM 512 =   8G range on acc
+    REM 768 =  16G range on acc
+
+    REM Example: to turn on all axis of the acc and nothing else with a 4G range:
+    REM AccFlag = 8+16+32+256
+
+    REM Turn on all devices, no wake-on-movement, acc range 2G.
+    AccFlag = 1+2+4+8+16+32+64
+    REM Example: use just the acccelerotmer: AccFlag = 8+16+32
+    PRINT AT 7,1 "SETUP", tag.AccelerometerSetup(AccFlag, 20, “Acc”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The Acc routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        Screen.ClearLine(1)
+        now = DateTime.GetNow()
+        PRINT "TIME", now.Time
+        PAUSE 50
+    NEXT time
+    REM Undo the accelerometer
+    status = tag.AccelerometerSetup(0, 0, "")
+    PRINT  AT 9, 1 "FINISH", status
+    tag.Close()
+END IF
+
+FUNCTION Acc(tag, ax, ay, az, mx, my, mz, rx, ry, rz)
+    Screen.ClearLine(2)
+    PRINT " ", "X", "Y", "Z"
+
+    Screen.ClearLine(3)
+    PRINT "ACC", Math.Round(ax,2), Math.Round(ay,2), Math.Round(az,2)
+
+    Screen.ClearLine(4)
+    PRINT "MAG", Math.Round(mx,2), Math.Round(my,2), Math.Round(mz,2)
+
+    Screen.ClearLine(5)
+    PRINT "GYRO", Math.Round(rx,2), Math.Round(ry,2), Math.Round(rz,2)
+
+END
+```
+### Accelerometer Off
+Turns off the accelerometer
+```BASIC
+CLS BLUE
+
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    PRINT "Got a device", device.Name
+    tag.SetupAcc(0, 100, “Acc”)
+END IF
+PRINT "All done"
+```
+### Barometer
+Demonstrates the basics of the BarometerSetup and using a callback routine.
+```BASIC
+CLS BLUE
+PRINT AT 1,1 "Demonstrate SensorTag Barometer measurements"
+
+REM device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+devices = Bluetooth.DevicesName(“CC1350 SensorTag”)
+device = devices[1]
+
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.BarometerSetup(1,  100, “Barometer”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        now = DateTime.GetNow()
+        Screen.ClearLine(2)
+        PRINT "TIME", now.Time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.BarometerSetup(0, 100, "Barometer")
+END IF
+
+REM Temperatures are in degrees C
+REM pressure is in hpa
+FUNCTION Barometer(tag, temp, pressure)
+    Screen.ClearLine(3)
+    PRINT "Temp", temp, CTOF(temp)
+    Screen.ClearLine(4)
+    PRINT "Pressure", pressure, HPATOINCHM(pressure)
+END
+
+FUNCTION CTOF(C)
+    F = C * 9/5 + 32
+    F = Math.Round(F, 1)
+RETURN F
+
+FUNCTION HPATOINCHM(HPA)
+   ATM = HPA / 1013.25
+   INCHM = ATM * 29.9213
+   INCHM  = Math.Round(INCHM, 2)
+RETURN INCHM
+```
+### Button
+Demonstrates the "Simple Key Service" on the SensorTag
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag Buttons"
+PRINT AT 6,1 "Count", devices.Count
+
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    PRINT AT 7,1 "SETUP", tag.ButtonSetup(1,  “Button”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.ButtonSetup(0, "Button")
+END IF
+
+FUNCTION Button(tag, left, right, side)
+    Screen.ClearLine(1)
+    IF (left) THEN PRINT AT 1,1 "LEFT"
+    IF (right) THEN PRINT AT 1,8 "RIGHT"
+    IF (side) THEN PRINT AT 1,16 "SIDE"
+END
+```
+### Humidity
+Demonstrates the basics of the HumiditySetup and using a callback routine.
+```BASIC
+CLS BLUE
+PRINT AT 1,1 "Demonstrate SensorTag Humidity measurements"
+
+FOR i=1 TO devices.Count
+   device = devices.Get(i)
+    tag = device.As(“SensorTag1350”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.HumiditySetup(1,  100, “Humidity”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        now = DateTime.GetNow()
+        Screen.ClearLine(1)
+        PRINT "TIME", now.Time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.HumiditySetup(0, 100, "Humidity")
+NEXT i
+
+REM Temperatures are in degrees C
+FUNCTION Humidity(tag, temp, humidity)
+    Screen.ClearLine(2)
+    PRINT "TEMP", Math.Round(temp,1), CTOF(temp)
+
+    Screen.ClearLine(3)
+    PRINT "Humidity", Math.Round(humidity,2)
+END
+
+FUNCTION CTOF(C)
+    F = C * 9/5 + 32
+    F = Math.Round(F, 1)
+RETURN F
+```
+### IO
+Lets you control the devices on the SensorTag.  The 1350 includes a red LED and a buzzer; the 2650 includes both a red and a green LED.
+```BASIC
+CLS BLUE
+PRINT AT 1,1 "Demonstrate SensorTag LED/Buzzer control"
+
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    val = INPUT DEFAULT 1 PROMPT "1=RED  4=BUZZER 0=Both off"
+    tag.IO(val)
+END IF
+```
+### IR
+Demonstrates the basics of the IRSetup and using a callback routine.
+```BASIC
+CLS BLUE
+PRINT AT 1,1 "Demonstrate SensorTag IR measurements"
+
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.IRSetup(1,  100, “IR”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        now = DateTime.GetNow()
+        Screen.ClearLine(2)
+        PRINT "TIME", now.Time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.IRSetup(0, 100, "IR")
+END IF
+
+REM Temperatures are in degrees C
+FUNCTION IR(tag, objTemp, ambTemp)
+    Screen.ClearLine(3)
+    PRINT "Object", Math.Round(objTemp,1), CTOF(objTemp)
+
+    Screen.ClearLine(4)
+    PRINT "Ambient", Math.Round(ambTemp,1), CTOF(ambTemp)
+END
+
+FUNCTION CTOF(C)
+    F = C * 9/5 + 32
+    F = Math.Round(F*10) / 10
+RETURN F
+```
+### Optical Sensor
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT AT 1,1 "Demonstrate SensorTag Optical measurements"
+
+device = Bluetooth.PickDevicesName(“CC1350 SensorTag,SensorTag 2.0”)
+
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.OpticalSetup(1,  100, “Optical”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        now = DateTime.GetNow()
+        Screen.ClearLine(2)
+        PRINT "TIME", now.Time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.OpticalSetup(0, 100, "Optical")
+END IF
+
+REM Light sensor readings are in Lux
+FUNCTION Optical(tag, lux)
+    Screen.ClearLine(3)
+    PRINT "LUX", lux
+END
+```

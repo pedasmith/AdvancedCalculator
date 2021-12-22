@@ -1,0 +1,114 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.HealthIdealHeartRateControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Ideal Heart Rate</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <!--
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblock}" HorizontalAlignment="Center">Ideal Heart Rate</TextBlock>
+                    -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Your age</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Age" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Age" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Age" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Maximum heart rate</TextBlock>
+                <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1MaxHeartRate" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1MaxHeartRate" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1MaxHeartRate" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Moderate Exercise (lower)</TextBlock>
+                <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1ModerateLowHeartRate" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1ModerateLowHeartRate" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1ModerateLowHeartRate" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Moderate Exercise (higher)</TextBlock>
+                <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1ModerateHighHeartRate" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1ModerateHighHeartRate" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1ModerateHighHeartRate" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Vigorous Exercise (lower)</TextBlock>
+                <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1VigorousLowHeartRate" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1VigorousLowHeartRate" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1VigorousLowHeartRate" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Vigorous Exercise (higher)</TextBlock>
+                <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1VigorousHighHeartRate" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1VigorousHighHeartRate" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1VigorousHighHeartRate" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/HealthIdealHeartRate.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20" >Ideal Heart Rate</Bold>
+                        <LineBreak />
+                        Your maximum heart rate is the most your heart rate should
+                        be during excersize.  It's calculated by subtracting your
+                        age from 220.
+
+                        <LineBreak />
+                        Your ideal heart rate for different types of excersize is
+                        then a percentage of the maximum heart rate.
+                        
+                        <LineBreak />
+                        To use this solver, enter your age; your maximum and ideal
+                        heart rates are automatically calculated.  The solver also
+                        works in reverse: enter any heart rate, and the corresponding 
+                        age is calculated.
+                        heart rate, and your age is calculated.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

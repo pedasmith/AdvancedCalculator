@@ -1,0 +1,251 @@
+﻿[
+	{"Word":"Density",
+		"Symbol":"ρ",
+		"Tags":"definition",
+		"Definition":"Density is the measure of mass per volume.  ",
+		"Example":"Cork has an approximate density of 240 kg/m³, which makes it much less dense than water (which is 1000 kg/m³)",
+		"Formulas":[
+			{"Description":"definition",
+				"Value":"density = mass ÷ volume"
+				}
+			],		
+		"Link":"http://en.wikipedia.org/wiki/Density"
+	},
+
+	{"Word":"Grain",
+		"Symbol":"",
+		"Tags":"mass unit",
+		"Definition":"A grain is a small unit of mass.  There are exactly 7000 grains per avoirdupois (customary) pound.  Unusually, a grain has the same value in the troy, avoirdupois, and apothacaries systems.",
+		"Example":"A typical asperin tablet is about 5 grains",
+		"Formulas":[
+			{"Description":"Convert grain to pound",
+				"Value":"pound = grain ÷ 7000",
+				"Conversion":"7000"
+				},
+			{"Description":"Convert pound to grain",
+				"Value":"grain = pound × 7000",
+				"Conversion":"7000"
+				},
+			{"Description":"Convert grain to ounce",
+				"Value":"ounce = grain ÷ 437.5",
+				"Conversion":"437.5"
+				},
+			{"Description":"Convert ounce to grain",
+				"Value":"grain = ounce × 437.5",
+				"Conversion":"437.5"
+				},
+
+			],		
+		"Link":"http://en.wikipedia.org/wiki/Grain_(unit)"
+	},	
+	
+	{"Word":"Gram",
+		"Symbol":"g",
+		"Tags":"mass unit SI",
+		"Definition":"A gram (also: gramme) is part of the SI units of mass.  Originally defined to be the mass of a cubic centimeter of water, it's now defined to be one-thousandth of the official kilogram weight standard, which is kept in Paris.",
+		"Example":"A pen cap can weight about a gram.",
+		"Formulas":[
+			{"Description":"Convert ounces to grams",
+				"Value":"gram = ounce × 28.349523125",
+				"Conversion":"28.349523125"
+				},
+			{"Description":"Convert grams to ounces",
+				"Value":"ounce = gram ÷ 28.349523125",
+				"Conversion":"28.349523125"
+				},
+			],
+		
+		"Link":"http://en.wikipedia.org/wiki/Gram"
+	},
+	
+	
+	{"Word":"Lumen",
+		"Symbol":"lm Φv",
+		"Tags":"luminous flux unit SI",
+		"Definition":"A lumen is a measure of luminous flux -- visible light.  Unlike a radiant flux, lumens measure the perceived brightness of a light, not just the total power emitted.  For example, a light that produces infra-red has a low luminous flux because humans can't see the infra-red light being produced. A lumen is defined to be one candela per steradians (solid angle)",
+		"Example":"A old-fashioned 60W lightbulb provided 700 to 750 lumens of light",
+		"Link":"http://en.wikipedia.org/wiki/Lumen_(unit)"
+	},
+	
+	
+	{"Word":"Meter",
+		"Symbol":"m",
+		"Tags":"length unit SI",
+		"Definition": "Meters (also: Metre) are the SI unit of length.  Originally defined to be one-10 millions of the distance from Earth's North Pole to the equator, it's now defined as the length of the path travelled by light in vacuum during a time interval of 1/299,792,458 of a second." ,
+		"Example":"Most people are less than 2 meters tall",
+		"Formulas":[
+			{"Description":"Convert meter to yard",
+				"Value":"yard = meter × 0.9144",
+				"Conversion":"0.9144"
+				},
+			{"Description":"Convert yard to meter",
+				"Value":"meter = yard × 1.0936",
+				"Conversion":"1.0936"
+				},
+			],	
+		"Link":"http://en.wikipedia.org/wiki/Metre"
+	},
+	
+	{"Word":"Newton",
+		"Symbol":"N",
+		"Tags":"force unit SI",
+		"Definition":"Newtons are the SI unit of force.  One Newton of force will accelerate one kilogram of mass by one meter per second squared.",
+		"Example":"The Earth exterts about 9.8 Newtons on a 1 kilogram object",
+		"Formulas":[
+			{"Description":"Convert Newtons to dyns",
+				"Value":"dyn = Newton × 10000",
+				"Conversion":"10000"
+				},
+			{"Description":"Convert dyns to Newtons",
+				"Value":"Newton = dyn ÷ 10000",
+				"Conversion":"10000"
+				},
+			{"Description":"Convert Newtons to pound-force",
+				"Value":"lbF = Newton ÷ 4.448222",
+				"Conversion":"4.448222"
+				},
+			{"Description":"Convert pound-force to Newtons",
+				"Value":"Newton = lbF × 4.448222",
+				"Conversion":"4.448222"
+				},
+			],	
+		"Link":"http://en.wikipedia.org/wiki/Newton_(unit)"
+	},
+	
+	{"Word":"Ounce",
+		"Symbol":"oz ℥",
+		"Tags":"mass unit",
+		"Definition":"There are several measures called the ounce.  The most common in the United States is the 'international avoirdupois ounce'; there are 16 of those in a pound.  Precious metals like gold are measured in troy ounces; a troy ounce is a bit heavier than regular ounce.  The word ounce comes from the Latin uncia, a 12th of a Roman pound (libra).",
+		"Example":"Apples often weigh 4 to 8 ounces",
+		"Formulas":[
+			{"Description":"Convert ounce to pound",
+				"Value":"pound = ounce ÷ 16",
+				"Conversion":"16"
+				},
+			{"Description":"Convert pound to ounce",
+				"Value":"ounce = pound × 16",
+				"Conversion":"16"
+				},
+			{"Description":"Convert ounce to gram",
+				"Value":"gram = ounce × 28.349523125",
+				"Conversion":"28.349523125"
+				},
+			{"Description":"Convert gram to ounce",
+				"Value":"ounce = gram ÷ 28.349523125",
+				"Conversion":"28.349523125"
+				},
+			{"Description":"Convert ounce to grain",
+				"Value":"grain = ounce × 437.5",
+				"Conversion":"437.5"
+				},
+			{"Description":"Convert grain to ounce",
+				"Value":"ounce = grain ÷ 437.5",
+				"Conversion":"437.5"
+				},
+
+			],		
+		"Link":"http://en.wikipedia.org/wiki/Ounce"
+	},	
+	
+	{"Word":"Pound",
+		"Symbol":"lb ℔",
+		"Tags":"mass unit",
+		"Definition":"A pound is a customary measure of mass.  The name pound has been used for several different measures.  The most common use is the international avoirdupois pound; this is defined to be exactly 0.45359237 kilograms.  Pounds are subdived into ounces; there are 16 ounces in a pound.  Alternatively, there are 7000 grains in a pound.  There are 2000 pounds in a US ton. Pound is also used a measure of force; it's the force on one pound on the Earth's surface.  Thus, one pound (mass) also weighs a pound (force).",
+		"Example":"Many tablet computers weigh between 1 and 2 pounds",
+		"Formulas":[
+			{"Description":"Convert pound to gram",
+				"Value":"gram = pound × 453.59237",
+				"Conversion":"453.59237"
+				},
+			{"Description":"Convert gram to pound",
+				"Value":"pound = gram ÷ 453.59237",
+				"Conversion":"453.59237"
+				},
+			{"Description":"Convert pound to ounce",
+				"Value":"ounce = pound × 16",
+				"Conversion":"16"
+				},
+			{"Description":"Convert ounce to pound",
+				"Value":"pound = ounce ÷ 16",
+				"Conversion":"16"
+				},
+			{"Description":"Convert pound to grain",
+				"Value":"grain = pound × 7000",
+				"Conversion":"7000"
+				},
+			{"Description":"Convert grain to pound",
+				"Value":"pound = grain ÷ 7000",
+				"Conversion":"7000"
+				},
+			{"Description":"Convert ton to pound",
+				"Value":"poound = ton × 2000",
+				"Conversion":"2000"
+				},
+			{"Description":"Convert pound to ton",
+				"Value":"ton = pound ÷ 2000",
+				"Conversion":"2000"
+				},
+			],		
+		"Link":"http://en.wikipedia.org/wiki/Pound_(mass)"
+	},
+
+	
+	{"Word":"Pascal",
+		"Symbol":"Pa",
+		"Tags":"pressure unit SI stress strength",
+		"Definition":"Pascals are a unit of pressure: a force per unit area.  The Pascal is defined to be one newton per square meter.  Similar units are the bar and millibar: one millibar is one hectopascal (hecto=100).",
+		"Example":"Standard atmospheric pressure is 101325 Pa.",
+		"Formulas":[
+			{"Description":"Convert Pascal to standard atmosphere",
+				"Value":"atm = Pascal ÷ 101325",
+				"Conversion":"101325"
+				},
+			{"Description":"Convert Pascal to technical atmosphere",
+				"Value":"at = Pascal ÷ 98066.5",
+				"Conversion":"98066.5"
+				},
+			{"Description":"Convert Pascal to Torr",
+				"Value":"Torr = Pascal ÷ 133.3224",
+				"Conversion":"133.3224"
+				},
+			{"Description":"Convert Pascal to psi",
+				"Value":"psi = Pascal ÷ 14503.77",
+				"Conversion":"6894.8"
+				},
+			{"Description":"Convert Pascal to psi",
+				"Value":"Pascal = psi × 14503.77",
+				"Conversion":"6894.8"
+				},
+			],
+		"Link":"http://en.wikipedia.org/wiki/Pascal_(unit)"
+	},
+		
+
+
+
+	{"Word":"THIS",
+		"Definition":"ton avoirdupois apothecary metric celcius fahrenheiht inch foot yard mile density"
+	},
+	
+		
+	
+	{"Word":"",
+		"Symbol":"",
+		"Tags":"force unit SI",
+		"Definition":"",
+		"Example":"",
+		"Formulas":[
+			{"Description":"",
+				"Value":"×÷±√²³−+",
+				"Conversion":""
+				},
+			{"Description":"",
+				"Value":"×÷±√²³−+",
+				"Conversion":""
+				},
+			],		
+		"Link":"http://en.wikipedia.org/wiki/Newton_(unit)"
+	},
+	
+	
+]

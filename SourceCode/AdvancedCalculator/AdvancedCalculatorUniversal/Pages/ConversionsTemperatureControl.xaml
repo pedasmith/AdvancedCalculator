@@ -1,0 +1,99 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ConversionsTemperatureControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Common Temperature Conversions</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Celsius (Centigrate) and Fahrenheit</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Celsius</TextBlock>
+                    <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1DegreesC" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1DegreesC" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1DegreesC" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Fahrenheit</TextBlock>
+                    <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1DegreesF" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1DegreesF" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1DegreesF" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center" >Kelvin and Rankine</TextBlock>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Kelvin</TextBlock>
+                    <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1DegreesKelvin" Style="{StaticResource solverbox}" InputScope="Number" />
+                    <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1DegreesKelvin" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1DegreesKelvin" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Rankine</TextBlock>
+                    <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1DegreesRankine" Style="{StaticResource solverbox}" InputScope="Number" />
+                    <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1DegreesRankine" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1DegreesRankine" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                </Grid>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ConversionsTemperature.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20">About Temperature</Bold>
+                        <LineBreak />
+                        <Bold>Celcius</Bold> (sometimes called Centigrade) is the standard metric temperature definition; 0° is the freezing point of water, and 100° is the boiling point of water.
+                        <LineBreak />
+                        <Bold>Fahrenheit</Bold> is commonly used in the United States of America; 32° Fahreheit is the freezing point for water (0° Celsius) and 212° Fahrenheit is the boiling point of water (100° Celsius).
+                        <LineBreak />
+                        <Bold>Kelvin</Bold> is an absolute temperature; it's commonly used by scientists.  A degree Kelvin is the same size as a degree Celcius, but the 0 point of degrees Kelvin is -273.15° Celsius.
+                        <LineBreak />
+                        <Bold>Rankine</Bold> is also an absolute temperature; it's sometimes used by engineers in the United States of America.  It has the same zero point as degrees Kelvin, but the size of a degree Rankine is the same as a degree Fahrenheit.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

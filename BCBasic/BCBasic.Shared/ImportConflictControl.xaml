@@ -1,0 +1,51 @@
+﻿<UserControl
+    x:Class="BCBasic.ImportConflictControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BCBasic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Border BorderBrush="Black" Margin="4" Padding="4" 
+            Background="Gray"
+            >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" FontSize="24" Text="Resolve Import Conflict" />
+            <TextBlock Grid.Row="1" FontSize="18" TextWrapping="Wrap">
+                A package by that name already exists.  Please say how to resolve the conflict.
+            </TextBlock>
+            
+            <Grid Grid.Row="2" x:Name="uiDiffGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+            
+            <StackPanel Grid.Row="3" x:Name="uiResolution">
+                <RadioButton Content="Add the new, rename the original" IsChecked="True" Tag="RenameOriginalImportNew" GroupName="Resolution"/>
+                <RadioButton Content="Keep the original (and cancel the import)" Tag="Cancel" GroupName="Resolution" />
+                <RadioButton Content="Merge the packages together, prefer the original programs" Tag="MergePreferOriginal" GroupName="Resolution"/>
+                <RadioButton Content="Keep the new package (and delete the original)" Tag="ImportNew" GroupName="Resolution"/>
+                <RadioButton Content="Merge the packages together, prefer the new programs" Tag="MergePreferNew" GroupName="Resolution"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,20,0,0">
+                <Button Content="OK" Click="OnOk" />
+                <Button Content="Cancel" Click="OnCancel" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

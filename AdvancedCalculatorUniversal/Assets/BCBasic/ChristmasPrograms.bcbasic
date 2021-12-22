@@ -1,0 +1,299 @@
+## Christmas Programs
+Some fun Christmas programs. The Tree program will display a Christmas tree, play songs, and if you have a TI beLight kit, will flash the lights red and green in time to the music!
+### Christmas Music
+Some Christmas Music to enjoy!
+```BASIC
+music = OhChristmasTree()
+PLAY music
+PLAY WAIT
+
+FUNCTION PickRandomSong()
+    n = Math.Floor (RND*7)
+    IF (n=0) RETURN DashingThroughTheSnow()
+    IF (n=1) RETURN DingDongMerrilyOnHigh()
+    IF (n=2) RETURN GoodKingWenceslas()
+    IF (n=3) RETURN HarkTheHerald()
+    IF (n=4) RETURN JingleBells()
+    IF (n=5) RETURN JoyToTheWorld()
+    IF (n=6) RETURN OhChristmasTree()
+   RETURN JoyToTheWorld()
+RETURN
+
+FUNCTION DashingThroughTheSnow()
+pre = "I10 t180"
+l1 = "L4 <G>EDC <G2GG g>EDC<A2P2 A>FED"
+l2 = "L4 <B2P2 >GGFD E2P2 <G>EDC <G2P2 G>EDC"
+l3 = "L4 <A2A A>FED GGGG AGFD C2"
+l4 = "L4 "
+l5 = "L4 "
+song = pre + l1 + l2 + l3 + l4 + l5
+RETURN song
+
+FUNCTION DingDongMerrilyOnHigh()
+pre = "I11 t180"
+l1 = "L4 >CCD8C8<B8A8 G2G A>CC<B >C2C2<"
+l2 = "L4 >CCD8C8<B8A8 G2G A>CC<B >C2C2<"
+l3 = "L4 G F8E8F8G8E8 FE8D8E8F8D8 ED8C8E8C8 DC8<B8>C8D8<B8"
+l4 = "L4 >C<B8A8B8>C8<A8 BA8GG A>CC<B >C2C2<"
+l5 = "L4 "
+song = pre + l1 + l2 + l3 + l4 + l5
+RETURN song
+FUNCTION GoodKingWenceslas()
+pre = "I2 t140"
+l1 = "L4 >CCCD CC<G2 AGAB >C2C2<"
+l2 = "L4 >CCCD CC<G2 AGAB >C2C2<"
+l3 = "L4 >GFED EDC2 <AGAB >C2C2 <"
+l4 = "L4 GGAB >CCD2 GFED C2F2 C1 <"
+l5 = "L4 "
+song = pre + l1 + l2 + l3 + l4 + l5
+RETURN song
+
+FUNCTION HarkTheHerald()
+pre = "I15 t120"
+l1 = "L4 CFFE8FAAG>CCC<B8"
+l2 = "L4 AGA2CFFE8FAAG>C<GGE8"
+l3 = "L4 EDC2>CCC<FBAAG>CCC<F"
+l4 = "L4 BAAG >DDDC <BAB2GA8B8>C<F8"
+l5 = "L4 FGA2>DDDC<BAB2GA8B8>C<F8  FGF2"
+song = pre + l1 + l2 + l3 + l4 + l5
+RETURN song
+
+FUNCTION JingleBells()
+pre = "I5 t180 "
+l1 = "E4E4E2E4E4E2E4G4C4D4"
+l2 = "E1F4F4F4F4F4E4E4E4E8E8"
+l3 =  "E4D4D4E4D2G2E4E4E2"
+l4 = "E4E4E2E4G4C4D4E1"
+l5 = "F4F4F4F4F4E4E4E8E8"
+l6 = "G4G4F4D4C1"
+song= pre+l1+l2+l3+l4+l5+l6
+RETURN song
+
+FUNCTION JoyToTheWorld()
+pre = "I47 t180"
+l1 = "L4 >F2ED8 C2<B- A2G2 F2>C<"
+l2 = "L4 >D2D E2E F1 F2F<"
+l3 = "L4 >FEDC C<B-8A>F FEDC C<B-8AA"
+l4 = "L4 AAAA8B-8 >C2<B-8A8 GGGG8A8 B-2A8G8"
+l5 = "L4 F>F2D C<B-8AB A2G2 F1"
+song = pre + l1+ l2 + l3 + l4 + l5
+RETURN song
+
+
+FUNCTION OhChristmasTree()
+pre = "I57 t120"
+l1 = "L4 D G8G8GA B8B8BB8 A8B8>C<F# AGD"
+l2 = "L4 G8G8GA B8B8BB8 A8B8>C<F# AGP8>D8<"
+l3 = "L4 >D8<B8>ED8 D8C8CC8 C8<A8>DC8 C8<B8BD"
+l4 = "L4 G8G8GA B8B8BB8 A8B8>C<F# AG"
+l5 = "L4 "
+song = pre + l1+ l2 + l3 + l4 + l5
+RETURN song
+```
+### Christmas Tree
+Draws a Christmas Tree in green
+```BASIC
+CLS BLACK WHITE
+PRINT "Merry Christmas"
+IMPORT FUNCTIONS FROM "Christmas Music"
+
+NSTARS = 50
+REM g = Screen.Graphics (50, 50, 300, 300)
+g = Screen.FullScreenGraphics()
+g.Background = BLACK
+g.Border = BLACK
+DrawTree (g)
+DIM starpos()
+GetRandomPoints (g, starpos, NSTARS)
+DrawStarsAt (g, starpos)
+DIM treepoints()
+GetTreePoints(g, treepoints)
+row = treepoints(3)
+g.Fill = WHITE
+g.Stroke = YELLOW
+DrawStar (g, row(1), row(2)+4, 5, 9, 19, PI/2)
+
+Screen.RequestActive()
+PLAY ONNOTE "TwinkleStar"
+100 REM Loop Top
+jb = PickRandomSong()
+xmas = "Ho ho ho!"
+PLAY jb
+PLAY WAIT
+PAUSE 100
+GOTO 100
+
+
+
+FUNCTION TwinkleStar()
+    newcolor = Math.Round (1+RND*6)
+    GLOBAL starpos
+    stop  = Math.Ceiling (starpos.Count / 10)
+    FOR I = 1 TO stop
+        idx = Math.Floor (RND*starpos.Count)
+        row = starpos[1+idx]
+        star = row[3]
+        star.Fill = newcolor
+    NEXT I
+RETURN
+
+FUNCTION DrawStarsRandom(g)
+     IF (NOT g.IsObject) THEN
+        g = Screen.FullScreenGraphics()
+        g.Background = WHITE
+    END IF
+    100 REM TOP
+        DrawStarRandom(g)
+        PAUSE 2
+    GOTO 100
+RETURN
+
+FUNCTION DrawStarRandom(g)
+    x = RND *g.W
+    y = RND * g.H
+    inner = RND * 10
+    outer = inner + RND*10
+    g.Fill = 1+RND * 7
+    g.Stroke = g.Fill
+    DrawStar (g, x, y, Math.Floor(RND*8 +3), inner, outer, PI/2)
+RETURN
+
+FUNCTION DrawStarsAt(g, pts)
+    FOR I = 1 TO pts.Count
+        row = pts[I]
+        x = row[1]
+        y = row[2]
+        inner = RND * 10
+        outer = inner + RND*10
+        inner = 5
+        outer = 12
+        g.Fill = 1+ RND * 6
+        g.Stroke = g.Fill
+        poly = DrawStar (g, x, y, Math.Floor(RND*8 +5), inner, outer, PI/2)
+        row[3] = poly
+    NEXT I
+RETURN
+
+REM Draw a star with the given number of points
+REM Specify the x,y position, the number of points
+REM the inner and outer size, and the ang.
+REM If you don't pick an angle, PI/4 is used so that there
+REM is a point at the top.
+FUNCTION DrawStar (g, x, y, npoints, inner, outer, ang)
+    IF (Math.IsNaN(ang)) ang = PI/4
+    poly = g.Polygon()
+    delta = (2 * PI / npoints)
+    FOR I = 1 TO npoints
+        a1 = (I-1) * delta + ang
+        a2  = a1 + delta / 2
+        x1 = x + COS(a1)*outer
+        y1 = y + SIN(a1)*outer
+        x2 = x + COS(a2)*inner
+        y2 = y + SIN(a2)*inner
+        poly.AddPoints (x1, y1, x2, y2)
+    NEXT I
+RETURN poly
+
+FUNCTION GetTreePoints (g, pt)
+    pt.Clear()
+    h = g.H - 20
+    bottom = 20
+    cx = g.W / 2
+    w = Math.Min (cx, h/3)
+    sh = (h - bottom) / 5
+    sw = w/5
+    pt.AddRow (cx-w, bottom)
+    pt.AddRow (cx+w, bottom)
+    pt.AddRow (cx, h)
+RETURN
+
+REM https://math.stackexchange.com/questions/18686/uniform-random-point-in-triangle
+FUNCTION GetRandomPoints (g, pt, n)
+    DIM tree()
+    GetTreePoints (g, tree)
+    ax = tree(1,1)
+    ay = tree(1,2)
+    bx = tree(2,1)
+    by = tree(2,2)
+    cx = tree(3,1)
+    cy = tree(3,2)
+
+    FOR I = 1 TO n
+        r1 = RND
+        r2 = RND
+        x = (1-√r1)*ax + (√r1*(1-r2))*bx + (r2*√r1)*cx
+        y = (1-√r1)*ay + (√r1*(1-r2))*by + (r2*√r1)*cy
+        pt.AddRow (x, y)
+    NEXT I
+RETURN
+
+
+FUNCTION DrawTree(g)
+    g.Push()
+    g.Stroke = WHITE
+    g.Fill = GREEN
+
+    h = g.H - 20
+    bottom = 20
+    cx = g.W / 2
+    w = Math.Min (cx, h/3)
+    sh = (h - bottom) / 5
+    sw = w/5
+    tree = g.Polygon()
+    DIM pts()
+    pts.Add (cx,h)
+    FOR i = 1 TO 4
+        x = cx-sw*i
+        y = h-sh*i
+        pts.Add (x-10, y, x, y+5)
+    NEXT i
+    pts.Add (cx-w, bottom, cx, bottom+10, cx+w, bottom)
+    FOR i = 4 TO 1 STEP -1
+        x = cx+sw*i
+        y = h-sh*i
+        pts.Add (x, y+5, x+10, y)
+    NEXT i
+    tree.SetPoints (pts)
+
+    g.Fill = "#654321"
+    g.Stroke = g.Fill
+    g.Rectangle (cx-10, 0, cx+10, 28)
+
+    g.Pop()
+RETURN
+```
+### MakeStars
+Functions to draw stars
+```BASIC
+REM LINE of wonder!
+
+IMPORT FUNCTIONS FROM "Christmas Tree"
+CLS  WHITE BLACK
+PRINT "STAR"
+REM g = Screen.FullScreenGraphics ()
+g = Screen.Graphics (50, 50, 200, 200)
+g.Border = WHITE
+g.Background = WHITE
+DrawStarsRandom(g)
+```
+### TestAddPoints
+Verifies the new polygon.AddPoints method
+```BASIC
+CLS GREEN WHITE
+PRINT "Random Graphics!"
+
+g = Screen.Graphics (50, 50, 300, 300)
+g.Fill = BLUE
+g.Stroke = YELLOW
+p = g.Polygon()
+
+FOR I = 1 TO 10000
+    x = RND * g.W
+    y = RND * g.H
+    p.AddPoints (x,y)
+    PRINT AT 2,2 I, Math.Round(x), Math.Round(y)
+    PAUSE 1
+NEXT I
+
+REM FOREVER WAIT
+```

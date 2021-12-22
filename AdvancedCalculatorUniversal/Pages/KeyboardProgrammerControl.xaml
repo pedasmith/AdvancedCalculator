@@ -1,0 +1,90 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.KeyboardProgrammerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+    <Grid Grid.Row="1" Grid.Column="0" Name="uiCalculatorProgrammerKeyboard">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+
+
+        <Button Tag="#KEY|nD" Grid.Column="0" Grid.Row="2" ToolTipService.ToolTip="Hexadecimal D" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">D</Button>
+        <Button Tag="#KEY|nE" Grid.Column="1" Grid.Row="2" ToolTipService.ToolTip="Hexadecimal E" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">E</Button>
+        <Button Tag="#KEY|nF" Grid.Column="2" Grid.Row="2" ToolTipService.ToolTip="Hexadecimal F" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">F</Button>
+        <Button Tag="#KEYbase|base2" Grid.Column="3" Grid.Row="2" ToolTipService.ToolTip="Base 2 (binary)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplayFormatButton">bin</Button>
+        <Button Tag="#KEYbase|base8" Grid.Column="4" Grid.Row="2" ToolTipService.ToolTip="Base 8 (octal)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplayFormatButton">oct</Button>
+        <Button Tag="#KEYbase|base10" Grid.Column="5" Grid.Row="2" ToolTipService.ToolTip="Base 10 (decimal)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplayFormatButton">dec</Button>
+        <Button Tag="#KEYbase|base16" Grid.Column="6" Grid.Row="2" ToolTipService.ToolTip="Base 16 (hexadecimal)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplayFormatButton">hex</Button>
+
+        <Button Tag="#KEY|nA" Grid.Column="0" Grid.Row="3" ToolTipService.ToolTip="Hexadecimal A" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">A</Button>
+        <Button Tag="#KEY|nB" Grid.Column="1" Grid.Row="3" ToolTipService.ToolTip="Hexadecimal B" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">B</Button>
+        <Button Tag="#KEY|nC" Grid.Column="2" Grid.Row="3" ToolTipService.ToolTip="Hexadecimal C" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">C</Button>
+        <Button Tag="#KEYmathbyte|1" Grid.Column="3" Grid.Row="3" ToolTipService.ToolTip="Number is byte" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplaySizeButton">▯</Button>
+        <Button Tag="#KEYmathbyte|2" Grid.Column="4" Grid.Row="3" ToolTipService.ToolTip="Number is word (2 bytes)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplaySizeButton">◫</Button>
+        <Button Tag="#KEYmathbyte|4" Grid.Column="5" Grid.Row="3" ToolTipService.ToolTip="Number is dword (4 bytes)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnDisplaySizeButton">◫◫</Button>
+        <Button Tag="#KEYmathbyte|oswab" Grid.Column="6" Grid.Row="3" ToolTipService.ToolTip="Byte swab" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">🔁</Button>
+
+        <Button Tag="#KEY|n7" Grid.Column="0" Grid.Row="4" ToolTipService.ToolTip="Number 7" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">7</Button>
+        <Button Tag="#KEY|n8" Grid.Column="1" Grid.Row="4" ToolTipService.ToolTip="Number 8" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">8</Button>
+        <Button Tag="#KEY|n9" Grid.Column="2" Grid.Row="4" ToolTipService.ToolTip="Number 9" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">9</Button>
+        <Button Tag="#KEYmathbit|pand" Grid.Column="3" Grid.Row="4" ToolTipService.ToolTip="Bitwise AND" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">&amp;</Button>
+        <Button Tag="#KEYmathrot|pshiftleft" Grid.Column="4" Grid.Row="4" ToolTipService.ToolTip="Shift left" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">≪</Button>
+        <Button Tag="#KEY4func|p/" Grid.Column="5" Grid.Row="4" ToolTipService.ToolTip="Divide" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">÷</Button>
+        <Button Tag="#KEYclear|a⌫" Grid.Column="6" Grid.Row="4" ToolTipService.ToolTip="Delete" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">⌫</Button>
+
+        <Button Tag="#KEY|n4" Grid.Column="0" Grid.Row="5" ToolTipService.ToolTip="Number 4" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">4</Button>
+        <Button Tag="#KEY|n5" Grid.Column="1" Grid.Row="5" ToolTipService.ToolTip="Number 5" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">5</Button>
+        <Button Tag="#KEY|n6" Grid.Column="2" Grid.Row="5" ToolTipService.ToolTip="Number 6" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">6</Button>
+        <Button Tag="#KEYmathbit|por" Grid.Column="3" Grid.Row="5" ToolTipService.ToolTip="Bitwise OR" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">|</Button>
+        <Button Tag="#KEYmathrot|pshiftright" Grid.Column="4" Grid.Row="5" ToolTipService.ToolTip="Shift right" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">≫</Button>
+        <Button Tag="#KEY4func|p*" Grid.Column="5" Grid.Row="5" ToolTipService.ToolTip="Multiply" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">×</Button>
+        <Button Tag="#KEYclear|fClearAll" Grid.Column="6" Grid.Row="5" ToolTipService.ToolTip="Clear All" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">C</Button>
+
+
+        <Button Tag="#KEY|n1" Grid.Column="0" Grid.Row="6" ToolTipService.ToolTip="Number 1" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">1</Button>
+        <Button Tag="#KEY|n2" Grid.Column="1" Grid.Row="6" ToolTipService.ToolTip="Number 2" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">2</Button>
+        <Button Tag="#KEY|n3" Grid.Column="2" Grid.Row="6" ToolTipService.ToolTip="Number 3" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">3</Button>
+        <Button Tag="#KEYmathbit|pxor" Grid.Column="3" Grid.Row="6" ToolTipService.ToolTip="Bitwise XOR (exclusive or)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">^</Button>
+        <Button Tag="#KEYmathrot|protleft" Grid.Column="4" Grid.Row="6" ToolTipService.ToolTip="Rotate left" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">⃝≪</Button>
+        <Button Tag="#KEY4func|p-" Grid.Column="5" Grid.Row="6" ToolTipService.ToolTip="Subtract" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">−</Button>
+        <!-- Unicode U+2212 minus -->
+        <Button Tag="#KEYclear|aClearX" Grid.Column="6" Grid.Row="6" ToolTipService.ToolTip="Clear Entry" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.SmallFontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">CE</Button>
+
+        <Button Tag="#KEYmathbit|ob#" Grid.Column="0" Grid.Row="7" ToolTipService.ToolTip="Count bits (popcount)" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" >B#</Button>
+        <Button Tag="#KEY|n0" Grid.Column="1" Grid.Row="7" ToolTipService.ToolTip="Number 0" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" >0</Button>
+        <Button Tag="#KEYmathbit|ocomp2" Grid.Column="2" Grid.Row="7" ToolTipService.ToolTip="2's complement" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}" Click="OnButton" >2's</Button>
+
+        <Button Tag="#KEYmathbit|onot" Grid.Column="3" Grid.Row="7" ToolTipService.ToolTip="Not" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">~</Button>
+        <Button Tag="#KEYmathrot|protright" Grid.Column="4" Grid.Row="7" ToolTipService.ToolTip="Rotate right" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">⃝≫</Button>
+        <Button Tag="#KEY4func|p+" Grid.Column="5" Grid.Row="7" ToolTipService.ToolTip="Add" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}"  Click="OnButton">+</Button>
+        <Button Tag="#KEY4func|f=" Grid.Column="6" Grid.Row="7" ToolTipService.ToolTip="Equals" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"  Width="{Binding cbm.ButtonWidth}"  Height="{Binding cbm.ButtonHeight}" Name="uiEqual2"  Click="OnButton">=</Button>
+    </Grid>
+
+</UserControl>

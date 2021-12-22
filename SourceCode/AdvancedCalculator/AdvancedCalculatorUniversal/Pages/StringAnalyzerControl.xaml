@@ -1,0 +1,53 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.StringAnalyzerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <StackPanel>
+                    <TextBlock Style="{StaticResource titletext}" >String Analyzer</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Style="{StaticResource aboutboxtext}" Margin="0,0,10,0">String to analyze</TextBlock>
+                        <TextBox Height="40" MinWidth="200"  TextChanged="OnAnalyzeStringTextChanged" x:Name="uiSearchBox" />
+                        <TextBlock VerticalAlignment="Center" Style="{StaticResource aboutboxtext}" FontWeight="Bold" FontSize="28" Margin="10,0,10,0" >🔎</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid x:Name="uiMainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0"  x:Name="uiStringAnalyzeInfo" />
+                <StackPanel MinHeight="50" Grid.Row="1" Grid.Column="0" Name="uiResultsList" MinWidth="300" HorizontalAlignment="Left"  Margin="4,0,0,0" />
+                <!-- The unicode entries are added via code -->
+
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Style="{StaticResource aboutboxstyle}">
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

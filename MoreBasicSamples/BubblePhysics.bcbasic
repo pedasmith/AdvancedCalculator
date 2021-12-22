@@ -1,0 +1,254 @@
+## _Bubble Physics
+Programs that demonstrate how bubbles rise through liquids. Equations are from Terminal Velocity of a Bubble Rise in a Liquid Column (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.192.9665&rep=rep1&type=pdf)
+### Bubble Animation
+Animation of bubbles rising in a beaker. The speed of the bubble rise depends on the size of the bubble using the GOODMAN equations from the MadSci network.
+**Default Key**: Bubble Animation
+```BASIC
+REM Bubble Animation: How fast do bubbles rise?
+REM Using the GOODMAN equations
+
+REM GOODMAN
+REM http://www.madsci.org/posts/archives/1997-08/865365227.Ph.r.html
+REM Goodman uses the kinematic viscosity which is the ratio of the 
+REM dynamic viscosity to the density. That's why Goodman uses a nu of .89
+REM for water and Talaia uses mu (which is the straight dynamic viscosity). 
+REM Goodman's equations are all cgs
+FUNCTION GoodmanTerminalVelocityVerySmall(d, nu)
+    REM g is the acceleration from gravity (m/s²)
+    g = 980
+    REM Goodman uses a as the radius of the bubble
+    a = d/2
+    v = (1/3) * g *  a²  / nu
+RETURN v
+
+REM Small means the diameter is between  .1cm and 1 cm
+FUNCTION GoodmanTerminalVelocitySmall(d, nu)
+    REM g is the acceleration from gravity (m/s²)
+    g = 980
+    REM Goodman uses a as the radius of the bubble
+    a = d/2
+    v = (1/9) * g *  a²  / nu
+RETURN v
+
+REM Pick the right forumula using Goodman's equations
+FUNCTION GoodmanTerminalVelocityAutorange(d, nu)
+    IF (d<.1) 
+        v  = GoodmanTerminalVelocityVerySmall(d, nu)
+    ELSE
+        v  = GoodmanTerminalVelocitySmall(d, nu)
+    END IF
+RETURN v
+
+
+
+REM Animates a bubble.
+REM Uses CGS system (centimeter, gram, seconds)
+
+REM Makes a window and draws a beaker in it
+REM Creates a set of bubbles and initializes them
+REM with different sizes and velocities
+FUNCTION BubbleSetup()
+    REM g is the graphics area we're going to use to draw in.
+    GLOBAL g
+
+    REM bubbles is the array of bubbles that we're 
+    REM filling in.
+    GLOBAL bubbles
+
+    REM BeakerH and BeakerW are the beakers sizes.
+    REM The BeakerH is used in the AnimateBubbles
+    REM function to decide when a bubble has reached
+    REM the top of the beaker and should be reset.
+    GLOBAL BeakerH
+    GLOBAL BeakerW
+
+    REM Create the "bubble" scale. The beaker is in the right half of the screen.
+    ratio = BeakerH / BeakerW
+    h = g.H
+    w = h / ratio
+    IF (w > g.W  /2)
+        w = g.W / 2
+        h = w * ratio
+    END IF
+
+    xpos = g.W/2
+    g.SetScaleWindow ("bubble", xpos, 0, xpos+w, h)
+    g.SetScale ("bubble", 0, -10, BeakerW,  BeakerH*1.2)
+    g.UseScale ("bubble")
+
+    REM Draw a beaker with pale blue water
+    g.Stroke = BLACK
+    g.Fill = "#AAAADD"
+    g.Thickness =0
+    g.Rectangle (0, -10, BeakerW, BeakerH)
+    g.Thickness = 4
+    g.Line (0, BeakerH, 0, -10)
+    g.LineTo (BeakerW, -10)
+    g.LineTo (BeakerW, BeakerH)
+    g.Thickness = 1
+    REM Mark every 10 cm on the beaker
+    FOR y = 0 TO BeakerH STEP 10
+        g.Line (0, y, BeakerW/10, y)
+    NEXT y
+
+    REM Create NBubble evenly-spaced bubbles.
+    g.Fill = GREEN
+    g.Thickness = 0
+
+    NBubble = 8
+    xpadding = BeakerW / 10
+    xstep = (BeakerW - xpadding*2) / NBubble
+
+    FOR index = 1 TO NBubble
+        x = index * xstep + xpadding
+        bubble = g.Circle (x, 0, 5)
+        bubbles.Add (bubble)
+        ResetBubbleSize (bubble, index)
+    NEXT index
+RETURN
+
+REM Given a bubble and its index, reset the bubble
+REM That means resetting the Y position  to 10
+REM randomly setting the bubble size
+REM and calculating the bubble speed.
+FUNCTION ResetBubbleSize (bubble, index)
+    REM nu is the viscosity of the liquid (water)
+    REM CGS system version
+    nu_water = 0.14
+
+    REM v is the array of bubble velocities
+    GLOBAL v
+
+    REM set the diameter of the bubble to a value
+    REM between DMIN and DMAX
+    DMIN = 0.02
+    DMAX = 0.2
+    diameter = (RND * (DMAX-DMIN) + DMIN)
+
+    REM Bubbles have to be drawn with an exaturated
+    REM size. When drawn to scale, they are too small
+    REM to tell one size from another.
+    bubble.Radius = diameter * 25
+    bubble.CY = 0
+    bubble.Opacity = 1.0
+
+    REM I can pick from several different speed systems
+    gspeed = GoodmanTerminalVelocityAutorange (diameter, nu_water)
+    speed = gspeed
+    v[index] = gspeed
+
+    GLOBAL SpeedText
+    GLOBAL SizeText
+    SpeedText.Text = "Speed=" + Math.Round(gspeed,2) + " cm/s"
+    SizeText.Text = "Size="+Math.Round(diameter,2)+" cm"
+
+RETURN
+
+REM This function is called periodically by System.SetInterupt
+REM It updates the bubble position based on their velocity 
+REM (which is always just the terminal velocity)
+REM When the bubble gets too high, it's reset to be a bubble
+REM at the bottom of the screen.
+
+FUNCTION AnimateBubbles(arg)
+    GLOBAL bubbles
+    GLOBAL v
+    REM lastTime is used to keep track of the last time
+    REM this function is called. The bubbles are updated
+    REM based on the actual computer time. That way
+    REM the AnimateBubble can actually be set to be
+    REM called more or less frequently and will still have
+    REM the same physics.
+    GLOBAL lastTime
+    GLOBAL BeakerH
+    now = DateTime.GetNow()
+    delta = now.Subtract (lastTime)
+
+    FOR i = 1 TO bubbles.Count
+        bubble = bubbles[i]
+        y = bubble.CY
+        speed = v[i]
+        nextY = y + speed*delta
+        bubble.CY = nextY
+IF (i=1) PRINT AT 1,1 "DBG: <<";speed;">> ";y;" ";nextY;" ";v
+        IF (nextY > BeakerH*.95)
+             bubble.Opacity = bubble.Opacity * .8
+             REM ResetBubbleSize (bubble, i)
+        END IF
+        IF (nextY > BeakerH*1.1)
+             ResetBubbleSize (bubble, i)
+        END IF
+    NEXT i
+    lastTime = now
+RETURN
+
+
+REM
+REM Main Program
+REM
+
+CLS  BLACK WHITE
+PRINT "Bubble Animation"
+
+REM Set up the arrays that will hold the bubbles
+REM and their velocities (speeds)
+DIM bubbles()
+DIM v()
+
+REM Create the graphics area and define
+REM the beaker height and width. The beaker
+REM size will be adjusted to any (reasonable)
+REM sized graphics area
+REM The beaker size is in centimeters.
+g = Screen.Graphics (0, 100, 300, 500)
+REM g = Screen.FullScreenGraphics()
+g.Background = WHITE
+g.Stroke = BLACK
+g.Border = WHITE
+
+REM Add some labelling
+g.Title = "Small Bubble Animation"
+TH = 30
+g.Text (0, g.H-TH, g.W/2, g.H-TH*2, "Most recent bubble", 20)
+SizeText = g.Text (0, g.H-TH*2, g.W/2, g.H-TH*3, "Size", 18)
+SpeedText = g.Text (0, g.H-TH*3, g.W/2, g.H-TH*4, "Speed", 18)
+
+BeakerW = 50
+BeakerH = 100
+BubbleSetup()
+
+REM Start animating the bubles.
+lastTime = DateTime.GetNow()
+System.SetInterval ("AnimateBubbles", 50, 0)
+FOREVER
+```
+### TALAIA Bubble physics
+Dead code from the Bubble Physics program. The TALAIA bubble equations are different from the GOODMAN equations, and I can't tell which one is correct and which is wrong. Leaving it here in case it's wanted later and a reminder that just because I have a function doesn't mean the function is correct.
+**Default Key**: TALAIA Bubble physics
+```BASIC
+REM Dead code for bubble physics using the TALAIA equations.
+
+REM TALAIA Calculations
+REM http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.192.9665&rep=rep1&type=pdf
+REM After comparing this with GOODMAN, the terms here are gcs, so the sizes are in centimeters.
+REM Calculation for SMALL bubbles
+REM d is the diameter of the bubble in meters
+REM mu is the dynamic viscosity of the liquid (cP)
+REM https://www.engineeringtoolbox.com/absolute-viscosity-liquids-d_1259.html
+REM These are all in the MKS system even thought the Talaia equation seems to be cgs
+REM    mu of water is 0.89
+REM    mu of milk is 0.3 (blood is 0.3 to 0.4)
+REM    mu of glycerine is 950
+REM pl is the density of the fluid
+REM    pl of water is 1.000
+REM    pl of milk is 1.032 (blood is 1025)
+REM    pl of glycerine is 1.261
+REM pg is density of the gas
+REM    pg of co2 gas is 0.001977
+REM The density of the gas is almost irrelevant
+FUNCTION TalaiaTerminalVelocitySmall(d, mu, pl, pg)
+    REM g is the acceleration from gravity (cm/s²)
+    g = 980
+    v = (1/18) * g * d² * (pl - pg) / mu
+RETURN v
+```

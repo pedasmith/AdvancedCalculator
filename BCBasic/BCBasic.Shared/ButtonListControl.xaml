@@ -1,0 +1,88 @@
+﻿<UserControl
+    x:Class="BCBasic.ButtonListControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BCBasic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.Resources>
+            <Style x:Key="TitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style x:Key="ListHeaderStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontStyle" Value="Italic" />
+            </Style>
+        </Grid.Resources>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource TitleStyle}">Set your program to run when you press a button (P1 to P5)</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ListHeaderStyle}" Margin="0,10,0,0" >What button do you want to set?</TextBlock>
+        <ListView Grid.Row="2" Grid.Column="1" ItemsSource="{Binding BCButtonList.ButtonList}" x:Name="uiButtonList">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding Button}"  FontSize="20" FontWeight="Bold" Margin="0,10,10,0" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Current program" Margin="10,0,10,0" FontSize="12" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" >
+                            <Run FontStyle="Italic" FontSize="14" Text="{Binding Package}" />
+                            <LineBreak />
+                            <Run FontStyle="Italic" FontSize="14" Text="{Binding Program}"  />
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ListHeaderStyle}" >What package is the program in?</TextBlock>
+        <ListView Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Library.Packages}" SelectedItem="{Binding Path=Package, Mode=TwoWay}" x:Name="uiPackageList">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="10,0,0,0">
+                        <Run Text="{Binding Name}" />
+                    </TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ListHeaderStyle}" >What program do you want to run?</TextBlock>
+        <ListView Grid.Row="6" Grid.Column="1" ItemsSource="{Binding Package.Programs}" x:Name="uiProgramList" SelectionChanged="OnSelectedProgramChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="10,0,0,0" TextWrapping="Wrap">
+                        <Run FontWeight="Bold" Text="{Binding Name}" />
+                        <Run Text="—" />
+                        <Run Text="{Binding Description}" />
+                    </TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <TextBox Header="What should the button be labeled?" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" x:Name="uiKeyName" />
+        <local:MenuIcon Grid.Row="9" Grid.ColumnSpan="2"  AltText="Save" MenuTextEZ="SAVE" Tapped="OnSaveT" Tag="{Binding BCButtonList}" />
+
+    </Grid>
+</UserControl>

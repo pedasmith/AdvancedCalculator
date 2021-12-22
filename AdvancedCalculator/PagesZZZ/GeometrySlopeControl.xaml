@@ -1,0 +1,99 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.GeometrySlopeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Slope Calculations</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Y</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Y" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Y" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Y" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">M</TextBlock>
+                <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1M" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1M" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1M" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">X</TextBlock>
+                <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1X" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1X" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1X" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">B</TextBlock>
+                <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1B" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1B" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1B" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Source="/Assets/SolverImages/GeometrySlope.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left" />
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20" >About Slopes</Bold>
+                        <LineBreak />
+                        The classic line equation is <Bold>Y=MX+b</Bold> where M is the slope of a line, B is the y-intercept (the value Y has
+                        when X is zero), and X and Y are the X and Y positions.
+                        <LineBreak />
+                        This solver, when given any 3 values, will calculate the last value.  For example, a common problem is where
+                        you know the Y value for one X value, and you also know the y-intercept (B).  In the case of X=10 Y=20 and B=5, 
+                        the slope (M) is calculated as 1.5.
+                        <LineBreak />
+                        <Bold>TIP</Bold>: you can do a series of slope calculations.  Suppose you have the M and B values, and you want
+                        to calculate a series of Y values given a series of X values.  Enter in the M and B values, and then the first
+                        X value.  The first Y value will be calculated.  Then enter the next X value.  The solver <Italic>can</Italic> update
+                        any of the variables such that the numbers work out, but will <Italic>prefer</Italic> to solve for the variable 
+                        that wasn't entered by hand.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

@@ -1,0 +1,130 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.HealthBMIAdultControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Adult Body Mass Index (BMI)</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <!--
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblock}" HorizontalAlignment="Center">Body Mass Index (BMI)</TextBlock>
+                    -->
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Left">Metric Height and Weight</TextBlock>
+                <!-- Metric -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Height (Meters)</TextBlock>
+                <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1HeightMeters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1HeightMeters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1HeightMeters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Weight (kilograms)</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1WeightKilograms" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1WeightKilograms" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1WeightKilograms" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                <!-- US -->
+                <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Left">US Height and Weight</TextBlock>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Height (inches)</TextBlock>
+                <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1HeightJustInches" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1HeightJustInches" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1HeightJustInches" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Height</TextBlock>
+                <StackPanel Grid.Row="6" Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="3">
+                    <TextBox Tag="autotbeq1HeightFeet" Style="{StaticResource solverboxnarrow}"  InputScope="Number" />
+                    <TextBlock Style="{StaticResource solverblock}">ft.</TextBlock>
+                    <TextBox Tag="autotbeq1HeightInches" Style="{StaticResource solverboxnarrow}"  InputScope="Number" />
+                    <TextBlock Style="{StaticResource solverblock}">in</TextBlock>
+                </StackPanel>
+
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Weight (pounds)</TextBlock>
+                <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1WeightPounds" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1WeightPounds" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1WeightPounds" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">BMI</TextBlock>
+                <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1BMI" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1BMI" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1BMI" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/HealthBMI.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20" >BMI: Body Mass Index</Bold>
+                        <LineBreak />
+                        Body mass index (BMI) is an easy-to-calculate value that indicates whether you are (overall)
+                        too heavy, too light, or just right.
+
+                        <LineBreak />
+                        BMI values above 30.0 are considered <Bold>obese</Bold>.<LineBreak />
+                        BMI values above 25 are <Bold>overweight</Bold><LineBreak />
+                        BMI values between 18.5 and 25 are <Bold>Normal</Bold><LineBreak />
+                        BMI values below 18.5 are <Bold>Underweight</Bold>.<LineBreak />
+                        
+                        As with all health measurements, check with your doctor.  Use the BMI Child
+                        solver for children; children use a BMI scale that's compared against
+                        age and gender specific charts.
+                        <LineBreak />
+                        <Bold>To use this solver</Bold>, enter your height and weight, 
+                        and your BMI will be calculated.  You can enter either metric
+                        or American values (kilograms and meters, or pounds and inches).
+                        You can also enter a BMI value and either a height or weight,
+                        and the other value will be calculated.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

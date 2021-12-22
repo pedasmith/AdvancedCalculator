@@ -1,0 +1,183 @@
+## EX: Financial
+Sample financial programs for ROI (Return on Investment), Present and Future value, and more.
+### Common Tip Values
+Starts with the value already in your calculator, and comes up with a range of tips (5%, 10%, 15%, 18%, 20%)
+**Default Key**: Common Tip Values
+```BASIC
+value = Calculator.Value
+CLS BLACK
+TEST()
+PRINT "5% tip of "; value; " is "; Tip(value, 5)
+PRINT "10% tip of "; value; " is "; Tip(value, 10)
+PRINT "15% tip of "; value; " is "; Tip(value, 15)
+PRINT "18% tip of "; value; " is "; Tip(value, 18)
+PRINT "20% tip of "; value; " is "; Tip(value, 20)
+
+Calculator.Message = "15% tip of " + value + " is " + Tip(value, 15)
+STOP 0+Tip(value, 15)
+
+REM We need a fancy function because we need to format the number
+REM nice and neat.  It should be calculated to the nearest penny exactly.
+FUNCTION Tip(value, percent)
+raw = value * (percent/100)
+round = Math.Round (raw * 100) / 100
+fraction = round - Math.Truncate(round)
+fraction = Math.Round (fraction * 100)
+IF (fraction < 10) THEN fraction = "0" + fraction
+top = "" + Math.Truncate(round) + "." + fraction
+RETURN top
+
+FUNCTION TEST ()
+    ASSERT (Tip(100, 5) =  "5.00")
+    ASSERT (Tip(76, 15) = "11.40")
+    ASSERT (Tip(140, 15) = "21.00")
+RETURN nerror
+```
+### Compound Interest
+Calculates compound interest
+**Default Key**: Compound Interest
+```BASIC
+REM
+REM Calculates the interest earned on a loan.  
+REM Loan terms and interest is given per year; the
+REM interest is compounded monthly.
+REM
+
+P = INPUT DEFAULT 1000 PROMPT "Principal (original balance)"
+RY = INPUT DEFAULT 12 PROMPT "Rate per year (enter 3% as 3)"
+NY = INPUT DEFAULT 1 PROMPT "Number of years"
+C = CompoundInterest(P, RY, NY)
+Calculator.Message = "Compound interest earned"
+STOP C
+
+FUNCTION CompoundInterest(P, RY, NY)
+R = RY / 1200
+N = NY * 12
+C = P * ( (1 + R)**N - 1)
+RETURN C
+
+FUNCTION TEST ()
+    ASSERT (CompoundInterest (1200, 12.49,  .5) ≅ 76.917)
+    ASSERT (CompoundInterest (1100,  3.2,  2) ≅ 72.602)
+RETURN nerror
+```
+### Doubling Time
+Calculate the time it takes to double an investment given a rate of return.  The rate of return is in percent; 12% is represented as 12.
+**Default Key**: Doubling Time
+```BASIC
+REM Takes the value in the calculator as a percent (e.g., 12% is 12)
+REM divides by 100 to get computer-type percents (0.12)
+REM values are in YEARS, but interest is assumed to compound MONTHLY.
+
+REM Example: at a rate of "6" (6%), money will double in about 11.58 years.
+
+CLS BLACK
+TEST()
+
+yr = Calculator.Value
+dt = DoublingTime(yr)
+Calculator.Message = "Doubling Time in years at " + yr + "% per year"
+STOP dt
+
+REM Doubling time in years given a per-year interest rate that compounds monthly
+REM yr is percent interest rate; e.g., give 4.25% as 4.25
+FUNCTION DoublingTime(yr)
+r = yr / 100
+REM divide by 12 to get the montly rate
+r = r / 12
+dt = LN(2) / LN(1 + r)
+REM dt starts off in months, but we want to present years, so divide by 12.
+dt = dt  / 12
+Calculator.Message = "Doubling Time in years at " + yr + "% per year"
+RETURN dt
+
+FUNCTION TEST ()
+    ASSERT (DoublingTime (6) ≅ 11.5813)
+    ASSERT (DoublingTime (6.35) ≅ 10.9445)
+RETURN nerror
+```
+### Future Value
+Calculates the future value of money today given a period of time and an interest rate.
+**Default Key**: Future Value
+```BASIC
+REM Future value uses the standard formula FV = PV * (1+r)**n
+REM where PV = present value (e.g., money to invest)
+REM r is the interest rate (3% is .03 in the formula, but this program lets the user enter '3' for 3%
+REM n is the number of periods.  This must match the interest rate (e.g., either both are 'per year' or both are 'per month')
+
+PV = INPUT DEFAULT 900 PROMPT "Present value"
+n = INPUT DEFAULT 3 PROMPT "How far into the future (years)"
+r = INPUT DEFAULT 3 PROMPT "Interest rate (per year).  Enter 3 for 3%"
+r = r / 100
+FV = FutureValue(PV, n, r)
+Calculator.Message = "FV of " + PV + " at " + r*100 + "%"
+STOP FV
+
+FUNCTION FutureValue(PV, n, r)
+FV = PV * ((1+r)**n)
+RETURN FV
+
+FUNCTION TEST_Simple()
+    ASSERT (FutureValue (1000, 5, .1) ≅ 1610.51)
+RETURN
+```
+### Money Conversion
+Simple program to convert from one currency to another.  The program will always prompt for the conversion rate, but will remember the last conversion rate you used.  This program does not go on-line to get the current set of conversion rates (it's not possible in BC BASIC)
+**Default Key**: Money Conversion
+```BASIC
+REM
+REM The defaults here are rougly the conversion rate from yen to 
+REM australian dollars.  1 yen is about 0.011 australian dollar; 
+REM 10000 yen is therefore about 110 australian dollars.
+REM
+rate = INPUT DEFAULT Memory.GetOrDefault ("ConversionRate", 0.011) PROMPT "Conversation rate <from> to  <to> [e.g., yen to australian dollars]"
+Memory.ConversionRate = rate
+amount = INPUT DEFAULT Memory.GetOrDefault ("ConversionAmount", 10000) PROMPT "Amount to convert [e.g., amount in yen]"
+Memory.ConversionAmount = amount
+value = amount  * rate
+Calculator.Message = "Convert "  + amount + " at a rate of  " + rate + " is " + value
+Calculator.Value = value
+```
+### Present Value
+Calculates the present value (PV) of a sum of money (the future value, FV) given an interest rate and the number of years in the future that the sum of money will be paid.
+**Default Key**: Present Value
+```BASIC
+REM Future value uses the standard formula PV = FV / (1+r)**n
+REM where PV = present value (e.g., money to invest)
+REM FV is the value of the investment in the future
+REM r is the interest rate (3% is .03 in the formula, but this program lets the user enter '3' for 3%
+REM n is the number of periods.  This must match the interest rate (e.g., either both are 'per year' or both are 'per month')
+
+REM Good practice to run the TEST program to make sure the calculations are OK.
+TEST()
+
+FV = INPUT DEFAULT 900 PROMPT "Future value (amount of money in the future)"
+n = INPUT DEFAULT 3 PROMPT "When will the money be paid"
+r = INPUT DEFAULT 3 PROMPT "Interest rate (per year).  Enter 3 for 3%"
+REM Some people want to type 10 for 10%
+r = r / 100
+PV = PresentValue (FV, n, r)
+Calculator.Message = "PV of " + FV + " at " + r*100 + "%"
+STOP PV
+
+FUNCTION PresentValue(FV, n, r)
+PV = FV / ((1+r)**n)
+RETURN PV
+
+FUNCTION TEST()
+    ASSERT (PresentValue (900, 3, .1) ≅ 676.18)
+    ASSERT (PresentValue (570, 1, .1) ≅ 518.18)
+    ASSERT (PresentValue (570, 3, .1) ≅ 428.25)
+RETURN nerror
+```
+### Return on Investment
+Also called ROI, the return on investment shows the percentage return on an investment.
+**Default Key**: Return on Investment
+```BASIC
+REM ROI
+EARNINGS = INPUT DEFAULT 1100 PROMPT "Earnings on the investment"
+INITIAL = INPUT DEFAULT 1000 PROMPT "Initial investment"
+ROI = (EARNINGS - INITIAL) / INITIAL
+Calculator.Message = "ROI when earnings is " + EARNINGS + " on an intial investment of " +  INITIAL
+STOP ROI
+```

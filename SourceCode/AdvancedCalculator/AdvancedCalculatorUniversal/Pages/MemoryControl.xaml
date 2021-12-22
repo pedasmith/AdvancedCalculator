@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.MemoryControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanelScrollViewer x:Name="uiMain" >
+        <local:FourPanelScrollViewer.ItemTop>
+            <local:ResultControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" />
+        </local:FourPanelScrollViewer.ItemTop>
+
+        <local:FourPanelScrollViewer.ItemMain>
+            <local:MemoryOneControl x:Name="uiMemoryOne" />
+        </local:FourPanelScrollViewer.ItemMain>
+
+        <local:FourPanelScrollViewer.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanelScrollViewer.ItemRight>
+
+        <local:FourPanelScrollViewer.ItemBottom>
+            <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+            </Grid>
+        </local:FourPanelScrollViewer.ItemBottom>
+    </local:FourPanelScrollViewer>
+</UserControl>

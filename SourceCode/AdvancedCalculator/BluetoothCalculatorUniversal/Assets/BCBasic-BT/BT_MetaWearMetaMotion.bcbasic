@@ -1,0 +1,568 @@
+## BT: MetaWear MetaMotion
+Demonstrates using the MetaMotion device from MetaWear.  Metawear sells a variety of small battery-powered sensors devices with a variety of sensors includes accelerometers, gyroscopes, temperature and humidity sensors and more.
+### _Basics
+A very simple program to get you started with programming the mbientlab.com MetaWear MetaMotion device.  The program will let you pick a device and then report information about the device's name, manufacturer and current power usage.
+```BASIC
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF (device.IsError)
+    CLS RED
+    PRINT "No MetaWear device found"
+    PRINT device
+    STOP
+END IF
+meta = device.As ("MetaMotion")
+IF (meta.IsError)
+    CLS RED
+    PRINT "Unable to connect to device"
+    PRINT meta
+END IF
+
+CLS GREEN
+PRINT "About my MetaWear device"
+PRINT " "
+PRINT "Name", meta.GetName()
+PRINT "Man.", meta.GetManufacturerName()
+PRINT "Power", meta.GetPower()
+PRINT "Availble Methods", meta.Methods
+```
+### Accelerometer
+Demonstrates the meta.AccelerometerSetup(1, "Accelerometer", gforce, rate) call.  When new acceleration data is sent from the device, the "Accelerometer" function will be called with the device plus an X, Y and Z value of the acceleration.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+gforce = INPUT DEFAULT 2 PROMPT "Maximum G-Force to measure (e..g, 2)"
+rate = INPUT DEFAULT 25 PROMPT "Callbacks per second (e.g., 25)"
+
+meta.ButtonSetup(1,"Button")
+meta.AccelerometerSetup(1, "Accelerometer", gforce, rate)
+
+ExitRequested = 0
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = MAXTIME
+NEXT time
+
+REM Turn it off
+meta.AccelerometerSetup(0, "Accelerometer")
+
+FUNCTION Accelerometer(ble, x, y, z)
+    PRINT AT 11, 1 "X", x
+    PRINT AT 12, 1 "Y", y
+    PRINT AT 13, 1 "Z", z
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### Altimeter
+Demonstrates the meta.AltimeterSetup(1, "Altimeter", rate) call.  When new altimeter data is sent from the device, the "Altimeter" function will be called with the device plus a height in meters.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+
+tare = Math.NaN
+meta = device.As ("MetaMotion")
+
+rate = INPUT DEFAULT 4 PROMPT "Seconds between callbacks (e.g., 4)"
+
+meta.ButtonSetup(1,"Button")
+meta.AltimeterSetup(1, "Altimeter", rate)
+
+ExitRequested = 0
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 7, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = MAXTIME
+NEXT time
+
+meta.AltimeterSetup(0, "Altimeter")
+
+FUNCTION Altimeter(ble, meters)
+    GLOBAL tare
+    IF (Math.IsNaN (tare)) THEN tare = meters
+
+    REM Conversion factor is pasted from Bing
+    feet=  meters * 3.2808399
+    deltaFeet = (meters - tare) * 3.2808399
+    PRINT AT 8, 1 "Tare", tare
+    PRINT AT 9, 1 "Meters", meters
+    PRINT AT 10, 1 "Feet", meters
+    PRINT AT 11, 1 "Delta", deltaFeet
+    
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### Ambient Light Sensor
+Demonstrates the meta.LightSensorSetup(1, "LightSensor") call.  When new ambient light data is sent from the device, the "LightSensor" function will be called with the device plus a light value.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS BLUE
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+meta.ButtonSetup(1,"Button")
+meta.LightSensorSetup(1, "LightSensor")
+
+ExitRequested = 0
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = 9999
+NEXT time
+
+meta.AccelerometerSetup(0, "Accelerometer")
+
+FUNCTION LightSensor(ble, lux)
+    PRINT AT 11, 1 "LUX 1", lux
+    REM PRINT AT 12, 1 "LUX 2", lux2
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### Barometer
+Demonstrates the meta.BarometerSetup(1, "Barometer", rate) call.  When new pressure data is sent from the device, the "Barometer" function will be called with the device plus a light value.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+
+meta = device.As ("MetaMotion")
+
+rate = INPUT DEFAULT 4 PROMPT "Seconds between callbacks (e.g., 4)"
+
+meta.ButtonSetup(1,"Button")
+meta.BarometerSetup(1, "Barometer", rate)
+
+ExitRequested = 0
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 7, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = MAXTIME
+NEXT time
+
+meta.AltimeterSetup(0, "Barometer")
+
+FUNCTION Barometer(ble, pascal)
+    REM Convert to inches of mercury
+    inches = pascal * 0.000295299830714
+    mb = pascal * 0.01
+    PRINT AT 9, 1 "Pascal", pascal
+    PRINT AT 10, 1 "Inches", inches
+    PRINT AT 11, 1 "mb", mb
+ 
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### Black
+Turns the LED to Black using the SetColor (red, green, blue) method.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+REM Color values are red, green, blue.
+meta.SetColor(0, 0, 0)
+```
+### Blue Pulse
+Demonstrates the advanced capabilities of the LED pulse control in the MetaWear.  The G, R, B values are set seperately; you set the high and low intensity and the rise, high, fall and total cycle time.  This lets you design fancy pulse ability.  This program sets the LED to slowly transition from a mid to high blue value and back again.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+REM meta.SetColor (0, 0, 0)
+REM result = meta.LedConfig(0, 0, 0, 1000, 500, 20, 2500, 1)
+REM result = meta.LedConfig(1, 0, 0, 1000, 500, 20, 2500, 1)
+result = meta.LedConfig(2, 248, 160, 0, 100, 0, 1000, 0)
+result = meta.LedOn()
+PRINT result
+```
+### Buttons
+Demonstrates the meta.ButtonSetup(1, "Button") call.  When teh user pressed the button, , the "Button" function will be called with the device plus an indication of the button press (0=up 1=down).
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+meta.ButtonSetup(1,"Button")
+
+MAXTIME = 100
+FOR time = 0 TO MAXTIME 
+    PRINT AT 7, 1 "MAXTIME", MAXTIME
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1) 
+        time = MAXTIME
+        ExitRequested = 0
+    END IF
+    IF(MAXTIME > 102)
+        a = INPUT PROMPT "ERROR!"
+    END IF
+NEXT time
+
+meta.ButtonSetup(0,"Button")
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### Green
+Turns the LED to Green using the SetColor (red, green, blue) method.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+REM Color values are red, green, blue.
+meta.SetColor(0, 255, 0)
+```
+### Gyroscope
+Demonstrates the meta.GyroscopeSetup(1, "Gyroscope", gforce, rate) call.  When new gyroscope data is sent from the device, the "Gyroscope" function will be called with the device plus X, Y and Z values.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+dps = INPUT DEFAULT 500 PROMPT "Maximum Degrees-per-second to measure (e..g, 500)"
+rate = INPUT DEFAULT 25 PROMPT "Callbacks per second (e.g., 25)"
+
+meta.ButtonSetup(1,"Button")
+meta.GyroscopeSetup(1, "Gyroscope", dps, rate)
+
+ExitRequested = 0
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = MAXTIME
+NEXT time
+
+REM Turn it off
+meta.GyroscopeSetup(0, "Gyroscope")
+
+FUNCTION Gyroscope(ble, x, y, z)
+    PRINT AT 11, 1 "X", x
+    PRINT AT 12, 1 "Y", y
+    PRINT AT 13, 1 "Z", z
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### LED Off
+Turns the LED Off using the LedOff() method.  This is different from simply setting the color to black.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+result = meta.LedOff()
+PRINT result
+```
+### LED On
+Turns the LED on using the LedOn() method.  It will display the last pattern set.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+result = meta.LedOn()
+PRINT result
+```
+### Magnetometer
+Demonstrates the meta.MagnetometerSetup(1, "Magnetometer") call.  When new magnetic data is sent from the device, the "Magnetometer" function will be called with the device plus an X, Y and Z value of the magnetic force.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+meta.ButtonSetup(1,"Button")
+meta.MagnetometerSetup(1, "Magnetometer")
+
+ExitRequested = 0
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = MAXTIME
+NEXT time
+
+REM Turn it off
+meta.MagnetometerSetup(0, "Magnetometer")
+
+FUNCTION Magnetometer(ble, x, y, z)
+    PRINT AT 11, 1 "X", x
+    PRINT AT 12, 1 "Y", y
+    PRINT AT 13, 1 "Z", z
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```
+### Save Data To File
+Saves Barometer data to a CSV file along with a time stamp.  This sample demonstrates how you can make a simple data logger program that exports data in a format that can be used by Excel.
+```BASIC
+REM Version 4:52
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+file = File.AppendPicker("CSV file", ".csv", "altimeter.csv")
+
+tare = Math.NaN
+meta.ButtonSetup(1,"Button")
+meta.AltimeterSetup(1, "Altimeter")
+DataToWrite = ""
+LastFlushTime = DateTime.GetNow()
+
+10 REM LOOP TOP
+ExitRequested = 0
+MAXTIME = 10000
+Screen.RequestActive()
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    meta.SetColor (time*255/MAXTIME, 0, 255)
+    IF (ExitRequested =1)  THEN time = MAXTIME
+NEXT time
+
+IF (ExitRequested = 0) THEN GOTO 10
+
+Screen.RequestRelease()
+meta.AltimeterSetup(0, "Altimeter")
+
+FUNCTION Altimeter(ble, type, meters)
+    REM The first reading is the zero point
+    GLOBAL tare
+    IF (tare.IsNaN) THEN tare = meters
+    PRINT AT 10,1 "TARE", tare, meters
+    meters = meters - tare
+
+    PRINT AT 11, 1 "TYPE", type
+    PRINT AT 11+type, 1 "VALUE", meters
+
+    GLOBAL file
+    DIM line (3)
+    dt = DateTime.GetNow()
+    line(1) = dt.Date
+    line(2) = dt.Time
+    line(3) = meters
+    str = String.Escape("csv", line)
+    WriteData (str)
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 5,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+
+FUNCTION WriteData(line)
+    GLOBAL DataToWrite
+    GLOBAL LastFlushTime
+
+    DataToWrite = DataToWrite + line
+
+    Screen.ClearLine (16)
+    Screen.ClearLine (17)
+    Screen.ClearLine (18)
+    Screen.ClearLine (19)
+
+    now = DateTime.GetNow()
+    PRINT AT 17,1 "LFT", LastFlushTime.Time, now.Time
+
+    delta = now.Subtract (LastFlushTime)
+    PRINT AT 16,1 "delta", delta
+
+    IF (delta > 4) 
+        LastFlushTime = now
+        FlushData()
+    END IF
+    PRINT AT 15, 1 "STR", str
+END
+
+FUNCTION FlushData()
+    GLOBAL file
+    GLOBAL DataToWrite
+    result = file.AppendText (DataToWrite)
+    DataToWrite = ""
+    PRINT AT 18,1 "Write", result
+END
+```
+### Temperature
+Demonstrates the meta.TemperatureSetup(1, "Temperature") call.  When new temperature data is sent from the device, the "Temperature" function will be called with the device plus the temperature in degrees Celsius.
+
+Also calls Bluetooth.PickDevicesName ("MetaWear") to pick a device to connect to.
+```BASIC
+CLS
+device = Bluetooth.PickDevicesName ("MetaWear")
+IF device.IsError
+    PRINT "No device was picked"
+    END
+END IF
+PRINT "Device is", device
+meta = device.As ("MetaMotion")
+
+meta.ButtonSetup(1,"Button")
+meta.TemperatureSetup(1, "Temperature")
+ncall= 0
+
+ExitRequested = 0
+MAXTIME = 100000
+FOR time = 0 TO MAXTIME STEP 1
+    PRINT AT 8, 1 "TIME", time
+    PAUSE 50
+    IF (ExitRequested =1)  
+        time = MAXTIME
+    ELSE
+        meta.SetColor (time*255/MAXTIME, 0, 255)
+        meta.TemperatureRead()
+    END IF
+NEXT time
+
+meta.TemperatureSetup(0, "Temperature")
+
+
+FUNCTION Temperature(ble, celcius)
+    GLOBAL ncall
+    ncall = ncall+1
+    PRINT AT 11, 1 "TEMP", celcius
+    PRINT AT 12, 1 "F.", (celcius*9/5+32)
+    PRINT AT 13, 1 "NCALL.", ncall
+END
+
+
+FUNCTION Button (ble, value)
+    PRINT AT 4, 1 "Button!", ble
+    PRINT AT 10,1 "VALUE", value
+    GLOBAL ExitRequested
+    IF (value = 1) THEN ExitRequested = 1
+END
+```

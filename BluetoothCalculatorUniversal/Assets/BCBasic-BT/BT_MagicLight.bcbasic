@@ -1,0 +1,67 @@
+## BT: MagicLight
+Supports the MagicLight and Flux lights.  These are Bluetooth-enabled light bulbs for home use.
+### Green
+Turns the device green
+```BASIC
+CLS BLUE
+PRINT "Sets the light to green"
+
+device = Bluetooth.PickDevicesName(“LEDBlue*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    light = device.As (“MagicLight”)
+ 
+    REM The three parameters are Red, Green and Blue values.
+    REM They must be in the range 0 to 255
+    Status = light.SetColor (0, 255, 0)
+    PRINT “status”, Status
+END IF
+```
+### Off
+Turns the device off
+```BASIC
+CLS BLUE
+PRINT "Turns the light off"
+
+device = Bluetooth.PickDevicesName(“LEDBlue*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    light = device.As (“MagicLight”)
+    Status = light.SetOff ()
+    PRINT “status”, Status
+END IF
+```
+### On
+Turns the device on
+```BASIC
+CLS BLUE
+PRINT "Turns the light on"
+
+device = Bluetooth.PickDevicesName(“LEDBlue*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    light = device.As (“MagicLight”)
+    Status = light.SetOn ()
+    PRINT “status”, Status
+END IF
+```
+### Red
+Turns the light red
+```BASIC
+CLS BLUE
+PRINT "Sets the light to red"
+
+device = Bluetooth.PickDevicesName(“LEDBlue*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    light = device.As (“MagicLight”)
+    REM The three parameters are Red, Green and Blue values.
+    REM They must be in the range 0 to 255
+    Status = light.SetColor (255, 0, 0)
+    PRINT “status”, Status
+END IF
+```

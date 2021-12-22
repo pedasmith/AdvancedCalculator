@@ -1,0 +1,156 @@
+## EX: System and Tracing
+Demonstrates the System object
+- System.Errors 
+- System.SetInterval (function, milliseconds, argument)
+- System.Trace (0=off 1=on)
+- System.Version
+### A clock using System.SetInterval 
+This clock program uses System.SetInterval to display the current time.  It will stop automatically after 5 seconds by call FOREVER STOP which will stop the FOREVER loop in the main program.
+```BASIC
+CLS GREEN
+start = DateTime.GetNow()
+System.SetInterval ("showtime", 500, "arg")
+
+PRINT "About to FOREVER (until FOREVER STOP)"
+FOREVER
+PRINT "All done!"
+
+FUNCTION showtime(arg)
+    Screen.ClearLine (10)
+    time = DateTime.GetNow()
+    PRINT "The current time is", time.Time
+
+    REM Stop after 5 seconds
+    GLOBAL start
+    delta = time.Subtract (start)
+
+    IF (delta > 5) THEN FOREVER STOP
+END
+```
+### Long Calculation
+This program runs a tight loop, calculating sin and cos values.  Use it to test out the System.Trace(1) command to see the kinds of output that get generated.
+```BASIC
+CLS GREEN
+PRINT "Do a lot of calculations"
+FOR x = 0 TO 100
+    FOR y = 0 TO 10000
+        s = SIN(x)
+        t = TAN(x)
+        c = COS(x)
+    NEXT y
+    PRINT AT 4,1 "X count", x
+NEXT x
+PRINT "done!"
+```
+### System.Errors
+This program prints the errors contained in System.Errors.  This contains a small number of the most recent errors from all programs that have been run since Best Calculator was last started. When a program fails, sometimes you can find out what the problem was by examining System.Errors
+```BASIC
+CLS BLUE
+PRINT "System Errors"
+PRINT System.Errors
+```
+### System.Folders
+This program prints the full folder paths used to save files to. System.FolderBasic is the primary folder for automatically saved BASIC programs. System.FolderBasicQuota is the roaming quota for that folder. System.FolderTemporary is where time-stamped BASIC programs are auto-saved by the editor. 
+```BASIC
+CLS GREEN
+PRINT "System FolderBasic"
+PRINT System.FolderBasic
+CONSOLE System.FolderBasic
+PRINT ""
+PRINT "System.FolderBasicQuota", System.FolderBasicQuota
+PRINT ""
+PRINT "System FolderTemporary"
+PRINT System.FolderTemporary
+CONSOLE System.FolderTemporary
+```
+### System.SetInterval (more complex sample)
+This sample is like the simple SetInterval sample but includes more callbacks.  Some of the callbacks will be suppressed in order to prevent the system from being overwhelmed with callbacks.
+```BASIC
+CLS BLUE
+PRINT "Demonstrate System.SetInterval"
+PRINT "mycallback will be called over and over"
+PRINT "until the count reaches 50"
+PRINT "Some of the callbacks will be suppressed."
+
+COUNT = 0
+MAXCOUNT = 50
+
+REM Set up multiple calls to mycallback 
+REM at different frequencies
+System.SetInterval ("mycallback", 2000,2000)
+System.SetInterval ("mycallback", 500, 500)
+System.SetInterval ("mycallback", 100, 100)
+System.SetInterval ("mycallback", 200, 200)
+FOREVER
+
+PRINT "All done!"
+
+FUNCTION  mycallback(arg)
+    GLOBAL COUNT
+    GLOBAL MAXCOUNT
+    COUNT = COUNT + 1
+    IF (COUNT >= MAXCOUNT)
+        FOREVER STOP
+    END IF
+
+    REM Print he argument on different lines
+    line = 10
+    IF arg >= 200 THEN line = line + 1
+    IF arg >= 500 THEN line = line + 1
+    IF arg >= 2000 THEN line = line + 1
+    Screen.ClearLine (line)
+    PRINT "Callback: ", arg, COUNT
+END
+
+
+GLOBAL testDelta
+FUNCTION TEST_Interval()
+    GLOBAL testDelta
+    NError = 0
+    count = 0
+    start = DateTime.GetNow()
+    target = .200
+    System.SetInterval ("Test_Interval_Helper", target * 1000, start)
+    FOREVER
+    IF (testDelta < target - .1) THEN NError = NError + 1
+    IF (testDelta > target + .1) THEN NError = NError + 1
+RETURN NError
+
+FUNCTION Test_Interval_Helper(start)
+    GLOBAL testDelta
+   now = DateTime.GetNow()
+   testDelta  = now.Subtract (start)
+    FOREVER STOP
+RETURN
+```
+### System.Version
+Displays the Best Calculator edition and version and the machine architecture.  This can be useful when you need to be sure that you have the latest version.
+```BASIC
+CLS GREEN
+PRINT "The system version is"
+PRINT System.Version
+```
+### TROFF
+Turns tracing OFF. Tracing is printed to the console; it starts off very frequent and then slows down so that the console isn't overwhelmed with messages.  You can turn tracing on using one program (like the TRON program) and then run the program you wish to trace.  This works because the tracing persists until you restart Best Calculator.
+```BASIC
+REM 0 == do not trace
+REM 1 == print about every 5 seconds
+
+REM
+REM System.Trace persists between running programs so you can call 
+REM System.Trace(1), then run a program, then run System.Trace(0)
+REM to turn tracing off.
+System.Trace (0)
+```
+### TRON
+Turns tracing ON. Tracing is printed to the console; it starts off very frequent and then slows down so that the console isn't overwhelmed with messages.  You can turn tracing on using one program (like the TRON program) and then run the program you wish to trace.  This works because the tracing persists until you restart Best Calculator.
+```BASIC
+REM 0 == do not trace
+REM 1 == print about every 5 seconds
+
+REM
+REM System.Trace persists between running programs so you can call 
+REM System.Trace(1), then run a program, then run System.Trace(0)
+REM to turn tracing off.
+System.Trace (1)
+```

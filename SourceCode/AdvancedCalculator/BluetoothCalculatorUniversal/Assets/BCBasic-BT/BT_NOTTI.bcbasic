@@ -1,0 +1,221 @@
+## BT: Notti
+Demonstrates how to control the NOTTI device (from Witti design company). The NOTTI device is a desktop device with a single light that can be set to any color.   You can also program transitions and for colors changes to happen at a time in the future.
+### An introduction
+An introduction to using the NOTTI specialization
+```BASIC
+CLS BLUE
+PRINT "An introduction to the NOTTI specialization"
+
+devices = Bluetooth.DevicesName (“*Notti”)
+
+FOR i = 1 TO devices.Count
+    device = devices.Get(i)
+    PRINT "Notti Device"
+    PRINT "Name", device.Name
+    Notti = device.As (“NOTTI”)
+    PRINT "Methods", Notti.Methods
+    PRINT "GetName()", Notti.GetName()
+    PRINT "GetPower()", Notti.GetPower()
+    PRINT " "
+NEXT i
+```
+### Change Mode
+Changes the mode of the NOTTI device (clock, animation, etc)
+```BASIC
+CLS BLUE
+PRINT "Set NOTTI mode"
+PRINT "0=Light on"
+PRINT "1=Light off"
+PRINT "2=Full animation"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Notti = device.As (“NOTTI”)
+    mode = INPUT DEFAULT 1 PROMPT "What mode?"
+    Status = Notti.ChangeMode(mode)
+    PRINT “status”, Status
+END IF
+```
+### NOTTI timer
+Slowly switches from GREEN to RED over (n) minutes
+```BASIC
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    notti = device.As ("NOTTI")
+    PRINT "Power", notti.GetPower()
+
+    nminutes  = Calculator.Value
+    nminutes = INPUT DEFAULT nminutes PROMPT "How many minutes to run for?"
+END IF
+STOP nminutes
+
+
+FUNCTION DoTimer(device)
+rstart = 0
+rend = 255
+gstart = 255
+gend = 0
+bstart = 0
+bend = 0
+
+notti.SetColor (rstart, gstart, bstart)
+PRINT notti
+Screen.RequestActive()
+tot = nminutes*60
+FOR s = 0 TO tot
+    pct = s / tot
+    r = pct*(rend - rstart) + rstart
+    g = pct*(gend - gstart) + gstart
+    b= pct*(bend - bstart) + bstart
+    IF (Math.Mod(s, 60)= 0) THEN PRINT s/60
+    Screen.ClearLine (8)
+    PRINT AT 8,1 "Set color", tot-s,INT(pct*1000)/10
+    notti.SetColor(r, g, b)
+    PAUSE 50
+NEXT s
+PRINT "done!"
+notti.SetColor(0, 0, 255)
+Screen.RequestRelease()
+RETURN
+```
+### Raw Bluetooth commands
+Sets the NOTTI color to red using the raw Bluetooth commands
+```BASIC
+CLS BLUE
+PRINT "Set a NOTTI device to RED"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    WriteColor(device, 255, 0, 0)
+END IF
+
+FUNCTION WriteColor(bt, r, g, b)
+    bt.Init()
+    REM The fff0 is the service for many NOTTI commands
+    REM The fff3 is the characteristic used by service fff0
+    REM     for many of the NOTTI commands
+    REM the 6 and 1 are the bytes that define the NOTTI 
+    REM command to send (0x0601 means set LED color)
+    REM the r g and b are the color to set.
+    bt.WriteBytes (“fff0”, “fff3”, 6, 1, r, g, b) 
+END
+```
+### Set Alarm
+Sets the Alarm on the NOTTI device
+```BASIC
+CLS BLUE
+PRINT "ALARM -- set NOTTI alarm"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Notti = device.As (“NOTTI”)
+    PRINT "NOTTI", Notti
+    h = INPUT DEFAULT 10 PROMPT "What hour?"
+    m = INPUT DEFAULT 10 PROMPT "What minute?"
+    ahead = INPUT DEFAULT 1 PROMPT "How far ahead 1=2.5 minutes"
+
+    Status = Notti.SetAlarmTime(h, m)
+    REM the 2 means it's a one-time alarm (0=off 1=every day)
+    REM 255, 0, 0 is RED (rgb color)
+    REM 1 means start up 2.5 minutes ahead of time (1=2.5 minute 10=25 minutes)
+
+    PRINT "AT " + h + ":" + m + " turn to RED"
+    PRINT "START " + (ahead*2.5) + " minutes ahead of that time"
+    Status = Notti.AlarmSetting (2, 255, 0, 0, ahead)
+    PRINT “status”, Status
+END IF
+```
+### SetColor to change the NOTTI color to blue
+Sets the NOTTI color to Blue
+```BASIC
+CLS BLUE
+PRINT "Sets a NOTTI to blue"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Notti = device.As (“NOTTI”)
+    REM The three parameters are Red, Green and Blue values.
+    REM They must be in the range 0 to 255
+    Status = Notti.SetColor (0, 0, 255)
+    PRINT “status”, Status
+END IF
+```
+### SetColor to change the NOTTI color to green
+Sets the NOTTI color to Blue
+```BASIC
+CLS BLUE
+PRINT "Sets a NOTTI to green"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Notti = device.As (“NOTTI”)
+    REM The three parameters are Red, Green and Blue values.
+    REM They must be in the range 0 to 255
+    Status = Notti.SetColor (0, 255, 0)
+    PRINT “status”, Status
+END IF
+```
+### SetColorCustom animates the color from red to blue and back again
+Uses the SetColorCustom command to change colors
+```BASIC
+CLS BLUE
+PRINT "Sets a NOTTI from RED to BLUE and back again"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Notti = device.As (“NOTTI”)
+    REM The three parameters are Red, Green and Blue values.
+    REM They must be in the range 0 to 255
+    Status = Notti.SetColorCustom (255, 0, 0, 0 , 0, 255)
+    PRINT “status”, Status
+END IF
+```
+### SetName of a NOTTI device
+Sets the name of a NOTTI device.  The device must be reset and re-paired for Windows to use the new name.
+```BASIC
+CLS BLUE
+PRINT "Change the name of a NOTTI device"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    PRINT device.Name
+    Notti = device.As (“NOTTI”)
+    Status = Notti.SetName ("My-Notti")
+    PRINT “status”, Status
+END IF
+```
+### Sync Time
+Sets the time on the NOTTI device
+```BASIC
+CLS BLUE
+PRINT "SyncTime -- set NOTTI time"
+
+device = Bluetooth.PickDevicesName(“*Notti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Notti = device.As (“NOTTI”)
+    PRINT "NOTTI", Notti
+    h = INPUT DEFAULT 10 PROMPT "What hour?"
+    m = INPUT DEFAULT 10 PROMPT "What minute?"
+    s = INPUT DEFAULT 15 PROMPT "What second?"
+    Status = Notti.SyncTime(h, m, s)
+    PRINT “status”, Status
+END IF
+```

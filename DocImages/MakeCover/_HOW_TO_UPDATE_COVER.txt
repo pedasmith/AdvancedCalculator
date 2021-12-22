@@ -1,0 +1,25 @@
+#Run the powershell files in order
+
+# FIRST AND FOREMOST: Update the Bluetooth package.appmanifest
+# with the new version number!
+
+# SECONDLY: be sure that the original docx file is checked in!
+# just in case this process goes sideways, we should have a 
+# nice backup
+
+# Get the .docx etc. files into this directory
+#   - also expands the .docx file into a temp directory
+#     called mydoc
+.\get-files.ps1
+
+# Makes the image file for the cover
+#     AND copies it into the expanded docx file director
+#     AND rebuilds the docx file
+# NOTE: this assumes that the front cover is "image2.png" in
+#     the word file. That isn't always the case!
+.\make-cover.ps1
+
+
+# Manually copy the .docx file back to the original directory
+
+.\clean-up.ps1

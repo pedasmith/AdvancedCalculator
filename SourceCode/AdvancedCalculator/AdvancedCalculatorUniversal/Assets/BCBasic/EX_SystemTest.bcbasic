@@ -1,0 +1,551 @@
+## EX: SystemTest
+A series of tests to show that BCBasic is working correctly.
+### MemoryTest
+Validates the memory routines.  You must have a memory cell PipeHeight at location 8 to work correctly.
+**Default Key**: MemoryTest
+```BASIC
+CLS
+PRINT "MEMORY TEST"
+
+n = MemoryTest()
+IF (n > 0) THEN PAPER RED
+IF (n = 0) THEN PAPER GREEN
+
+IF (n > 0) THEN PRINT "ERROR: failed test: "; n
+IF (n = 0) THEN PRINT "OK"
+STOP
+
+FUNCTION MemoryTest()
+NError = 0
+
+REM
+REM Test Simple name, index, names
+REM
+Memory.PipeHeight = 23.4
+IF (Memory.PipeHeight = 23.4) THEN GOTO 20
+PRINT "Mem: PipeHeight="; Memory.PipeHeight
+NError = NError + 1
+
+20 REM
+IF (Memory["PipeHeight"] = 23.4) THEN GOTO 30
+PRINT "Mem: PipeHeight="; Memory["PipeHeight"]
+NError = NError + 1
+
+30 REM
+IF (Memory[8] = 23.4) THEN GOTO 40
+PRINT "Mem: PipeHeight="; Memory[8]
+NError = NError + 1
+
+40 REM 
+100 REM  TEST boundary conditions.  
+NError = NError + TestMemoryInvalidIndex (-4)
+NError = NError + TestMemoryInvalidIndex (101)
+NError = NError + TestMemoryInvalidIndex (1.1)
+NError = NError + TestMemoryInvalidIndex ("this index is net never set")
+
+
+99 REM
+RETURN NError
+
+FUNCTION TestMemory(index)
+NError = 0
+
+RETURN NError
+
+FUNCTION TestMemoryInvalidIndex(index)
+NError = 0
+sbnan = Memory[index]
+IF (Math.IsNaN (sbnan)) THEN GOTO 10
+PRINT "MEM: Gettng index="; index;
+PRINT "Should be nan"
+PRINT "Actual value="; sbnan
+NError = NError + 1
+
+10 REM Make sure it's not set
+isset = Memory.IsSet (index)
+IF (NOT isset) THEN GOTO 20
+PRINT "MEM: IsSet index="; index
+PRINT " Should be NOT SET"
+PRINT "Actual value="; isset
+NError = NError + 1
+
+20 REM Make sure it's not set
+is99 = Memory.GetOrDefault (index, 99)
+IF (is99 = 99) THEN GOTO 30
+PRINT "MEM: GetOrDef index="; index
+PRINT "Actual value="; is99
+PRINT "Should be 99 (default)"
+NError = NError + 1
+
+30 REM done
+RETURN NError
+```
+### Test Approximately Equal
+Test the ≅ operator with floats
+**Default Key**: TestApproximatelyEqual
+```BASIC
+nerror=TEST_Simple()
+IF nerror = 0
+    PRINT "Test ApproximatelyEqual: OK"
+ELSE
+    PAPER RED
+    PRINT "Test ApproximatelyEqual: FAIL"
+END IF
+STOP nerror
+
+FUNCTION TEST_Simple ()
+    ASSERT (1 ≅ 1)
+    ASSERT (-7 ≅ -7)
+    ASSERT (99999999 ≅ 99999999)
+
+    ASSERT (1.1 ≇ 1)
+    ASSERT (1.01 ≇ 1)
+    ASSERT (1.001 ≇ 1)
+    ASSERT (1.0001 ≇ 1)
+    ASSERT (1.00001 ≅ 1)
+    ASSERT (1.000001 ≅ 1)
+
+    ASSERT (99999999 ≅ 99999994)
+    ASSERT (99999999 ≅ 99999944)
+    ASSERT (99999999 ≅ 99999444)
+    ASSERT (99999999 ≇ 99994444)
+REM     ASSERT (99999999 ≅ 99994444)
+RETURN
+```
+### Test Expression Syntax
+Tests numeric expressions
+**Default Key**: TestBasicSyntax
+```BASIC
+CLS GREEN
+REM
+REM Weird bug: the minus signs keep reverting from 
+REM 45,8722,8211 to 45,8722,44.
+REM The 8211 keeps switching to be a regular
+REM minus sign in the .TPG source.
+minusSigns = "-−–"
+
+PRINT "LEN=";LEN (minusSigns)
+FOR i=0 TO 6
+    PRINT CODE(minusSigns)
+    minusSigns = MID(minusSigns, 2)
+NEXT i
+
+PRINT -1
+PRINT −2
+PRINT –3
+
+
+FUNCTION TEST_Constants()
+    ASSERT (2 + -10 = -8) 
+    ASSERT (1.1E4 = 11000) 
+    ASSERT (.45 * 2 = 0.90) 
+    ASSERT (45E-2 = 0.45) 
+RETURN
+
+FUNCTION TEST_Expressions()
+    ASSERT (2 + 3 * 5 = 17) 
+    ASSERT (-10 + 5 = -5) 
+    REM Test the different minus signs
+    ASSERT (10 - 1E-1 − 2E−2 – 3E–3  = 9.877) 
+RETURN nerror
+
+FUNCTION TEST_REM ()
+    nerror = 0
+    a = 20
+    REM Does a blank REM gobble up the next line?
+    REM
+    a = 10
+    ASSERT (a = 10) 
+ RETURN nerror
+```
+### Test IF...FOR
+Tests how IF statements handle FOR loops embedded inside.
+```BASIC
+FUNCTION TEST_Simple()
+
+nok = 0
+nerror = 0
+a = "testing"
+IF (a = "testing")
+    FOR i = 1 TO 5
+        REM Two types of IF statements
+        IF (i <> 5) 
+            nok = nok +1
+        END IF
+        IF (i = 5) THEN nok = nok + 7
+
+        REM Nested FOR loop
+        FOR j = 1 TO 5
+            nok = nok + 1
+        NEXT j
+    NEXT i
+END IF
+
+ASSERT (nok = 5-1+7+25)
+RETURN
+```
+### TEST_DIM
+Validates 1- and 2-dimensional arrays
+```BASIC
+CLS
+    DIM array(2,5)
+    array.Fill (99.99)
+    array(2,2) = 2.2
+    PRINT "NOTE: check: array(2,2)=";array(2,2)
+REM TEST_DIM()
+
+FUNCTION TEST_DIM()
+    DIM d1(10)
+    d1.Fill (1.1)
+    DIM d2(4,7)
+    d2.Fill (4.7)
+    row3 = d2(3)
+
+
+    ASSERT (d1.Count  = 10)
+    ASSERT (d1(1) = 1.1)
+
+    ASSERT (d2.Count = 4)
+   ASSERT (row3.Count = 7)
+    ASSERT (d2[2,2] = 4.7)
+
+    REM More complex test. Fill a [2,4]
+    REM array with a series of different values
+    REM and make sure they are all correct 
+    REM in the end.
+    DIM d3 (2,4)
+
+    FOR r = 1 TO 2
+        FOR c = 1 TO 4
+            value = r*4 + c
+            d3[r,c] = value
+        NEXT c
+    NEXT r
+
+    FOR r = 1 TO 2
+        FOR c = 1 TO 4
+            value = r*4 + c
+            ASSERT (d3[r,c] = value)
+        NEXT c
+    NEXT r
+RETURN
+
+FUNCTION TEST_ARRAY_FILL_UNIQUE()
+    REM Also makes sure that arrays can be set and get
+    REM with either () or [] syntax.
+
+    DIM array(2,5)
+    array.Fill (99.99)
+    array[1,1] = 1.1
+    array(2,2) = 2.2
+    ASSERT (array(1,1) = 1.1)
+    ASSERT (array(2,2) = 2.2)
+    ASSERT (array(2,3) = 99.99)
+
+    ASSERT (array[1,1] = 1.1)
+    ASSERT (array[2,2] = 2.2)
+    ASSERT (array[2,3] = 99.99)
+
+RETURN
+
+FUNCTION TEST_Array_Index_Range()
+    DIM array()
+    array.Add(1)
+    array.Add(2)
+
+    Array_Index_0 = array[0]
+    ASSERT (Array_Index_0.IsError= 1)
+    ASSERT (array[1] = 1)
+    ASSERT (array[2] = 2)
+    Array_Index_3 = array[3]
+    ASSERT (Array_Index_3.IsError= 1)
+
+    REM Can add a new element to the array
+    array[3] = 3.3
+   ASSERT (array[3] = 3.3)
+
+    array[10] = 10
+    ASSERT (array[10] = 10)
+    Array_Index_9 = 0 + array[9]
+    ASSERT (Array_Index_9.IsNaN = 1)
+
+RETURN
+
+FUNCTION TEST_DIM_Add()
+
+    DIM data()
+    data.Add (1, 2, 3)
+    ASSERT (data[1] = 1)
+    ASSERT (data[2] = 2)
+    ASSERT (data[3] = 3)
+
+RETURN
+
+FUNCTION TEST_DIM_AddRow()
+
+    DIM data()
+    data.AddRow (1, 2, 3)
+    data.AddRow(4,5,6)
+    ASSERT (data[1,1] = 1)
+    ASSERT (data[1,2] = 2)
+    ASSERT (data[1,3] = 3)
+    ASSERT (data[2,1] = 4)
+    ASSERT (data[2,2] = 5)
+    ASSERT (data[2,3] = 6)
+
+RETURN
+
+
+FUNCTION TEST_DIM_RemoveAt_Simple()
+
+    DIM data()
+    data.Add (11)
+    data.Add(22)
+    data.Add(33)
+    ASSERT (data[1] = 11)
+    ASSERT (data.Count = 3)
+    removedValue = data.RemoveAt (2)
+    ASSERT (data[1] = 11)
+    ASSERT (data[2] = 33)
+    ASSERT (removedValue = 22)
+    ASSERT (data.Count = 2)
+RETURN
+
+FUNCTION TEST_DIM_RemoveAt_Edge()
+    DIM empty()
+    ASSERT (empty.Count = 0)
+    removedValue = empty.RemoveAt(1)
+    ASSERT (removedValue.IsError = 1)
+    ASSERT (removedValue.ErrorCode = 1)
+RETURN
+
+FUNCTION TEST_DIM_SetProperty()
+
+    DIM data()
+    data.SetProperty ("declination", 34)
+    data.SetProperty ("obliquity", .23)
+    case = data.Declination
+
+    ASSERT (data.declination = 34)
+    ASSERT (case <> 34)
+    ASSERT (case.IsError = 1)
+    ASSERT (data[1] = 34)
+    ASSERT (data[2] = .23)
+    ASSERT (data.Count = 2)
+RETURN
+
+FUNCTION TEST_DIM_2d()
+
+    DIM data(10,10)
+    notset = data[1,1]
+    bounds1 = data[11,1]
+    bounds2 = data[1,11]
+    ASSERT (notset.Type = "NOTHING")
+    ASSERT (bounds1.IsError = 1)
+    ASSERT (bounds2.IsError = 1)
+
+    data.Fill (0)
+    ASSERT (data[1,1] = 0)
+
+    data[1,2] = 1.2
+    data[2,1] = 2.1
+    ASSERT (data[1,2] = 1.2)
+    ASSERT (data[2,1] = 2.1)
+RETURN
+
+
+```
+### TEST IF..IF
+Tests an IF statement nested inside another IF statement
+```BASIC
+FUNCTION TEST_IF_Simple()
+NERROR = 0
+NOK = 0
+
+    IF (1=1)
+        IF (1=2)
+            NERROR=NERROR+1
+            PRINT "ERROR: IF(1=2) SHOULD NOT DO THE 'if'!!"
+        ELSE
+            REM everything is OK
+            NOK = NOK + 1
+        END IF
+    ELSE
+        NERROR=NERROR+1
+        PRINT "ERROR: IF(1-1) Should do the iff statement!"
+    END IF
+
+    ASSERT (NOK=1)
+    ASSERT (NError=0)
+RETURN
+
+FUNCTION TEST_IF_Nested()
+
+    a = 1
+    b = 1
+    c = 1
+    count = 0
+    IF (a=1) THEN count = count + 1
+    ELSE
+        IF (b = 1) THEN count = count + 1
+    END IF
+    nested_if_statements_are_wrong = count
+    REM Pinning an obviously incorrect behavior!
+    ASSERT (nested_if_statements_are_wrong = 2)
+
+RETURN
+
+FUNCTION TEST_IF_Nested_B()
+
+    a = 1
+    b = 1
+    c = 1
+    count = 0
+    IF (a=1)
+        count = count + 1
+    ELSE
+        IF (b = 1) THEN count = count + 1
+    END IF
+    ASSERT (count = 1)
+
+RETURN
+
+
+```
+### TEST LET
+Tests the LET statement
+```BASIC
+FUNCTION TEST_Simple()
+LET a=10
+LET b=a
+LET a=20
+
+ASSERT (a=20)
+ASSERT (b=10)
+NERROR = 0
+
+
+MAXTIME = 100
+FOR time = 0 TO MAXTIME STEP 1
+    IF (time=50) THEN time=200
+NEXT time
+
+ASSERT (time=201)
+ASSERT (MAXTIME=100)
+RETURN
+```
+### TEST Math.Round
+Tests the math rounding
+```BASIC
+
+
+FUNCTION TEST_Simple()
+    ASSERT (Math.Round(1.23, 0) = 1)
+    ASSERT (Math.Round(1.51, 0) = 2)
+    ASSERT (Math.Round(1.23, 1) = 1.2)
+    ASSERT (Math.Round(123, -1) = 120)
+    ASSERT (Math.Round(123, -2) = 100)
+RETURN
+```
+### Test PRINT statements
+Verifies that PRINT works as expected
+````BASIC
+TEST_PRINT()
+
+FUNCTION TEST_PRINT()
+    CLS
+    PRINT "HELLO"
+    PRINT "WOR"   ;
+    PRINT "LD"
+    PRINT AT 4,1 "line4"
+    PRINT "123456789*123456789*123456789*"
+    PRINT "hello", "world"
+    PRINT "A📭Z"
+
+    ASSERT (Screen.GetAt (1,1,6) = "HELLO ")
+    ASSERT (Screen.GetAt (2,1,6) = "WORLD ")
+    ASSERT (Screen.GetAt (4,1,6) = "line4 ")
+    ASSERT (Screen.GetAt (6,1,6) = "hello ")
+    ASSERT (Screen.GetAt (6,16,7) = " world ")
+    ASSERT (Screen.GetAt (7,1,4) = "A📭Z")
+RETURN
+````
+### TEST READ MULTIPLE
+Test the ability of READ to handle multiple values
+```BASIC
+REM DATA statements are always global
+DATA 1.1, 2.2, 3.3, 4.4, 5.5
+
+FUNCTION TEST_Read_Multiple()
+
+    READ x, y, z
+    READ a, b, c
+    ASSERT (x = 1.1)
+    ASSERT (y = 2.2)
+    ASSERT (z = 3.3)
+
+    ASSERT (a = 4.4)
+    ASSERT (b = 5.5)
+    ASSERT (c = 1.1)
+
+RETURN
+```
+### Test REM statements
+Verifies that the REM statements are parsed correctly.
+```BASIC
+FUNCTION TEST_REM_SIMPLE()
+    NError = 0
+    a = 1
+    REM a = 2
+    IF (a <> 1) THEN NError = NError + 1
+RETURN NError
+
+FUNCTION TEST_REM_MULTILINE()
+    NError = 0
+    a = 1
+    REM a = 2↲
+    a = 3
+    IF (a <> 1) THEN NError = NError + 1
+RETURN NERROR
+```
+### Test String Expressions
+Tests string expressions (most importantly, including escaping quotes)
+```BASIC
+FUNCTION TEST_String_Quoting()
+    ASSERT (LEN("hello world") = 11)
+   ASSERT (LEN(("abc" + "def")) = 6)
+
+    ASSERT (LEN("hello ""quote""") = 13)
+    ASSERT (LEN(“This is “quoted””.”) = 17)
+    ASSERT (LEN("hello “quote”") = 13)
+    ASSERT (LEN("hello &QUOT;quote&QUOT;") = 13)
+
+    REM Unicode characters can count as two.
+    ASSERT (LEN ("abc📭DEF") = 8)
+RETURN
+
+FUNCTION TEST_SPC()
+     ASSERT (SPC(5) = “     ”)
+     ASSERT (SPC(0) = "")
+     ASSERT (SPC(-4) = "")
+RETURN
+
+```
+### Test Data extension
+Tests the Data extension for city information
+FUNCTION TEST_Data_Extension()
+
+    yorks = Data.GetLocations("York")
+    ASSERT (yorks.Count = 5)
+    eny = yorks[1]
+    ey = yorks[2]
+    nyc = yorks[3]
+    ny = yorks[4]
+    y = yorks[5]
+    ASSERT (y.Population = 153717)
+    ASSERT (y.Elevation = 17)
+    ASSERT (y.LatitudeDD = 53.95763)
+    ASSERT (y.LongitudeDD = -1.08271)
+RETURN
+
+

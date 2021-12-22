@@ -1,0 +1,85 @@
+## BT: beLight
+Supports the beLight CC2540T developer kit from TI.  This is a  small, Bluetooth-enabled high-output light.  Unlike some other lights, it includes a bright white light plus individual red, green and blue lights.  This lets you make a light whose color can be adjusted to be cooler (more blue) or warmer (more red).  The BC BASIC device.As("beLight") specialization includes just one method, SetColor(r, g, b, w) that lets you set the red, green, blue and white values.  Valid values are 0 (off) to 255.
+### Green
+Turns the device green
+```BASIC
+CLS BLUE
+PRINT "Sets the beLight to green"
+
+device = Bluetooth.PickDevicesName(“beLight*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    beLight = device.As (“beLight”)
+    REM The four parameters are Red, Green, Blue and White values.
+    REM White is very bright
+    REM They must be in the range 0 to 255
+    Status = beLight.SetColor (0, 255, 0, 0)
+    PRINT “status”, Status
+END IF
+```
+## Pick Color
+Picks a color to display on the TI beLight kit
+```BASIC
+CLS BLUE
+PRINT "Lets you experiment with the beLight colors"
+
+device = Bluetooth.PickDevicesName(“beLight*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    beLight = device.As (“beLight”)
+    REM The four parameters are Red, Green, Blue and White values.
+    REM White is very bright
+    REM They must be in the range 0 to 255
+    Status = beLight.SetColor (255, 0, 0, 0)
+    PRINT “status”, Status
+
+    REM Set up sliders for the colors
+    g = Screen.Graphics (50, 50, 300, 400)
+    g.Background = BLUE
+    g.Stroke = WHITE
+    H = 60
+    Y = 300-H
+    R = g.Slider (0, Y, 300, Y+H, "Red", "OnColor")
+    Y = Y - H
+    G = g.Slider (0, Y, 300, Y+H, "Green", "OnColor")
+    Y = Y - H
+    B = g.Slider (0, Y, 300, Y+H, "Blue", "OnColor")
+    Y = Y - H
+    W = g.Slider (0, Y, 300, Y+H, "White", "OnColor")
+    Y = Y - H
+END IF
+FOREVER WAIT
+
+FUNCTION OnColor()
+    GLOBAL beLight
+    GLOBAL R
+    GLOBAL G
+    GLOBAL B
+    GLOBAL W
+    r = R.Value
+    g = G.Value
+    b = B.Value
+    w = W.Value
+    beLight.SetColor (r, g, b, w)
+RETURN
+```
+### Red
+Turns the beLight red
+```BASIC
+CLS BLUE
+PRINT "Sets the beLight to red"
+
+device = Bluetooth.PickDevicesName(“beLight*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    beLight = device.As (“beLight”)
+    REM The four parameters are Red, Green, Blue and White values.
+    REM White is very bright
+    REM They must be in the range 0 to 255
+    Status = beLight.SetColor (255, 0, 0, 0)
+    PRINT “status”, Status
+END IF
+```

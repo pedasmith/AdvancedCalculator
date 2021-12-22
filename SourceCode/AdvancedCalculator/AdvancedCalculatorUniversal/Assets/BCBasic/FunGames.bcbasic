@@ -1,0 +1,3781 @@
+## Fun games
+A bunch of games and parts of games that you can use, read, and understand and use as the basis for your own games. Make your own games using the Balloon Game as a template for moving your player and avoiding obstacles. Or play the full games of Boop the Snoot, Canonballs!, Hunt the Wumpus and Pong. Encrypt your messages with the ROT13 program, and build an elephant mathematically with Elephant.
+### Balloon Game #1 (simple)
+Just enough code to move a red balloon around based on user controls!
+**Default Key**: 🎈
+```BASIC
+REM  Super  simple  balloon  game.  The  balloon  will
+REM  move  around  on  the  screen  based  on  the  user
+REM  input  (WASD  controls or arrow keys)
+REM
+REM  You  can  use  this  as  the  start  for  a  real  game
+
+CLS "#3377BB"
+PRINT "BALLOON GAME"
+g = Screen.Graphics (50, 50, 200, 200)
+g.Border = "#3377BB"
+
+REM Start the balloon in the center of the screen.
+x1 = (g.W-40) / 2
+y1 = (g.H -60) / 2
+balloon = g.Text (x1, y1, x1+40, y1+60, "🎈", 40)
+
+REM Main program loop.  Read in a command from the user
+REM and then act on it.  The commands are WASD for up, left,
+REM down and right.
+
+10 REM Top
+PAUSE 10
+cmd = INKEY$
+
+xd = 0
+yd = 0
+REM Figure out how we want to move.
+IF (cmd = "X") THEN STOP
+IF (cmd = "W" OR cmd  = "Up") THEN yd = 3
+IF (cmd = "A" OR cmd = "Left") THEN xd = -3
+IF (cmd = "S" OR cmd = "Down") THEN yd = -3
+IF (cmd = "D" OR cmd = "Right") THEN xd = 3
+balloon.X1 = balloon.X1 + xd
+balloon.Y1 = balloon.Y1 + yd
+GOTO 10
+```
+### Balloon Game #2: Avoid the ground
+Phase two of designing the Balloon game. The ground is now something to avoid, and the balloon keeps sinking unless you press the up key enough.
+```BASIC
+REM  Super  simple  balloon  game.  The  balloon  will
+REM  move  around  on  the  screen  based  on  the  user
+REM  input  (WASD  controls)
+REM
+REM  This  version  adds  simple  collision  detection.
+REM  DrawFloor()  makes  a  set  of  boxes  (rectangles);  it's
+REM  easy  to  detect  if  the  balloon  .Intersects  with  any
+REM  of  them.  DrawFloor()  is  set  up  to  only  draw  
+REM  5  boxes.
+
+
+CLS "#3377BB"
+PRINT "BALLOON GAME"
+g = Screen.Graphics (50, 50, 200, 200)
+REM g.Border = "#3377BB"
+
+x1 = (g.W-40) / 2
+y1 = (g.H -60) / 2
+balloon = g.Text (x1, y1, x1+40, y1+60, "🎈", 40)
+DIM floor()
+DrawFloor (g, floor)
+
+REM You have to avoid death, of course.
+REM When the health drops to zero, you
+REM have lost. When you touch the floor,
+REM your health is deducted by the amount
+REM in the ".Data" value.
+Health = 10
+
+REM Call the BlowBalloon very so often
+REM so that we can push it around
+System.SetInterval ("BlowBalloon", 50, .2)
+
+
+10 REM Top
+PAUSE 10
+cmd = INKEY$
+IF (cmd <> "") THEN PlayerMovesBalloon(cmd, balloon, 3)
+IF (cmd = "X") THEN STOP
+IF (health < 0) THEN STOP
+GOTO 10
+
+REM
+REM This new function draws a floor consisting of
+REM a series of boxes on the bottom of the playing
+REM area. The boxes are drawn at random. We always
+REM draw the same number of boxes regardless of
+REM the size of the graphics.
+REM
+FUNCTION DrawFloor(g, floor)
+    NBOX = 5
+    maxh = g.H * .2
+    w = g.W / NBOX
+    g.Push()
+    g.Fill = "#44BB44"
+    g.Stroke = "#44BB44"
+    FOR i = 0 TO NBOX-1
+        box =g.Rectangle (i*w, 0, (i+1)*w, RND*maxh)
+        REM -10 means that the floor is very deadly.
+        box.Data = -10
+        floor.Add (box)
+    NEXT i
+    g.Pop()
+RETURN
+
+FUNCTION BlowBalloon(delta)
+    GLOBAL health
+    IF (health < 0) THEN RETURN
+
+    GLOBAL balloon
+    balloon.Y1 = balloon.Y1 - delta
+
+    REM See if we are touching the floor.
+    GLOBAL health
+    GLOBAL floor
+    FOR i = 1 TO floor.Count
+        item = floor[i]
+        IF (balloon.Intersect (item))
+            dhealth = item.Data
+            health = health + dhealth
+            Screen.ClearLine (1)
+            PRINT "Health", health
+            IF (health < 0)
+                CONSOLE "POP!"
+            END IF
+        END IF
+    NEXT i
+RETURN
+
+REM
+REM The code to move the balloon is moved into
+REM this function. Once it's in this function, it won't
+REM clutter up the main program loop any more
+REM
+FUNCTION PlayerMovesBalloon(cmd, balloon, speed)
+    xd = 0
+    yd = 0
+    REM Figure out how we want to move.
+    IF (cmd = "W" OR cmd = "Up") THEN yd = speed
+    IF (cmd = "A" OR cmd = "Left") THEN xd = -speed
+    IF (cmd = "S" OR cmd = "Down") THEN yd = -speed
+    IF (cmd = "D" OR cmd = "Right") THEN xd = speed
+    balloon.X1 = balloon.X1 + xd
+    balloon.Y1 = balloon.Y1 + yd
+RETURN
+```
+### Boop the Snoot
+Two-player game to boop the snoot (press the nose) of each animal and get points. The code is set up for either 1 or 2 player modes (just set the NPlayer value).
+```BASIC
+
+CLS BLUE
+PRINT "Boop the Snoot!"
+REM g = Screen.Graphics (50, 50, 300, 400)
+g = Screen.FullScreenGraphics()
+g.Background = "#004444"
+
+NPlayer = 2
+
+REM Draw the board
+IF (NPlayer = 2)
+    w = g.W / NPlayer
+    g.Fill = "#005500"
+    g.Rectangle (0, 0, w, g.H)
+    g.Fill = "#000055"
+    g.Rectangle (w, 0, g.W, g.H)
+END IF
+
+REM
+REM Set up the scoring
+REM
+DIM Score(NPlayer)
+FOR i = 1 TO NPlayer
+    Score[i] = i
+NEXT i
+Level = 1
+
+DIM ScoreTextTitle (NPlayer)
+DIM ScoreText(NPlayer)
+SetupScores(g)
+
+DIM Animals()
+InitAnimals ()
+DIM Faces()
+SetupFaces (g)
+
+
+REM
+REM Set up the tap last because it's on top
+REM of everything else
+REM
+Tap = g.Circle (g.W/2, g.H/2, 20)
+Tap.Fill = BLUE
+Tap.Stroke = BLUE
+Tap.Opacity = 0
+
+g.SetTapped ("OnTap")
+System.SetInterval ("Frame", 50, "")
+
+FOREVER
+
+REM Called every 50 milliseconds or so and updates the screen.
+REM The primary thing is to update the "tap" circle opacity
+REM and the faces opacity, optionally moving the face when
+REM it's 'clear'
+FUNCTION Frame()
+    opacityDelta = .1
+    GLOBAL Tap
+    Screen.ClearLine (3)
+    IF (Tap.Opacity > 0) THEN Tap.Opacity = Tap.Opacity - opacityDelta
+
+    GLOBAL Faces
+    GLOBAL g
+    GLOBAL NPlayer
+    FOR i = 1 TO Faces.Count
+        face = Faces[i]
+        IF (face.Opacity > 0)
+            face.Opacity = face.Opacity - opacityDelta / 15*(i/NPlayer)
+            IF (face.Opacity <= 0)
+                MoveFace (face, i)
+                face.Opacity = 1
+            END IF
+        END IF
+    NEXT i
+RETURN
+
+REM A convenience function. Given a face index
+REM (1..Faces.Count), say if the face belongs to 
+REM player 1 or player 2.
+FUNCTION FaceIndexToPlayer (face)
+    GLOBAL NPlayer
+    GLOBAL Faces
+    max = Faces.Count
+    half = max / NPlayer
+    REM e.g. with 10 faces, half is 1 and 1..5 is player 1 and 6..10 is player2
+    player = 1
+    IF (face>half) THEN player = 2
+ RETURN player
+
+REM Reposition a single face on the board. Faces have
+REM to stay on their side of the board!
+FUNCTION MoveFace(face, i)
+    GLOBAL g
+    GLOBAL NPlayer
+    player = FaceIndexToPlayer (i)
+
+    w =  g.W / NPlayer
+    xoffset = (player-1) * w
+    face.CX = (RND * w) + xoffset
+    face.CY = RND * g.H
+RETURN
+
+REM If the player hits a face, remove it from
+REM the board. If a player has removed all
+REM their faces, the round is up.
+FUNCTION OnTap(g, x, y)
+    GLOBAL NPlayer
+    Screen.ClearLine (2)
+    PRINT x, y
+    GLOBAL Tap
+    Tap.Opacity = 1
+    Tap.CX = x
+    Tap.CY = y
+
+    REM Did I hit any faces?
+    GLOBAL Faces
+    GLOBAL Score
+    GLOBAL ScoreText
+
+    DIM nvisible(NPlayer)
+    FOR i = 1 TO NPlayer
+        nvisible[i] = 0
+    NEXT i
+    FOR i = 1 TO Faces.Count
+        player = FaceIndexToPlayer (i)
+        face = Faces[i]
+        IF (Tap.Intersect (face) AND face.Opacity > 0)
+            face.Opacity = 0
+            Score[player] = Score[player] + face.Data
+            text = ScoreText[player]
+            text.Text = Score[player]
+        END IF
+        IF (face.Opacity > 0) THEN nvisible(player) = nvisible(player) + 1
+    NEXT i
+
+    alldone  = 0
+    FOR i = 1 TO NPlayer
+        IF (nvisible[i] = 0) THEN alldone = 1
+    NEXT i
+
+    REM Next round!
+    IF (alldone) THEN RoundComplete()
+RETURN
+
+REM Call this when a cound is complete.
+FUNCTION RoundComplete()
+        GLOBAL Level
+        Level = Level + 1
+        UpdateFaces ()
+RETURN
+
+REM Set up the animal faces.
+FUNCTION InitAnimals()
+    GLOBAL Animals
+    Animals.Clear()
+    Animals.Add ("🐶", "😼", "🐯", "🐮", "🐭", "🐰", "🐱", "🐵",  "🐷", "🐸", "🐹", "🐺", "🐻",  "🐼", "💆")
+RETURN
+
+FUNCTION UpdateFaces()
+    GLOBAL Level
+    GLOBAL Animals
+    GLOBAL Faces
+    animal  = Animals[Math.Mod (Level-1, Animals.Count) + 1]
+
+    FOR i = 1 TO Faces.Count
+        face = Faces[i]
+        face.Text = animal
+        face.Opacity = 1
+        MoveFace (face, i)
+    NEXT i
+RETURN
+
+FUNCTION SetupFaces(g)
+    GLOBAL Level
+    GLOBAL Animals
+    GLOBAL Faces
+    GLOBAL NPlayer
+
+    animal  = Animals[Math.Mod (Level-1, Animals.Count) + 1]
+    Faces.Clear()
+    count = 4
+
+    FOR player = 1 TO NPlayer
+        pw = g.W / NPlayer
+        px = (player-1) * pw
+        FOR i = 1 TO count
+            fw = 70
+            fh = 80
+            cx = (RND * pw) + px
+            cy = RND * g.H
+            face = g.Text(cx-fw/2, cy-fh/2, cx+fw/2, cy+fw/2, animal, 50)
+
+            face.Alignment = "CC"
+            IF (NPlayer > 1)
+                IF (player = 1) THEN face.Rotate = -PI/2
+                IF (player = 2) THEN face.Rotate = PI/2
+            END IF
+            face.Data = 1
+            REM 1 point
+
+            Faces.Add (face)
+        NEXT i
+    NEXT player
+RETURN
+
+REM Set up the scoring areas for the screen.
+REM This is both the ScoreTextTitle ("Score" or "Player <n>")
+REM and the actual ScoreText which is where the score is put.
+FUNCTION SetupScores(g)
+    GLOBAL NPlayer
+    GLOBAL ScoreText
+    GLOBAL ScoreTextTitle
+
+    g.Fill  = WHITE
+    g.Stroke = WHITE
+    title = g.Text(g.W-180-120, g.H-80, g.W-120-15, g.H-20, "Score", 50)
+    title.Alignment = "RB"
+    ScoreTextTitle[1] = title
+
+    text = g.Text(g.W-120, g.H-80, g.W-30, g.H-20, Score[1], 50)
+    text.Alignment = "RB"
+    ScoreText[1] = text
+
+    IF (NPlayer > 1)
+        REM Fix up the scores for two player.
+        text = ScoreTextTitle[1]
+        text.Text = "Player 1"
+        ScoreTextTitle[2] = ScoreTextTitle[1]
+        ScoreText[2] = ScoreText[1]
+
+        title = g.Text(0, g.H-80, g.W/2, g.H-20, "Player 2", 50)
+        title.Alignment = "LB"
+        ScoreTextTitle[1] = title
+
+        text = g.Text(240, g.H-80, g.W/2-30, g.H-20, Score[2], 50)
+        text.Alignment = "LB"
+        ScoreText[1] = text
+    END IF
+RETURN
+```
+### Cannonball!
+Inspired by the reddit.com/r/retrobattlestations challenge from FozzTexx. This version is all-new (I looked at the original code, but decided to just rewrite all of it)
+```BASIC
+REM Inpsired by the Reddit Retrobattlestations challege for July 2018
+REM The original retro BASIC code was examined, but this program
+REM is from-scratch to take advantage of BC BASIC modern control flow,
+REM graphics and UNICODE support.
+
+
+CLS WHITE BLACK
+PRINT "Cannonball!"
+REM g = Screen.Graphics (0, 100, 300, 700)
+g = Screen.FullScreenGraphics()
+REM COLORS
+CANNONCOLOR = "#999999"
+BALLCOLOR = "#AAAAAA"
+TEXTCOLOR = "#111111"
+GROUNDCOLOR = "#228844"
+
+REM Physics constants. 
+TimeSpeedUp = 3
+REM 7 is correct for w=300
+REM and must be smaller for larger widths.
+GravityMultiply = 7 / (g.W/300)
+
+REM LOCATIONS of THINGS
+GROUNDY = 100
+
+REM Cannon X and Y locations
+CX = 50
+CY = 10 + GROUNDY
+REM CXDelta is how much to move the cannon by
+CXDelta = 0
+REM CN is the cannon size
+CN = 50
+REM CA is the cannon angle (in radians)
+CA = Math.DtoR(10)
+
+REM The two actual cannon objects (a circle + rectangle)
+CBarrel = 0
+CBreech = 0
+
+
+REM Cannonball
+Ball = 0
+BallX  = CX+50
+BallY = CY+50
+BallXV = 0
+BallYV = 0
+BallXA = 0
+BallYA = 0
+REM In flight, set BallYA to -9.98 * GravityMultiply
+BallMuzzleVelocity = 10
+
+REM Point tracks the ball and is used for collision
+Point = g.Rectangle (0,0,2,10)
+Point.Opacity = 0
+
+REM Basin and Tower
+Basin = 0
+Tower = 0
+Water = 0
+BasinX = g.W - 50
+BasinY = 40+GROUNDY
+BasinSize = 30
+
+REM All of the game state variables
+REM State is r=running w=waiting  e=end (after NLeft is done)
+State = "w"
+Score = 0
+
+REM Which figure to use. #1 is the best, so just fix it at that.
+CurrFigure = 1
+
+REM Number of cannonballs (humans) left
+StartingLives = 5
+NLeft = StartingLives
+REM Result is "" "s" "f" (running, score, fail)
+Result = ""
+
+REM All of the Score variables. The Score global
+REM gets put int the ScoreText text block.
+REM These are filled in from DrawScore(g)
+Score = 0
+ScoreTextTitle = 0
+ScoreText = 0
+NLeftTextTitle = 0
+NLeftText = 0
+ResultText = 0
+
+
+
+DIM figures()
+figures.Add ("🤸")
+figures.Add("🐧")
+figures.Add ("🐄")
+figures.Add("🐳")
+figures.Add("🛸")
+
+DrawScore (g)
+DrawGround(g)
+DrawCannon (g)
+DrawCannonball (g)
+DrawTower(g)
+
+slider = g.Slider (0, 0, g.W, 50, "CANNON ANGLE", "OnCannonAngle")
+slider.Min = 0
+slider.Max = 90
+
+StartPlaying()
+
+runner = "🏃"
+coffin = "⚰"
+background = "🌋🏔🗻⛰"
+trees = "🌳🌲🌴🎄🎋"
+
+
+REM
+REM The program now just calls "Frame" over and over again
+REM until it's stopped
+REM
+System.SetInterval ("Frame", 50, 0)
+FOREVER
+
+FUNCTION Frame()
+    GLOBAL g
+    GLOBAL coffin
+    GLOBAL Ball
+    GLOBAL BallYA
+    GLOBAL CA
+    GLOBAL NLeft
+    GLOBAL Score
+    GLOBAL State
+    GLOBAL slider
+    GLOBAL CX
+    GLOBAL CXDelta
+
+    cmd  = INKEY$
+    IF (cmd <> "")
+        IF (cmd = " " AND State = "w")
+             FireCannonball(g, 45*3)
+        END IF
+        IF (cmd = " " AND State = "e")
+            StartPlaying()
+        END IF
+        IF (cmd = "Up")
+            CA = CA + Math.DtoR (2)
+            UpdateCannon (g)
+        END IF
+        IF (cmd = "Down")
+            CA = CA - Math.DtoR (2)
+            UpdateCannon (g)
+        END IF
+    END IF
+
+    REM Only worry about moving the ball if we're running
+    IF (State = "r")
+        UpdateBall()
+        IF (Math.Abs (CXDelta) > .1)
+            CX = CX + CXDelta * .1
+            CXDelta = CXDelta * .9
+            MoveCannon()
+        END IF
+
+        GLOBAL Result
+        Result = CalculateResult()
+
+        IF (Result <> "")
+            IF (Result = "f") THEN Lost()
+            IF (Result = "s") THEN Won()
+
+            REM Are we done yet?
+            IF (NLeft <= 0) THEN DisplayEnd()
+        END IF
+    END IF
+RETURN
+
+FUNCTION StartPlaying()
+    GLOBAL NLeft
+    GLOBAL NLeftText
+    GLOBAL StartingLives
+    NLeft = StartingLives
+    NLeftText.Text = NLeft
+    SetScore (0)
+    GLOBAL State
+    State = "w"
+
+    Screen.ClearLines (1, 10)
+    msg =  "Cannonball!\nUse the UP and DOWN keys to move the cannon\n"
+    msg = msg + "Press SPACE to fire the cannon\nWin by getting the player into the water"
+    PRINT msg
+
+    GLOBAL ResultText
+    ResultText.Text = msg
+    ResultText.Opacity = 1
+RETURN
+
+FUNCTION DisplayEnd()
+    GLOBAL Score
+    GLOBAL StartingLives
+    GLOBAL State
+    State = "e"
+    Screen.ClearLines (1, 10)
+    PRINT "ALL DONE"
+    msg = "You won " + Score + " times out of " + StartingLives  + " attempts\n"
+    
+    IF Score = 0 msg = msg + "Try aiming for the water\n"
+    IF Score = 1 msg = msg + "You're getting there\n"
+    IF Score = 2 msg = msg + "Two out of " + StartingLives + " ain't bad\n"
+    IF Score = 3 msg =msg + "Getting the hang of it!\n"
+    IF Score = 4 msg = msg + "Woot!\n"
+    IF Score = 5 msg = msg + "You've done this before!\n"
+    PRINT msg + "\n\n" +   "Type space to try again"
+
+    GLOBAL ResultText
+    ResultText.Opacity = 1
+    ResultText.Text = msg
+RETURN
+
+FUNCTION Lost()
+    GLOBAL coffin
+    GLOBAL Ball
+    GLOBAL GROUNDY
+
+    Halt()
+    GLOBAL Ball
+    PRINT "DIE!"
+    Ball.Text = coffin
+    Ball.Rotate = 0
+    Ball.CY = GROUNDY
+RETURN
+
+
+FUNCTION Won()
+    GLOBAL Ball
+    GLOBAL BallY
+
+    PRINT "SCORE!"
+    Ball.Rotate = 0
+    Ball.CY = Ball.CY +4
+    BallY = Ball.CY
+
+    IncrementScore (1)
+    Halt()
+RETURN
+
+REM Call this after Won() or Lost() to stop the ball,
+REM reset the number of people left, reset the state
+FUNCTION Halt()
+    GLOBAL State
+    GLOBAL NLeft
+    GLOBAL NLeftText
+    NLeft = NLeft - 1
+    NLeftText.Text = NLeft
+    StopBall()
+    State = "w"
+    REM w=waiting for input
+RETURN
+
+REM Did the cannonball hit anything?
+FUNCTION CalculateResult()
+    GLOBAL Point
+    GLOBAL Basin
+    GLOBAL Tower
+    GLOBAL Water
+
+    IF (Point.Intersect (Water)) THEN RETURN "s"
+    IF (Point.Intersect (Tower)) THEN RETURN "f"
+
+    GLOBAL BallYA
+    IF (BallYA = 0) THEN RETURN "f"
+RETURN ""
+
+REM Move the ball. Lots of globals (sorry)
+REM Motion is relative to absolute time (so that we can
+REM update the Frame() frequency without changing 
+REM the game play.
+FUNCTION UpdateBall()
+    GLOBAL Ball
+    GLOBAL BallX
+    GLOBAL BallY
+    GLOBAL BallXV
+    GLOBAL BallYV
+    GLOBAL BallXA
+    GLOBAL BallYA
+    GLOBAL LastUpdateTime
+    GLOBAL TimeSpeedUp
+    GLOBAL Point
+    GLOBAL GROUNDY
+    now = DateTime.GetNow()
+    delta = now.Subtract (LastUpdateTime)
+    delta = delta * TimeSpeedUp
+    REM Make time go faster!
+
+    LastUpdateTime = now
+    BallX = BallX + (BallXV * delta)
+    BallY = BallY  + (BallYV * delta)
+    BallXV = BallXV + (BallXA * delta)
+    BallYV = BallYV + (BallYA * delta)
+
+    Ball.CX= BallX
+    Ball.CY = BallY
+    Point.CX = BallX
+    Point.CY = BallY
+
+    IF (BallYA <>0) THEN Ball.Rotate = RND * 2 * PI
+
+    IF (BallY <= GROUNDY)
+        StopBall()
+    END IF
+RETURN
+
+REM Stop the ball from moving. 
+FUNCTION StopBall()
+    GLOBAL BallXV
+    GLOBAL BallYV
+    GLOBAL BallXA
+    GLOBAL BallYA
+    BallYV = 0
+    BallYA = 0
+    BallXV= 0
+    BallXA = 0
+RETURN
+
+REM Connected to the Slider; updates the cannon
+REM angle.
+FUNCTION OnCannonAngle (slider, value)
+    GLOBAL g
+    GLOBAL CA
+    CA = Math.DtoR (value)
+    UpdateCannon (g)
+RETURN
+
+REM Move the cannon based on CA (Cannon Angle) and CX/CY values
+REM CX and CY are the center of the "ball" at the end of the cannon.
+FUNCTION UpdateCannon(g)
+    GLOBAL CBarrel
+    GLOBAL CBreech
+    GLOBAL CX
+    GLOBAL CY
+    GLOBAL CA
+    CBarrel.Rotate  = CA
+    CBreech.CX = CX
+    CBReech.CY = CY
+    CBarrel.X1 = CX
+    CBarrel.CY = CY
+RETURN
+
+REM Draw the cannon at the start.
+FUNCTION  DrawCannon(g)
+    GLOBAL CANNONCOLOR
+    GLOBAL CX
+    GLOBAL CY
+    GLOBAL CN
+    GLOBAL CA
+    GLOBAL CBarrel
+    GLOBAL CBreech
+    g.Fill = CANNONCOLOR
+    g.Stroke = CANNONCOLOR
+    w  =  CN  /  4
+    CBreech = g.Circle  (CX,  CY,  w/2)
+
+    CBarrel = g.Rectangle (CX, CY-w/2, CX+CN, CY+w/2)
+    CBarrel.CXD = 0
+    CBarrel.Rotate = CA
+RETURN
+
+REM Move the cannon based on CX
+FUNCTION  MoveCannon()
+    GLOBAL CX
+    GLOBAL CBarrel
+    GLOBAL CBreech
+
+    CBreech.CX = CX
+    CBarrel.X1 = CX
+RETURN
+
+REM Draw the cannon ball at the start.
+REM Does not use the Figure because that will
+REM be set when we fire. Cannonall starts out
+REM invisible (opacity=0)
+FUNCTION DrawCannonball(g)
+    GLOBAL Ball
+    GLOBAL BallX
+    GLOBAL BallY
+    GLOBAL CN
+    GLOBAL BALLCOLOR
+    g.Fill = BALLCOLOR
+    g.Stroke = BALLCOLOR
+    w = CN / 4
+    REM Ball = g.Circle (BallX, BallY, w/2)
+    Ball = g.Text (0, 0, 32, 32, "🤸", 20)
+    Ball.CX = BallX
+    Ball.CY = BallY
+    Ball.Opacity = 0
+RETURN
+
+REM Fire the cannonball with a given speed.
+REM The x and y velocity are computed based
+REM on the cannon angle and position is based
+REM on cannon position and length.
+
+FUNCTION FireCannonball(g, speed)
+    GLOBAL Ball
+    GLOBAL BallX
+    GLOBAL BallY
+    GLOBAL BallXV
+    GLOBAL BallYV
+    GLOBAL BallXA
+    GLOBAL BallYA
+    GLOBAL CX
+    GLOBAL CXDelta
+    GLOBAL CY
+    GLOBAL CN
+    GLOBAL CA
+    GLOBAL BALLCOLOR
+    GLOBAL GravityMultiply
+    GLOBAL State
+    GLOBAL LastUpdateTime
+    GLOBAL ResultText
+
+    LastUpdateTime = DateTime.GetNow()
+    State = "r"
+    ResultText.Opacity = 0
+
+    GLOBAL figures
+    GLOBAL CurrFigure
+    Ball.Text = figures[CurrFigure]
+
+    Ball.Opacity = 1.0
+    Ball.Fill = BALLCOLOR
+    Ball.Stroke = BALLCOLOR
+
+    BallX = CX + CN*COS(CA)
+    BallY = CY + CN*SIN(CA)
+
+    BallXV = speed * COS(CA)
+    BallYV = speed * SIN(CA)
+
+    BallXA = 0
+    BallYA = -9.98 * GravityMultiply
+
+    REM Move the cannon
+    maxrand = 50
+    CXDelta = (RND*maxrand*2) - maxrand
+RETURN
+
+REM Draw the ground at the start.
+FUNCTION DrawGround (g)
+    GLOBAL GROUNDY
+    GLOBAL GROUNDCOLOR
+    g.Fill = GROUNDCOLOR
+    g.Stroke = g.Fill
+    ground = g.Rectangle (0, 0, g.W, GROUNDY)
+RETURN
+
+REM Draw the tower, basic and water at the start
+FUNCTION DrawTower(g)
+    GLOBAL Tower
+    GLOBAL Water
+    GLOBAL Basin
+    GLOBAL BasinX
+    GLOBAL BasinY
+    GLOBAL BasinSize
+    GLOBAL GROUNDY
+
+    g.Stroke = BLUE
+    g.Fill = BLUE
+    Water = g.Rectangle (0, GROUNDY, 20, 7+GROUNDY)
+    Water.CX = BasinX
+    Water.Y1 = 53+GROUNDY
+
+
+    g.Fill = WHITE
+    g.Stroke = WHITE
+    Basin = g.Text (0, GROUNDY, 32, 48+GROUNDY, " ⏡ ", BasinSize)
+    Basin.Alignment = "CB"
+    Basin.CX = BasinX - 4
+    Basin.CY = BasinY
+
+
+    g.Fill = TRANSPARENT
+    g.Stroke =  WHITE
+    Tower = g.Rectangle (0, GROUNDY, 25, 50+GROUNDY)
+    Tower.CX  = BasinX
+
+RETURN
+
+REM Draw the score at the start
+FUNCTION DrawScore(g)
+    GLOBAL Score
+    GLOBAL ScoreTextTitle
+    GLOBAL ScoreText
+    GLOBAL NLeftTextTitle
+    GLOBAL NLeftText
+    GLOBAL ResultText
+    GLOBAL TEXTCOLOR
+    
+    CH = 45
+    g.Fill = TEXTCOLOR
+    g.Stroke = TEXTCOLOR
+    ScoreTextTitle = g.Text (0, g.H-CH, g.W/2-5, g.H, "SCORE", 30)
+    ScoreTextTitle.Alignment = "RC"
+    ScoreText = g.Text (g.W/2, g.H-CH, g.W+5, g.H, Score, 30)
+    ScoreText.Alignment = "LC"
+    
+    NLeftTextTitle = g.Text (0, g.H-CH*2, g.W/2-5, g.H-CH, "LIVES LEFT", 30)
+    NLeftTextTitle.Alignment = "RC"
+    NLeftText = g.Text (g.W/2, g.H-CH*2, g.W+5, g.H-CH, Score, 30)
+    NLeftText.Alignment = "LC"
+
+    ResultText = g.Text (0, g.H-CH*8.5, g.W, g.H-CH*3, "Cannonballs!", 45)
+    ResultText.Alignment = "CC"
+
+    g.Text (0, g.H-CH*10, g.W, g.H-CH*9, "/retrobattlestations rsclient 7/22/2018 Cannonball", 30)
+
+RETURN
+
+REM Set the score value and update the screen.
+FUNCTION SetScore (value)
+    GLOBAL Score
+    GLOBAL ScoreText
+    Score = value
+    ScoreText.Text = Score
+RETURN
+
+REM Increment the score value and update the screen.
+FUNCTION IncrementScore (value)
+    GLOBAL Score
+    GLOBAL ScoreText
+    Score = Score + value
+    ScoreText.Text = Score
+RETURN
+```
+### Cryptography with ROT13
+A simple ROT13 program. Given a string, will convert it to ROT13. And given a ROT13 string, will convert it back to plain text!
+```BASIC
+CLS
+PRINT  "ROT13 Converter"
+PRINT  "===== ========="
+PRINT  "  "
+PRINT  "Encrypt messages to send to your friends"
+PRINT  "Decrypt the messages they send back"
+PRINT  "  "
+PRINT  "To use, just enter a message to decrypt or encrypt"
+PRINT  "and the result will be printed"
+
+str = INPUT DEFAULT "hello" PROMPT "Message to ROT13"
+rot13 = ROT13(str)
+
+PRINT  "  "
+PRINT  "Original: " + str
+PRINT  "Converted: " + rot13
+
+FUNCTION ROT13 (str)
+        retval  =  ""
+        FOR  i  =  1  TO  LEN  (str)
+                num  =  ASC(str[i])
+                IF  (num  >=  ASC("A")  AND  num  <=  ASC("Z"))
+                        num  =  num  +  13
+                        IF  (num  >  ASC("Z"))  THEN  num  =  num  -  26
+                END  IF
+                IF  (num  >=  ASC("a")  AND  num  <=  ASC("z"))
+                        num  =  num  +  13
+                        IF  (num  >  ASC("z"))  THEN  num  =  num  -  26
+                END  IF
+                chr  =  CHR(num)
+                retval  =  retval  +  chr
+                REM  Just  for  debugging!  PRINT  str[i],  num,  chr,  retval
+        NEXT  i
+RETURN  retval
+```
+### Elephant
+"With four parameters I can fit an elephant, and with five I make the trunk wiggle". Using the complex parameters from http://fermatslibrary.com/s/drawing-an-elephant-with-four-complex-parameters, this program draws a elephant. IMHO, the paper is cheating: the parameters aren't just things you can drop into a program. The last one, for example, has to be handled specially because it's a dot for the eye.
+```BASIC
+CLS  WHITE BLACK
+PRINT "DRAW ELEPHANT"
+g = Screen.Graphics (100, 100, 200, 200)
+DIM Points()
+DIM Param()
+REM Values are AX AY BX BY
+Param.AddRow (0, 0, 0, 0)
+Param.AddRow (0,  -60, 50, -30)
+Param.AddRow (0, 0, 18, 8)
+Param.AddRow (12, 0, 0, -10)
+Param.AddRow (0, 0, 0, 0)
+Param.AddRow (-14, 0, 0, 0)
+
+REM  Now  convert  the  parameters  into  X,Y  values
+REM  Note  that  the  original  data  needs  to  be  flipped:
+REM  X  becomes  Y,  and  Y  becomes  X.  And  the  Y  values
+REM  need  to  be  inverted for  BC  BASIC.
+FOR t = 0 TO PI*2+.1 STEP .05
+    x = 0
+    y = 0
+    FOR k = 0 TO Param.Count-1
+        param = Param[k+1]
+        x = x + (param[1] * COS(k*t)) + (param[3] * SIN(k*t))
+        y = y + (param[2] * COS(k*t)) + (param[4] * SIN(k*t))
+    NEXT k
+    Points.AddRow (y, -x)
+NEXT t
+xy = g.GraphXY(Points)
+PRINT  "All  done"
+```
+### Game Gestures
+A library (and a demo program) showing how to get gestures (LEFT RIGHT UP DOWN and "") from the user swiping on the screen. Just hook up the GESTURE functions, and it works!
+```BASIC
+REM Demonstrate the Gesture functions
+REM Each function is either Gesture___ or GestureDemonstation___
+REM You only need to hook up the Gesture___ function to add
+REM gestures to your game.
+
+REM You need to IMPORT FUNCTIONS FROM "Game Gestures" to 
+REM make the functions available to your code.
+
+REM The GestureResult will be set with the discovered
+REM gesture (LEFT RIGHT UP DOWN or ""). It's up to your
+REM code to clear the GestureResult appropriately.
+GestureResult = ""
+
+REM GestureX GestureY and GestureTime are internal values
+GestureX = -1
+GestureY = -1
+GestureTime = 0
+
+
+g = Screen.FullScreenGraphics()
+g.Background = BLUE
+g.Fill = GREEN
+Dot = g.Circle(0, 0, 40)
+SwipeText = g.Text (50, 100, 600, 250, "swipe", 44)
+CLS
+PRINT "Gesture Recognizer"
+System.SetInterval ("GestureDemonstrationOnTimer", 50, "")
+
+
+REM You have to either set up the OnGesturePressed
+REM and OnGestureReleased on the graphics object
+REM OR if you already have a Pressed/Released, you can
+REM directly call these functions.
+g.SetPressed ("GestureOnPressed", "")
+g.SetReleased ("GestureOnReleased", "")
+
+
+REM The demonstration pressed/moved will set the dot 
+REM so that the gestures are visible.
+g.SetPressed ("GestureDemonstrationOnPressed", "")
+g.SetMoved ("GestureDemonstationOnMoved", "")
+
+ 
+FOREVER
+
+FUNCTION GestureOnPressed(g,x,y)
+    GLOBAL GestureX
+    GLOBAL GestureY
+    GLOBAL GestureTime
+    GLOBAL GestureResult
+    GestureX = x
+    GestureY = y
+    GestureTime = DateTime.GetNow()
+    GestureResult = ""
+RETURN
+ 
+ 
+FUNCTION GestureOnReleased(g, x, y)
+    SwipeMaxTime = 1.0
+    SwipeMinDistance = 100
+    GLOBAL GestureX
+    GLOBAL GestureY
+    GLOBAL GestureTime
+    GLOBAL GestureResult
+    now = DateTime.GetNow()
+    delta = now.Subtract (GestureTime)
+    IF (delta < SwipeMaxTime)
+        dx = x - GestureX
+        dy = y - GestureY
+        d = √(dx² + dy²)
+        IF (d > SwipeMinDistance)
+            REM Did a swipe gesture!
+            
+            IF (dx² > dy²)
+                swipe = "LEFT"
+                IF (dx > 0) THEN swipe = "RIGHT"
+            ELSE
+                swipe = "DOWN"
+                IF (dy > 0) THEN swipe = "UP"
+            END IF
+            GestureResult = swipe
+        END IF
+    END IF
+    GestureTime = 0
+RETURN
+
+
+FUNCTION GestureDemonstrationOnPressed(g, x, y)
+    GLOBAL Dot
+    Dot.CX = x
+    Dot.CY = y
+    Dot.Opacity = 1
+RETURN
+
+ 
+FUNCTION GestureDemonstationOnMoved(g, x, y)
+    GLOBAL Dot
+    IF (Dot.Opacity > .3)
+        Dot.CX = x
+        Dot.CY = y
+        Dot.Opacity = 1
+    RETURN
+RETURN
+ 
+ 
+FUNCTION GestureDemonstrationOnTimer()
+    GLOBAL Dot
+    Dot.Opacity = Dot.Opacity * .90
+    GLOBAL SwipeText
+    SwipeText.Opacity = SwipeText.Opacity * .99
+ 
+    GLOBAL GestureResult
+    IF (GestureResult <> "")
+        SwipeText.Text = GestureResult
+        SwipeText.Opacity = 1
+       GestureResult = ""
+    END IF
+RETURN
+```
+### Hit the Target
+Maze game.  This game use the Inclinometer to move around the screen.  On each level you play a different fun character (a rocket, a boat, and more).  Yellow items will drain your health; green one recharge you.  Get to all of the exit points without dying to advance to the next level.
+**Default Key**: 🚀
+```BASIC
+CLS BLUE
+PRINT "Hit the target"
+PRINT System.Errors
+REM The 'g' variable is the overall screen
+g = Screen.FullScreenGraphics()
+
+IMPORT FUNCTIONS FROM "MusicForGames"
+
+REM AllRects is the set of things that can block 
+REM the player.  Each rect has a Data value 
+REM which is the amount by which touching
+REM the block reduces the player health.
+DIM AllRects()
+
+Health = 5
+NDest = 0
+GoalNDest = 5
+Difficulty = 1
+
+PlayedWarning = 0
+g.Fill = GREEN
+x = 40
+y = 40
+dx = 1
+dy = 1
+THICKNESS  = 10
+SIZE = 25
+REM player = g.Rectangle (40, 240, 40+SIZE, 240+SIZE)
+
+healthText = ""
+destText = ""
+
+FRICTION = .80
+FramesToPause = 0
+MustSetup = 0
+
+Setup()
+System.SetInterval ("frame", 50, "frame")
+inclinometer = Sensor.Inclinometer ("inclinometer")
+
+FOREVER
+
+REM difficulty ranges from 1 to 10
+FUNCTION Setup()
+    GLOBAL g
+    GLOBAL AllRects
+    GLOBAL GoalNDest
+    GLOBAL healthText
+    GLOBAL destText
+    GLOBAL Difficulty
+    GLOBAL NDest
+    GLOBAL Health
+
+    NDest = 0
+    Health = 5
+    AllRects.Clear()
+    g.Clear()
+
+    area = g.W * g.H
+    blocksize = 50*50
+    nbadblock = Math.Ceiling (area * Difficulty * 0.05 / blocksize)
+    ngoodblock = Math.Ceiling (area * 0.01 / blocksize)
+    IF (Difficulty < 3) THEN ngodblock = ngoodblock * 3
+    IF (Difficulty > 6) THEN ngoodblock = 2
+
+    DrawWalls(g)
+    SetupLevel1(g, AllRects, 40, 100, nbadblock, ngoodblock, GoalNDest)
+
+    g.Fill = WHITE
+    healthTitle  = g.Text (50, g.H-90, 150, g.H-50, "Health", 30)
+    healthText = g.Text (150, g.H-90, 350, g.H-50, Health, 30)
+
+    destTitle  = g.Text (50, g.H-140, 150, g.H-100, "Dest", 30)
+    destText = g.Text (150, g.H-140, 350, g.H-100, NDest, 30)
+    
+END
+
+FUNCTION SetupLevel1(g, AllRects, minsize, maxsize, nbad, ngood, ndest)
+    GLOBAL THICKNESS
+    g.Background = BLACK
+    FOR i = 1 TO nbad
+        g.Fill = BLACK
+        g.Stroke = BLACK
+        size = minsize + (RND * (maxsize-minsize))
+        x = RND * (g.W - size - THICKNESS*2) + THICKNESS
+        y = RND * (g.H - size - THICKNESS*2) + THICKNESS
+        IF (x < 200 AND y > g.H-150) THEN x = x + 300
+        txt  = g.Text (x, y+5, x+size, y+size, "🌑", SizeToFontSize(size))
+        txt.Alignment  = "SS"
+        txt.Data = -0.1 
+        REM Data = -(value) means that health drop by value when touched
+        AllRects.Add (txt)
+    NEXT i
+
+    FOR i = 1 TO ngood
+        g.Fill = BLACK
+        g.Stroke = BLACK
+        size = minsize + (RND * (maxsize-minsize))
+        x = RND * (g.W - size - THICKNESS*2) + THICKNESS
+        y = RND * (g.H - size - THICKNESS*2) + THICKNESS
+        IF (x < 200 AND y > g.H-150) THEN x = x + 300
+        txt  = g.Text (x, y, x+size, y+size, "🛠", SizeToFontSize(size))
+        txt.Alignment  = "CC"
+        txt.Data = .5
+        REM Data = -(value) means that health drop by value when touched
+        AllRects.Add (txt)
+
+        REM Mark the good things with a symbol
+    NEXT i
+
+    FOR i = 1 TO ndest
+        g.Fill = BLACK
+        g.Stroke = BLACK
+        size = minsize + (RND * (maxsize-minsize))
+        x = RND * (g.W - size - THICKNESS*2) + THICKNESS
+        y = RND * (g.H - size - THICKNESS*2) + THICKNESS
+        IF (x < 200 AND y > g.H-150) THEN x = x + 300
+        txt  = g.Text (x, y, x+size, y+size, "☄", SizeToFontSize(size))
+        txt.Alignment  = "CC"
+        txt.Data = 9999
+        REM Data = 9999 marks it as a destination
+        AllRects.Add (txt)
+    NEXT i
+
+    REM Make Player one
+    GLOBAL player
+    GLOBAL SIZE
+    player = g.Text (40, 240, 40+SIZE, 240+SIZE, "🚀", SizeToFontSize(SIZE))
+END
+
+FUNCTION SizeToFontSize(size)
+    fontSize = size * 0.7
+RETURN fontSize
+
+REM
+REM Updates the health based on
+REM any collisions.
+REM
+FUNCTION CheckCollision()
+    GLOBAL AllRects
+    GLOBAL player
+    GLOBAL Health
+    GLOBAL NDest
+    GLOBAL PlayedWarning
+
+    nwarn = 0
+    FOR i =1 TO AllRects.Count
+        obj = AllRects(i)
+        IF (obj.Intersect (player))
+            hdelta = obj.Data
+            IF (hdelta = 9999)
+                now = DateTime.GetNow()
+                dtime = 44
+                NDest = NDest + 1
+                obj.Data = 0
+                obj.Opacity = 0.2
+                Space1()
+            ELSE
+                Health = Health + hdelta
+                IF (hdelta < 0)
+                    IF (PlayedWarning = 0) 
+                        Warning1()
+                        PlayedWarning = 10
+                    END IF
+                    nwarn = nwarn + 1
+                ELSE
+                    REM Make it clear that something happened
+                    obj.Opacity = 0.6
+                END IF
+            END IF
+        END IF
+    NEXT i
+
+    REM Turn off once we are out of the way
+    REM of the asteroids
+    IF (nwarn = 0 AND PlayedWarning > 0) THEN PlayedWarning = PlayedWarning - 1
+END
+
+FUNCTION DrawWalls(g)
+    GLOBAL THICKNESS
+
+    g.Fill = BLUE
+    g.Stroke = BLUE
+    g.Rectangle (0, 0, THICKNESS, g.H)
+    g.Rectangle (0, g.H-THICKNESS, g.W, g.H)
+    g.Rectangle (g.W-THICKNESS,  0, g.W, g.H)
+    g.Rectangle (0,  0, g.W, THICKNESS)
+END
+
+
+REM
+REM Is called constantly when the inclinometer
+REM detects that the machie is tilted.
+REM Updates the dx & dy (aka velocity) based
+REM on the tilt and the friction.
+REM
+FUNCTION inclinometer (roll, pitch, yaw, accuracy)
+    GLOBAL FRICTION
+    GLOBAL dx
+    GLOBAL dy
+
+    dx = dx + (-pitch / 10)
+    dx = dx * FRICTION
+    dy = dy + (roll  / 10)
+    dy = dy * FRICTION
+
+    IF dx > 20 THEN dx = 20
+    IF dx < -20 THEN dx = -20
+    IF dy > 20 THEN dy = 20
+    IF dy < -20 THEN dy = -20
+END
+
+FUNCTION UpdatePlayerBasedOnHealth(player, Health, NDest)
+    GLOBAL healthText
+    GLOBAL destText
+    IF (Health <= 0)
+        REM Dead!
+        player.Fill = RED
+    END IF
+
+    IF (Health >= 10)
+        player.Fill = GREEN
+    END IF
+    healthText.Text = Math.Round (Health, 2)
+    destText.Text = NDest
+END
+
+REM If the player (based on x,y values) has
+REM hit a wall, bounce off.
+FUNCTION MaybeBounceOffWalls()
+    GLOBAL THICKNESS 
+    GLOBAL SIZE
+    GLOBAL g
+
+    GLOBAL x
+    GLOBAL y
+    GLOBAL dx
+    GLOBAL dy
+
+    IF (x < THICKNESS)
+        x = THICKNESS+(THICKNESS-x)
+        dx = -dx
+    END IF
+    w = g.W - THICKNESS - SIZE
+    IF (x > w)
+        x = w - (x-w)
+        dx = -dx
+    END IF
+
+    IF (y < THICKNESS)
+        y = THICKNESS+(THICKNESS-y)
+        dy = -dy
+    END IF
+    h = g.H - THICKNESS - SIZE
+    IF (y > h)
+        y = h - (y-h)
+        dy = -dy
+    END IF
+EXIT
+
+REM
+REM Called periodically to update the screen
+REM Move the player, updates the score, etc.
+REM
+FUNCTION frame(arg)
+    GLOBAL x
+    GLOBAL y
+    GLOBAL dx
+    GLOBAL dy
+    GLOBAL player
+    GLOBAL Health
+    GLOBAL NDest
+    GLOBAL GoalNDest
+    GLOBAL Difficulty
+    GLOBAL FramesToPause
+    GLOBAL MustSetup
+
+    IF (FramesToPause > 0)
+        FramesToPause = FramesToPause - 1
+        RETURN
+    END IF
+    IF (MustSetup)
+        MustSetup = 0
+        Setup()
+    END IF
+
+    x = x + dx
+    y = y + dy
+    MaybeBounceOffWalls()
+
+    player.X1 = x
+    player.Y1 = y
+    CheckCollision()
+
+    IF (Health < 0) THEN Health = 0
+    IF (Health > 10) THEN Health = 10
+    UpdatePlayerBasedOnHealth(player, Health, NDest)
+
+    IF (Health = 0)
+        FramesToPause = 50 * 2
+        PRINT "Lost"
+        Death1()
+        Difficulty = Difficulty -1 
+        IF (Difficulty < 1) THEN Difficulty = 1
+        MustSetup=1
+    ELSE
+        IF (NDest = GoalNDest)
+            FramesToPause = 50 * 2
+            PRINT "WIN"
+            Triumph1()
+            Difficulty = Difficulty +1 
+            IF (Difficulty  > 10) THEN Difficulty = 10
+            MustSetup = 1
+        END IF
+    END IF
+END
+```
+### HTML Color output from the rear camera
+Find the color of anything! This little program displays the "rear" camera with different levels of zoom. The central part of the image is sampled and the background set to the sampled value; the value is also set on the screen.
+```BASIC
+REM  Slightly  fancy  program  that  will  use  the  rear  camera
+REM  and  let  you  examine  the  HTML  color  of  objects.
+REM  It  displays  the  full  image,  a  zoomed-in  image,
+REM  and  then  the  "center"  of  the  image.
+REM  And  it  shows  you  the  HTML  value  of  the  color,
+REM  and  sets  the  border  to  that  color.
+
+CLS BLUE
+PRINT “Show HTML Color”
+
+REM Step 1: make the camera and preview
+cam = Sensor.Camera (“Rear”)
+grf = Screen.Graphics (50, 50, 340, 440)
+img = grf.Image (20, 20, 420, 170)
+cam.Start()
+cam.Image = img
+
+REM Step 2: make the analysis image
+REM and set up callback
+a = cam.Analyze()
+REM Normal radius is .16667
+REM 0.01 will be very zoomed-in
+a.Radius = 0.01
+REM a.CX = 0.5
+REM a.CY = 0.5
+a.AnalysisW = 128
+a.AnalysisH = 128
+imgAnalysis = grf.Image(230, 190, 420, 320)
+a.Image= imgAnalysis
+a.Function = “HtmlColor”
+
+REM Add a partial zoom
+REM so we can see what we're seeing
+imgAnalysisPartial = grf.Image(20, 190, 210, 320)
+a2 = cam.Analyze()
+a2.Image= imgAnalysisPartial
+
+FOREVER 
+
+REM Step three: HTML color output
+REM and set the background color
+FUNCTION HtmlColor (r, g, b)
+    color = String.Escape (“color”, r, g, b)
+    Screen.ClearLine (2)
+    PRINT color
+    GLOBAL grf
+    grf.Background  = color
+END
+```
+### Hunt the Wumpus
+A reimagining of the class Unix and microcomputer game! In this version, you play through five cave levels, each increasingly hard. Your goal on each level is to take a picture of the monster using a drone. But be careful: you'll die if you fall into a pit or walk into the monster's lair. By listening carefully, you can avoid these problems. Watch out for the bats, too: if you walk into a cave with a bat, you'll be flown to some other part of the level. You get points for each picture of the monster, and extra points for finding the monster quickly.
+**Default Key**: 🐉
+```BASIC
+REM
+REM Hunt the Wumpus inspired game!
+REM
+DIM Map()
+DIM Doors()
+DIM Bats()
+DIM Monsters()
+DIM Pits()
+DIM MapInfo()
+DIM PictureGallery()
+PictureGalleryText = 0
+Score = 0
+CavesPerStreak= 5
+NCavesLeft = CavesPerStreak
+MsgBox = 0
+SHOW_ALL_ROOMS = 0
+REM Stuff for scores
+NMonsters = 0
+NDoors = 0
+NDoorsTotal = 0
+DIM DoorPct()
+
+IMPORT FUNCTIONS FROM "Game Gestures"
+REM The GestureResult will be set with the discovered
+REM gesture (LEFT RIGHT UP DOWN or ""). It's up to your
+REM code to clear the GestureResult appropriately.
+GestureResult = ""
+
+REM GestureX GestureY and GestureTime are internal values
+GestureX = -1
+GestureY = -1
+GestureTime = 0
+
+IMPORT FUNCTIONS FROM "MusicForGames"
+REM 0 means no message box.
+LIGHT_TAN = "#F7EBD5"
+DARK_TAN = "#DACAB0"
+MEDIUM_BROWN = "#BA7528"
+DARK_BROWN = "#654320"
+VDARK_BROWN = "#412B2B"
+
+CLS LIGHT_TAN BLACK
+PRINT "Hunt the Wumpus!"
+g = Screen.FullScreenGraphics()
+REM g= Screen.Graphics (150, 0, 500, 350)
+g.Background = LIGHT_TAN
+bat= "🦇"
+monster = "🐉"
+pit = "🕳"
+camera = "🎥"
+
+REM ScoreType = P(Panel) M(Mini)
+ScoreType = "M"
+REM Size is either S (small) or M(medium)
+REM Phone screen are about 350 wide
+Size = "S"
+REM State r=running c=ready to click on camera e=end game s=splash screen
+State = "s"
+PickUISize(g)
+SplashScreen(g)
+g.SetPressed ("OnPressed", "")
+g.SetMoved("OnMoved", "")
+g.SetReleased ("OnReleased", "")
+System.SetInterval ("OnTimer", 50, "")
+
+REM Now do the real program!
+FOREVER
+
+FUNCTION OnTimer()
+    GLOBAL Dot
+    IF (Dot.Opacity > 0) THEN Dot.Opacity = Dot.Opacity - 0.1
+
+    GLOBAL State
+    IF ((State <> "e" AND State <> "s") AND State <> "f") THEN FadeMessage()
+
+    GLOBAL GameResult
+    IF (State = "r" AND GameResult >= 0)
+        State = "e"
+        UpdateGameScore()
+        EndSceneStart()
+        UpdateScoreDisplay()
+    END IF
+RETURN
+
+REM Called when each game ends. Updates the DoorPct()
+FUNCTION UpdateGameScore()
+    GLOBAL DoorPct
+    GLOBAL GameResult
+    GLOBAL NDoors
+    GLOBAL NDoorsTotal
+    GLOBAL MapNCol
+    GLOBAL MapNRow
+    nrooms = MapNCol * MapNRow
+    pct = NDoors / nrooms
+    IF (GameResult <> 20) THEN pct = 2.0
+    DoorPct.Add (pct)
+    NDoorsTotal = NDoorsTotal + NDoors
+    NDoors = 0
+RETURN
+
+FUNCTION OnMoved(g, x, y)
+    GLOBAL Dot
+    IF (Dot.Opacity > 0.1)
+        Dot.CX = x
+        Dot.CY = y
+        Dot.Opacity = 1
+    END IF
+
+RETURN
+
+FUNCTION OnPressed(g, x, y, arg)
+    GLOBAL Dot
+    Dot.Opacity =  1
+    Dot.CX = x
+    Dot.CY = y
+
+    GestureOnPressed(g, x, y, arg)
+RETURN
+
+FUNCTION OnReleased(g, x, y, arg)
+    REM Handle the gestures
+    GestureOnReleased(g, x, y, arg)
+
+    REM clicked a door?
+    GLOBAL Dot
+    Dot.Opacity =  1
+    Dot.CX = x
+    Dot.CY = y
+
+    GLOBAL Map
+    GLOBAL CurrRoomIndex
+    currRoom = Map[CurrRoomIndex]
+
+    GLOBAL State
+    IF (State = "c")
+        FOR i = 1 TO Map.Count
+            room= Map[i]
+            circle = room[8]
+            IF (circle.Intersect (Dot))
+                TakePictureOf (i)
+                State = "r"
+                RETURN
+            END IF
+        NEXT i
+    END IF
+
+    IF (State = "e" )
+        REM Start the next game
+        EndSceneEnd()
+        GLOBAL NCavesLeft
+        NCavesLeft = NCavesLeft - 1
+        IF (NCavesLeft <= 0) 
+            State = "f"
+            FinishScreen(g)
+        ELSE
+            InitGame(g)
+        END IF
+        RETURN
+    END IF
+
+    IF (State = "f" )
+        PRINT "Start Next Game"
+        REM Start the next game
+        EndSceneEnd()
+        InitGameStreak(g)
+        InitGame(g)
+        RETURN
+    END IF
+
+    IF (State = "s")
+        InitGameStreak(g)
+        InitGame(g)
+        RETURN
+    END IF
+
+    IF (State = "r")
+        GLOBAL Doors
+
+        GLOBAL GestureResult
+
+        nextRoomIndex = -1
+        IF (GestureResult = "UP") THEN nextRoomIndex = currRoom[4]
+        IF (GestureResult = "RIGHT") THEN nextRoomIndex = currRoom[5]
+        IF (GestureResult = "DOWN") THEN nextRoomIndex = currRoom[6]
+        IF (GestureResult = "LEFT") THEN nextRoomIndex = currRoom[7]
+        IF (GestureResult = "")
+            FOR i = 1 TO Doors.Count
+                door = Doors[i]
+                IF (door.Intersect (Dot))
+                    nextRoomIndex  = door.Data
+                END IF
+            NEXT i
+        END IF
+
+        IF (nextRoomIndex > 0)
+            GoToRoom(g, nextRoomIndex)
+            GLOBAL NDoors
+            NDoors = NDoors + 1
+            RETURN
+        END IF
+
+        GLOBAL Camera
+        IF (Camera.Intersect (Dot))
+            State = "c"
+        END IF
+    END IF
+RETURN
+
+FUNCTION InitGameStreak(g)
+    GLOBAL PictureGallery
+    PictureGallery.Clear ()
+    GLOBAL PictureGalleryText
+    PictureGalleryText = 0
+    GLOBAL Score
+    Score = 0
+    GLOBAL NMonsters
+    GLOBAL NDoors
+    GLOBAL NDoorsTotal
+    GLOBAL DoorPct
+    NMonsters = 0
+    NDoors = 0
+    NDoorsTotal = 0
+    DoorPct.Clear()
+
+    GLOBAL NCavesLeft
+    GLOBAL CavesPerStreak
+    NCavesLeft = CavesPerStreak
+    GLOBAL NPicturesLeft
+    NPicturesLeft = 10
+    UpdateScoreDisplay()
+RETURN
+
+REM Sets the Size variable to S or M (small/medium)
+FUNCTION PickUISize(g)
+    GLOBAL  Size
+    Size  =  "S"
+    IF (g.W > 600 AND g.H > 600) THEN Size = "M"
+RETURN
+
+REM Sets the MapNCol and MapNRow based on graphics size and Size
+FUNCTION PickGameSize(g, level)
+    REM ScoreType is either P(panel) or M(mini)
+    GLOBAL ScoreType
+    GLOBAL MapNCol
+    GLOBAL MapNRow
+    GLOBAL Size
+
+    roomsize = 60
+    IF (Size = "M") THEN roomsize = 90
+    h = g.H
+    w = g.W
+    IF (ScoreType ="P") THEN w = w - 200
+    IF (ScoreType = "M") THEN h = h - 40
+
+    roomAdjust = RoomSizeAdjust (level)
+    roomsize = roomsize * roomAdjust
+    MapNCol = Math.Round (w / roomsize)
+    MapNRow = Math.Round (h / roomsize)
+RETURN
+
+FUNCTION RoomRemoveAdjust(level)
+    IF (level = 1) THEN RETURN 0
+    IF (level = 2) THEN RETURN .1
+    IF (level = 3) THEN RETURN .15
+    IF (level = 4) THEN RETURN .20
+RETURN .25
+
+REM RoomAdjust is for the total number of rooms
+FUNCTION RoomSizeAdjust(level)
+    IF (level = 1) THEN RETURN 2.00
+    IF (level = 2) THEN RETURN 1.75
+    IF (level = 3) THEN RETURN 1.50
+    IF (level = 4) THEN RETURN 1.30
+ RETURN 1.10
+
+FUNCTION GetLevel()
+    GLOBAL CavesPerStreak
+    GLOBAL NCavesLeft
+    level = CavesPerStreak - NCavesLeft + 1
+RETURN level
+
+FUNCTION InitGame(g)
+    g.Clear()
+    level= GetLevel()
+    PickUISize(g)
+    PickGameSize(g, level)
+
+    GLOBAL GameResult
+    GameResult = -1
+
+    GLOBAL State
+    State = "r"
+
+    GLOBAL MapNCol
+    GLOBAL MapNRow
+
+    REM Some of the key graphics sizes
+    GLOBAL CellSize
+    GLOBAL RoomRadius
+    GLOBAL CorridorW
+    CellSize = Math.Min (g.W / MapNCol, g.H / MapNRow)
+    RoomRadius = CellSize / 4
+    CorridorW = RoomRadius / 2
+    GLOBAL CurveRadius
+    CurveRadius = RoomRadius * .75
+    MakeMap(g)
+
+    nroom = MapNCol * MapNRow
+    removeCount = nroom * RoomRemoveAdjust (level)
+    RemoveRandomRooms(removeCount)
+    MakeItems(level)
+    MakeDoors(g)
+    MakeWarnings(g)
+
+    GLOBAL Dot
+    GLOBAL VDARK_BROWN
+    g.Fill = VDARK_BROWN
+    Dot = g.Circle (-40, -40, 10)
+
+    REM SetMessage ("Cave Hunt\nWhump")
+
+    GLOBAL CurrRoomIndex
+    CurrRoomIndex = PickStartRoom()
+    DisplayRoom (g, CurrRoomIndex)
+    DisplayRoomDoors (CurrRoomIndex)
+    DisplayWarnings(CurrRoomIndex)
+
+    REM Changing how the map is drawn? Try
+    REM doing DisplayAll* to see the results.
+    GLOBAL SHOW_ALL_ROOMS
+    IF (SHOW_ALL_ROOMS) 
+        DisplayAllCorridors (g)
+         DisplayAllRooms (g)
+    END IF
+RETURN
+
+REM Potentially sets the GameResult to 1 or 2
+FUNCTION TakePictureOf(roomIndex)
+    GLOBAL Map
+    GLOBAL monster
+    GLOBAL pit
+    GLOBAL bat
+    GLOBAL GameResult
+    GLOBAL NPicturesLeft
+    GLOBAL PictureGallery
+
+    text = "🥌"
+    corridor = "🎞"
+    NPicturesLeft = NPicturesLeft - 1
+    IF (NPicturesLeft < 0) THEN GameResult = 10
+    IF (RoomIsValid(roomIndex) = 0)
+        text = corridor
+    END IF
+    IF (RoomHasPit(roomIndex))
+        text = pit
+    END IF
+    IF (RoomHasBat(roomIndex))
+        text = bat
+    END IF
+    IF (RoomHasMonster(roomIndex))
+        text = monster
+        GameResult = 20
+        GLOBAL Score
+        Score = Score + 10
+        UpdateScoreDisplay()
+       GLOBAL NMonsters
+        NMonsters = NMonsters + 1
+    END IF
+    PictureGallery.Add(text)
+    text = "Picture of\n" + text
+    SetMessage (text)
+    UpdatePictureGallery()
+RETURN
+
+FUNCTION EndSceneStart()
+    GLOBAL GameResult
+    GLOBAL  monster
+    IF (GameResult = 0)
+        SetMessage ("Game over\nEaten by the monster!")
+        FuneralMarchChopin()
+    END IF
+
+    IF (GameResult = 1)
+        SetMessage ("Game over\nYou fell into a pit!")
+        FuneralMarchChopin()
+    END IF
+
+    IF (GameResult = 10)
+        SetMessage ("Game over\nNo more pictures!")
+    END IF
+
+    IF (GameResult = 20)
+        SetMessage ("You got a picture\nof the monster!  "  +  monster)
+    END IF
+RETURN
+
+FUNCTION EndSceneEnd()
+    ClearMessage()
+RETURN
+
+REM Potentially sets the game result to 0 (killed)
+FUNCTION GoToRoom(g, nextRoomIndex)
+    GLOBAL GameResult
+
+     drawCorridor =1
+    10 REM If the room has a bat, go to a new room!
+    IF (RoomHasBat (nextRoomIndex))
+        SetMessage ("The Bat takes you\nto a new room")
+        nextRoomIndex = RandomRoom()
+        drawCorridor = 0
+        GOTO 10
+    END IF
+
+    GLOBAL CurrRoomIndex
+    DisplayWarnings (nextRoomIndex)
+
+    DisplayRoom (g, nextRoomIndex)
+    IF (drawCorridor) THEN DisplayCorridor (g, CurrRoomIndex, nextRoomIndex)
+	DisplayRoomDoors (nextRoomIndex)
+    CurrRoomIndex = nextRoomIndex
+
+    REM Handle the occupants of the room
+
+    IF (RoomHasPit(CurrRoomIndex))
+        GameResult = 1
+    END IF
+    IF (RoomHasMonster(CurrRoomIndex))
+        GameResult = 0
+    END IF
+RETURN
+
+FUNCTION PickStartRoom()
+         GLOBAL Map
+    10 REM
+        roomIndex = RandomRoom()
+        REM It's not fair to drop the player into a room with no choice of direction.
+        nCorridors = 0
+        room = Map[roomIndex]
+        FOR port = 4 TO 7
+            idx = room[port]
+            IF (idx > 0) THEN nCorridors = nCorridors + 1
+        NEXT port
+        IF (nCorridors < 2) THEN GOTO 10
+        IF (RoomHasBat (roomIndex)) THEN GOTO 10
+        IF (RoomHasPit (roomIndex)) THEN GOTO 10
+        IF (RoomHasMonster(roomIndex)) THEN GOTO 10
+RETURN roomIndex
+
+FUNCTION DisplayAllRooms(g)
+    GLOBAL Map
+    FOR roomIndex = 1 TO Map.Count
+        DisplayRoom (g, roomIndex)
+    NEXT roomIndex
+RETURN
+
+FUNCTION DisplayAllCorridors(g)
+    GLOBAL Map
+    FOR roomIndex = 1 TO Map.Count
+        room = Map[roomIndex]
+        roomName = room[1]
+        IF (roomName > 0) 
+            FOR i = 4 TO 7
+                nextIndex = room[i]
+                IF (nextIndex > 0) THEN DisplayCorridor (g, roomIndex, nextIndex)
+            NEXT i
+        END IF
+    NEXT roomIndex
+RETURN
+
+
+FUNCTION GetRoomPort (roomIndex, nextIndex)
+    GLOBAL Map
+    nextRoom = Map[nextIndex]
+    FOR i = 4 TO 7
+        IF (nextRoom[i] = roomIndex) THEN RETURN i
+    NEXT i
+RETURN -1
+
+FUNCTION DisplayCorridor (g, index1, index2)
+    GLOBAL Map
+    GLOBAL CellSize
+    GLOBAL RoomRadius
+	
+    room = Map[index1]
+    x1 = RoomX (room)
+    y1 = RoomY (room)
+    room = Map[index2]
+    x2 = RoomX (room)
+    y2 = RoomY (room)
+
+    GLOBAL CorridorW
+    cr = CorridorW / 2
+    GLOBAL DARK_BROWN
+    g.Stroke = DARK_BROWN
+
+    IF (y1 = y2) THEN DisplayCorridorEW (g, x1, y1, x2, y2)
+    IF (x1 = x2) THEN DisplayCorridorNS(g, x1, y1, x2, y2)
+    IF (x1 <> x2 AND y1 <> y2)
+        REM The p1 and p2 values are port numbers 4=North 5=East 6=South and 7=West
+        p1 = GetRoomPort (index2, index1)
+        p2 = GetRoomPort (index1, index2)
+        DisplayCorridorCurveUniversal(g, x1, y1, p1, x2, y2, p2)
+    END IF
+RETURN
+
+REM The p1 and p2 values are port numbers 4=North 5=East 6=South and 7=West
+FUNCTION DisplayCorridorCurveUniversal(g, x1, y1, p1, x2, y2, p2)
+    IF ((p1 = 5 OR p1= 7) AND (p2 = 4 OR p2 = 6))
+        DisplayCorridorCurveUniversalEW_NS(g, x1, y1, p1, x2, y2, p2)
+    END IF
+   REM Swap around to draw EW_NS (there's no NS_EW draw routine)
+    IF ((p1 = 4 OR p1= 6) AND (p2 = 5 OR p2 = 7))
+        DisplayCorridorCurveUniversalEW_NS(g, x2, y2, p2, x1, y1, p1)
+    END IF
+
+
+    REM Draw a squiggle from E/W or W/E
+    REM First one is 5=E to 7=W,  x1<x2 and y1<>y2
+    IF ((p1 = 5 OR p1= 7) AND (p2 = 5 OR p2 = 7))
+         DisplayCorridorCurveUniversalEW_EW(g, x1, y1, p1, x2, y2, p2)
+    END IF
+
+    IF ((p1 = 4 OR p1= 6) AND (p2 = 4 OR p2 = 6))
+         DisplayCorridorCurveUniversalNS_NS(g, x1, y1, p1, x2, y2, p2)
+    END IF
+RETURN
+
+
+FUNCTION DisplayCorridorCurveUniversalEW_NS(g, x1, y1, p1, x2, y2, p2)
+    GLOBAL RoomRadius
+    GLOBAL CurveRadius
+    GLOBAL CellSize
+    distance = (√((x1-x2)² + (y1-y2)²) ) / CellSize
+    radius = CurveRadius
+    IF (distance > 2) THEN radius = CurveRadius * 5
+ 
+    REM The main algorithm handles EW connecting to NS
+    REM To display NS to EW, simple swap the values
+    IF ((p1 = 4 OR p1 = 6) AND (p2 = 5 OR p2 = 7)) THEN RETURN
+	
+    xd = RoomRadius-2
+    yd = xd
+    GLOBAL CorridorW
+    cr = CorridorW / 2
+    IF ((p1 = 5 OR p1= 7) AND (p2 = 4 OR p2 = 6))
+        innerR =radius - cr
+        outerR = radius + cr
+		
+        REM How much E straight is needed?
+        xStart = x1+xd
+        IF (p1 = 7) THEN xStart = x1-xd
+        xEnd = x2
+        yStart = y1
+        yEnd = y2-yd
+
+        IF (p2 = 4) THEN yEnd = y2+yd
+
+        xCurve1 = xEnd - radius
+        IF (p1 = 7) THEN xCurve1 = xEnd + radius
+        yCurve1 = yStart + radius
+        IF (p2 = 4) THEN yCurve1 =  yStart - radius
+
+        REM Draw the starting straight
+        g.Line (xStart, yStart+cr, xCurve1, yStart+cr)
+        g.Line (xStart, yStart-cr, xCurve1, yStart-cr)
+
+        REM Draw the curve
+        ax = xCurve1
+        ay =yCurve1
+        IF (p1 = 5 AND p2 =4)  THEN  a1 = 0
+        IF (p1 = 5 AND p2= 4) THEN a2 = PI/2
+
+        IF (p1 = 5 AND p2 =6) THEN a1 = PI * 1.5
+        IF (p1 = 5 AND p2 =6) THEN a2 = 0
+
+        IF (p1 = 7 AND p2 =4) THEN a1 = PI / 2
+        IF (p1 = 7 AND p2 =4) THEN a2 = PI
+
+        IF (p1 = 7 AND p2 =6) THEN a1 = PI
+        IF (p1 = 7 AND p2 =6) THEN a2 = PI * 1.5
+
+        ArcSize = 0.15
+        g.Arc (ax, ay, outerR-ArcSize, outerR+ArcSize, a1, a2)
+        g.Arc (ax, ay, innerR-ArcSize, innerR+ArcSize, a1, a2)
+
+        REM Draw the final straight
+        g.Line (xEnd-cr, yCurve1, xEnd-cr, yEnd)
+        g.Line (xEnd+cr, yCurve1, xEnd+cr, yEnd)
+    END IF
+RETURN
+
+FUNCTION DisplayCorridorCurveUniversalEW_EW(g, x1, y1, p1, x2, y2, p2)
+    GLOBAL RoomRadius
+    GLOBAL CurveRadius
+    GLOBAL CellSize
+    distance = (√((x1-x2)² + (y1-y2)²) ) / CellSize
+    radius = CurveRadius
+    IF (distance > 2) THEN radius = CurveRadius * 5
+
+    REM The main algorithm handles EW connecting to NS
+    REM To display NS to EW, simple swap the values
+    IF ((p1 = 4 OR p1 = 6) AND (p2 = 5 OR p2 = 7)) THEN RETURN
+	
+    xd = RoomRadius-2
+    yd = xd
+    GLOBAL CorridorW
+    cr = CorridorW / 2
+
+    REM Draw a squiggle from E/W or W/E
+    REM First one is 5=E to 7=W,  x1<x2 and y1<>y2
+    IF ((p1 = 5 OR p1= 7) AND (p2 = 5 OR p2 = 7))
+        innerR =radius/2 - cr
+        outerR = radius/2 + cr
+
+        REM How much E straight is needed?
+        xStart = x1+xd
+        IF (p1 = 7) THEN xStart = x1 - xd
+        xEnd = x2+xd
+        IF (p2=7) THEN xEnd = x2-xd
+
+        xMiddle = (xStart + xEnd) / 2
+        yStart = y1
+        yEnd = y2
+
+        xCurve1 = xMiddle - radius/2
+        IF (x1 > x2) THEN xCurve1 = xMiddle + radius/2
+        yCurve1 = yStart + radius/2
+        IF (y1 > y2) THEN yCurve1 = yStart - radius/2
+        xCurve2 = xMiddle + radius/2
+        IF (x1 > x2) THEN xCurve2 = xMiddle - radius/2
+        yCurve2 = yEnd - radius/2
+        IF (y1 > y2) THEN yCurve2 = yEnd + radius/2
+
+        REM Draw the starting straight
+        g.Line (xStart, yStart+cr, xCurve1, yStart+cr)
+        g.Line (xStart, yStart-cr, xCurve1, yStart-cr)
+
+        REM Draw curve #1
+        ax = xCurve1
+        ay = yCurve1
+        IF (p1 = 5 AND p2 = 7)
+            IF (y1 < y2)
+                a1 = PI*1.5
+                a2= 0
+           ELSE
+                a1 = 0
+                a2 = PI/2
+            END IF
+        END IF
+        IF (p1 =7 AND p2 = 5)
+            IF (y1 < y2)
+                a1 = PI
+                a2 = PI*1.5
+            ELSE
+                a1 = PI/2
+                a2 = PI
+            END IF
+        END IF
+        g.Arc (ax, ay, outerR-0.2, outerR+0.2, a1, a2)
+        g.Arc (ax, ay, innerR-0.2, innerR+0.2, a1, a2)
+
+        REM Draw the middle straight
+        g.Line (xMiddle-cr, yCurve1, xMiddle-cr, yCurve2)
+        g.Line (xMiddle+cr, yCurve1, xMiddle+cr, yCurve2)
+
+        REM Draw curve #2
+        ax = xCurve2
+        ay = yCurve2
+        IF (p1 = 5 AND p2 = 7)
+            IF (y1 < y2)
+                 a1 = PI /2
+                 a2 = PI
+            ELSE
+                a1 = PI 
+               a2 = PI * 1.5
+            END IF
+        END IF
+        IF (p1 =7 AND p2 = 5)
+            IF (y1 < y2)
+                a1  =  0
+                a2 = PI/2
+            ELSE
+                a1 = PI*1.5
+                a2 = 0
+           END IF
+        END IF
+        g.Arc (ax, ay, outerR-0.2, outerR+0.2, a1, a2)
+        g.Arc (ax, ay, innerR-0.2, innerR+0.2, a1, a2)
+		
+        REM Draw the final straight
+        g.Line (xCurve2, yEnd-cr, xEnd, yEnd-cr)
+        g.Line (xCurve2, yEnd+cr, xEnd, yEnd+cr)
+    END IF
+RETURN
+
+FUNCTION DisplayCorridorCurveUniversalNS_NS(g, x1, y1, p1, x2, y2, p2)
+    GLOBAL RoomRadius
+    GLOBAL CurveRadius
+    GLOBAL CellSize
+    distance = (√((x1-x2)² + (y1-y2)²) ) / CellSize
+    radius = CurveRadius
+    IF (distance > 2) THEN radius = CurveRadius * 5
+
+    xd = RoomRadius-2
+    yd = xd
+    GLOBAL CorridorW
+    cr = CorridorW / 2
+
+    REM Draw a squiggle from N/S or S/N
+    REM First one is 5=E to 7=W,  x1<x2 and y1<>y2
+    IF ((p1 = 4 OR p1= 6) AND (p2 = 4 OR p2 = 6))
+        innerR =radius/2 - cr
+        outerR = radius/2 + cr
+
+        REM How much N straight is needed?
+        yStart = y1+yd
+        IF (p1 = 6) THEN yStart = y1 - yd
+        yEnd = y2+yd
+        IF (p2 = 6) THEN yEnd = y2-yd
+
+        yMiddle = (yStart + yEnd) / 2
+        xStart = x1
+        xEnd = x2
+
+        yCurve1 = yMiddle - radius/2
+        IF (y1 > y2) THEN yCurve1 = yMiddle + radius/2
+        xCurve1 = xStart + radius/2
+        IF (x1 > x2) THEN xCurve1 = xStart - radius/2
+        yCurve2 = yMiddle + radius/2
+        IF (y1 > y2) THEN yCurve2 = yMiddle - radius/2
+        xCurve2 = xEnd - radius/2
+        IF (x1 > x2) THEN xCurve2 = xEnd + radius/2
+
+        REM Draw the starting straight
+        g.Line (xStart+cr, yStart, xStart+cr, yCurve1)
+        g.Line (xStart-cr, yStart, xStart-cr, yCurve1)
+
+        REM Draw curve #1
+        ax = xCurve1
+        ay = yCurve1
+        IF (p1 = 4 AND p2 = 6)
+            IF (x1 < x2)
+                a1 = PI/2
+                a2= PI
+           ELSE
+                a1 = 0
+                a2 = PI/2
+            END IF
+        END IF
+        IF (p1 =6 AND p2 = 4)
+            IF (x1 < x2)
+                a1 = PI
+                a2 = PI*1.5
+            ELSE
+                a1 = PI*1.5
+                a2 = 0
+            END IF
+        END IF
+        g.Arc (ax, ay, outerR-0.2, outerR+0.2, a1, a2)
+        g.Arc (ax, ay, innerR-0.2, innerR+0.2, a1, a2)
+
+        REM Draw the middle straight
+        g.Line (xCurve1, yMiddle-cr, xCurve2, yMiddle-cr)
+        g.Line (xCurve1, yMiddle+cr, xCurve2, yMiddle+cr)
+
+        REM Draw curve #2
+        ax = xCurve2
+        ay = yCurve2
+        IF (p1 = 4 AND p2 = 6)
+            IF (x1 < x2)
+                 a1 = PI*1.5
+                 a2 = 0
+            ELSE
+                a1 = PI 
+               a2 = PI * 1.5
+            END IF
+        END IF
+        IF (p1 =6 AND p2 = 4)
+            IF (x1 < x2)
+                a1  =  0
+                a2 = PI/2
+            ELSE
+                a1 = PI/2
+                a2 = PI
+           END IF
+        END IF
+        g.Arc (ax, ay, outerR-0.2, outerR+0.2, a1, a2)
+        g.Arc (ax, ay, innerR-0.2, innerR+0.2, a1, a2)
+		
+        REM Draw the final straight
+        g.Line (xEnd-cr, yCurve2, xEnd-cr, yEnd)
+        g.Line (xEnd+cr, yCurve2, xEnd+cr, yEnd)
+    END IF
+RETURN
+
+
+FUNCTION DisplayCorridorEW(g, x1, y1, x2, y2)
+    GLOBAL RoomRadius
+    d = RoomRadius-2
+    GLOBAL CorridorW
+    cr = CorridorW / 2
+
+    IF (x2 < x1) THEN d = -d
+    g.Line (x1+d, y1-cr, x2-d, y2-cr)
+    g.Line (x1+d, y1+cr, x2-d, y2+cr)
+RETURN
+
+FUNCTION DisplayCorridorNS(g, x1, y1, x2, y2)
+    GLOBAL RoomRadius
+    d = RoomRadius-2
+    GLOBAL CorridorW
+    cr = CorridorW / 2
+
+    IF (y2 < y1) THEN d = -d
+    g.Line (x1-cr, y1+d, x2-cr, y2-d)
+    g.Line (x1+cr, y1+d, x2+cr, y2-d)
+RETURN
+
+
+
+REM Returns the X position of the center of the room
+FUNCTION RoomX(room)
+    col = room[3]
+RETURN RoomColX(room[3])
+
+FUNCTION RoomColX(col)
+    GLOBAL CellSize
+    x = (col - 1) * CellSize + CellSize/2
+RETURN x
+
+REM Returns the Y position of the center of the room
+FUNCTION RoomY(room)
+    GLOBAL CellSize
+    GLOBAL MapNRow
+    GLOBAL ScoreType
+    yoffset = 0
+    IF (ScoreType = "M") THEN yoffset = 40
+    roomRow = MapNRow - room[2] 
+    y = (roomRow) * CellSize + CellSize/2  + yoffset
+RETURN y
+
+FUNCTION RoomRowY(row)
+    GLOBAL CellSize
+    GLOBAL MapNRow
+    GLOBAL ScoreType
+    yoffset = 0
+    IF (ScoreType = "M") THEN yoffset = 40
+    roomRow = MapNRow - row 
+    y = (roomRow) * CellSize + CellSize/2 + yoffset
+RETURN y
+
+REM Display all of the warning indicator
+REM e.g. if there are ats, pits, etc nearby.
+FUNCTION DisplayWarnings(roomIndex)
+    GLOBAL Bats
+    GLOBAL BWarn
+    bresult = RoomHasNear(roomIndex, Bats, 1)
+    BWarn.Opacity = bresult
+
+    GLOBAL Pits
+    GLOBAL PWarn
+    presult = RoomHasNear(roomIndex, Pits, 1)
+    PWarn.Opacity = presult
+
+    GLOBAL Monsters
+    GLOBAL MWarn
+    mresult = RoomHasNear(roomIndex, Monsters, 1)
+    MWarn.Opacity = mresult
+
+    PLAY STOP
+    PLAY WAIT
+    IF (mresult = 1)
+        Monster()
+    ELSE
+        IF (presult = 1) 
+            Pit()
+        ELSE
+            IF (bresult = 1) THEN Bat()
+        END IF
+    END IF
+RETURN
+
+FUNCTION RoomIsValid (roomIndex)
+    GLOBAL Map
+    room = Map[roomIndex]
+    roomName = room[1]
+    IF (roomName <= 0) THEN RETURN 0
+RETURN 1
+
+FUNCTION DisplayRoom(g, roomIndex)
+    GLOBAL Map
+    GLOBAL MapNCol
+    GLOBAL MapNRow
+    GLOBAL CellSize
+    GLOBAL RoomRadius
+    GLOBAL bat
+    GLOBAL pit
+    GLOBAL monster
+
+    room = Map[roomIndex]
+    roomName = room[1]
+    IF (NOT RoomIsValid (roomIndex)) THEN RETURN
+    IF (roomName <= 0) THEN RETURN
+    x = RoomX (room)
+    y = RoomY (room)
+    circle = room[8]
+    circle.Opacity = 1
+    IF (RoomHasBat(roomIndex))
+        btext = g.Text (0, 0, 30, 30, bat, 20)
+        btext.CX = x
+        btext.CY = y + 5
+    END IF
+    IF (RoomHasPit(roomIndex))
+        ptext = g.Text (0, 0, 40, 40, pit, 30)
+        ptext.CX = x
+        ptext.CY = y - 15
+    END IF
+    IF (RoomHasMonster(roomIndex))
+        mtext = g.Text (0, 0, 40, 40, monster, 30)
+        mtext.CX = x
+        mtext.CY = y
+    END IF
+RETURN circle
+
+FUNCTION RoomHasBat(roomIndex)
+    GLOBAL Bats
+    Retval = RoomHas (roomIndex, Bats)
+RETURN Retval
+
+FUNCTION RoomHasPit(roomIndex)
+    GLOBAL Pits
+    Retval = RoomHas (roomIndex, Pits)
+RETURN Retval
+
+FUNCTION RoomHasMonster(roomIndex)
+    GLOBAL Monsters
+    Retval = RoomHas (roomIndex, Monsters)
+RETURN Retval
+
+FUNCTION RoomHas(roomIndex, lookFor)
+    FOR i = 1 TO lookFor.Count
+        IF (lookFor[i] = roomIndex) THEN RETURN 1
+    NEXT i 
+RETURN 0
+
+FUNCTION RoomHasNear(roomIndex, lookFor, distance)
+    list = NearRooms (roomIndex, distance)
+    FOR i = 1 TO list.Count
+        currRoomIndex = list[i]
+        IF (RoomHas (currRoomIndex, lookFor)) 
+            RETURN 1
+        END IF
+    NEXT i
+RETURN 0
+
+FUNCTION NearRooms(roomIndex, distance)
+    DIM list()
+    GLOBAL Map
+    list.Add(roomIndex)
+
+    startIndex = 1
+    endIndex = list.Count
+    FOR d = 1 TO distance
+        FOR i = startIndex TO endIndex
+            roomIndex = list[i]
+            room = Map[roomIndex]
+            FOR j = 4 TO 7
+                nextRoomIndex = room[j]
+                IF (nextRoomIndex <> 0 AND NOT ListContains (list, nextRoomIndex)) 
+                    list.Add (nextRoomIndex)
+                END IF
+            NEXT j
+        NEXT i
+        startIndex  = endIndex + 1
+        endIndex = list.Count
+    NEXT d
+RETURN list
+
+FUNCTION TEST_NearRooms()
+    GLOBAL Map
+    DIM Map()
+    GLOBAL MapNCol
+    GLOBAL MapNRow
+    MapNRow = 4
+    MapNCol = 3
+    MakeMap()
+    
+    list = NearRooms(1, 1)
+    ASSERT (list.Count = 3)
+
+    list = NearRooms(1, 2)
+    ASSERT (list.Count = 6)
+
+    list = NearRooms(1, 0)
+    REM ASSERT (list.Count = 1)
+RETURN
+
+
+FUNCTION ListContains(list, lookFor)
+    FOR i = 1 TO list.Count
+        value = list[i]
+        IF (value  = lookFor) THEN RETURN 1
+    NEXT i
+RETURN 0
+
+
+FUNCTION TEST_HasBats()
+    GLOBAL Bats
+    GLOBAL Map
+    DIM Bats()
+    DIM Map()
+    GLOBAL MapNRow
+    GLOBAL MapNCol
+
+    MapNRow =3
+    MapNCol = 4
+    MakeMap()
+    MakeBats(4)
+    b = Bats[1]
+    n = 0
+    FOR rrr = 1 TO Map.Count
+        IF (RoomHasBat(rrr)) THEN n = n + 1
+    NEXT rrr
+
+   ASSERT (n = 4)
+RETURN
+
+FUNCTION NPercentCap (n, percent, nrooms)
+    max = percent * nrooms
+    IF (n <= max) THEN RETURN n
+RETURN max
+
+FUNCTION PickLevel (level, l1, l2, l3, l4, l5)
+    IF (level = 1) THEN RETURN l1
+    IF (level = 2) THEN RETURN l2
+    IF (level = 3) THEN RETURN l3
+    IF (level = 4) THEN RETURN l4
+RETURN l5
+
+FUNCTION MakeItems(level)
+    GLOBAL MapNRow
+    GLOBAL MapNCol
+    nrooms = MapNRow * MapNCol
+
+    MakeBats (NPercentCap (PickLevel (2, 3, 4, 5, 6), .1, nrooms))
+    MakePits (NPercentCap (PickLevel (2, 3, 5, 7, 9), .15, nrooms))
+    MakeMonsters (NPercentCap (PickLevel (1, 1, 1, 2, 2), .5, nrooms))
+RETURN
+
+FUNCTION MakeBats(N)
+    GLOBAL Bats
+    Bats.Clear()
+    FOR i = 1 TO N
+        10 REM RETRY
+        roomIndex = RandomRoom()
+        IF (RoomHasBat(roomIndex)) THEN GOTO 10
+        Bats.Add (roomIndex)
+    NEXT i
+RETURN
+
+FUNCTION MakeDoors(g)
+    GLOBAL Doors
+    Doors.Clear()
+    FOR i = 1 TO 4
+        door = g.Text (0, 0, 20, 20, "🚪", 20)
+        door.Alignment = "CC"
+        Doors.Add (door)
+        HideDoor(i)
+    NEXT i
+RETURN
+
+FUNCTION DisplayRoomDoors(roomIndex)
+    GLOBAL Map
+    GLOBAL Doors
+    room = Map[roomIndex]
+    FOR i = 4 TO 7
+        nextRoomIndex = room[i]
+        doorIndex  = i - 3
+        door = Doors[doorIndex]
+        door.Data = nextRoomIndex
+        IF (nextRoomIndex < 1) THEN HideDoor(doorIndex)
+        IF (nextRoomIndex >= 1) THEN DisplayDoor(roomIndex, doorIndex)
+    NEXT i
+RETURN
+
+FUNCTION HideDoor(doorIndex)
+    GLOBAL Doors
+    door = Doors[doorIndex]
+    door.CX = -9999
+RETURN
+
+FUNCTION DisplayDoor(roomIndex, doorIndex)
+    GLOBAL Doors
+    GLOBAL Map
+    GLOBAL RoomRadius
+    room = Map[roomIndex]
+    x = RoomX(room)
+    y = RoomY(room)
+    door = Doors[doorIndex]
+    IF (doorIndex = 1) THEN y = y + RoomRadius
+    IF (doorIndex = 2) THEN x = x + RoomRadius
+    IF (doorIndex = 3) THEN y = y - RoomRadius
+    IF (doorIndex = 4) THEN x = x -  RoomRadius
+    door.CX = x
+    door.CY = y
+RETURN
+
+FUNCTION MakeMonsters(N)
+    GLOBAL Bats
+    GLOBAL Pits
+    GLOBAL Monsters
+    Monsters.Clear()
+    FOR i = 1 TO N
+        10 REM RETRY
+        roomIndex = RandomRoom()
+        IF (RoomHasBat(roomIndex)) THEN GOTO 10
+        IF (RoomHasPit(roomIndex)) THEN GOTO 10
+        IF (RoomHasMonster(roomIndex)) THEN GOTO 10
+        Monsters.Add (roomIndex)
+    NEXT i
+RETURN
+
+
+FUNCTION MakePits(N)
+    GLOBAL Bats
+    GLOBAL Pits
+    Pits.Clear()
+    FOR i = 1 TO N
+        10 REM RETRY
+        roomIndex = RandomRoom()
+        IF (RoomHasBat(roomIndex)) THEN GOTO 10
+        IF (RoomHasPit(roomIndex)) THEN GOTO 10
+        Pits.Add (roomIndex)
+    NEXT i
+RETURN
+
+REM Also makes the Scores
+FUNCTION MakeWarnings(g)
+    GLOBAL ScoreType
+    IF (ScoreType = "P") THEN MakeWarningsPanel(g)
+    IF (ScoreType = "M") THEN MakeWarningsMini(g)
+RETURN
+
+FUNCTION MakeWarningsMini(g)
+    GLOBAL MWarn
+    GLOBAL BWarn
+    GLOBAL PWarn
+    GLOBAL Camera
+
+    GLOBAL bat
+    GLOBAL monster
+    GLOBAL pit
+    GLOBAL camera
+
+    g.Fill = BLACK
+
+    h = 40
+    x = 10
+    y = 0
+
+
+    FS = 20
+    WW = FS*1.4
+
+    IF (g.W < 575)
+        ratio = g.W / 575
+        FS = FS * ratio
+        WW = WW * ratio
+    END IF
+
+    IDX = 0.5
+    BWarn = g.Text (IDX*WW, y, IDX*WW+WW, y+h, bat, FS)
+    BWarn.Opacity = 0
+    IDX=IDX+1
+
+    PWarn = g.Text (IDX*WW, y, IDX*WW+WW, y+h, pit, FS)
+    PWarn.Opacity = 0
+    IDX=IDX+1
+
+    MWarn = g.Text (IDX*WW, y, IDX*WW+WW, y+h, monster, FS)
+    MWarn.Opacity = 0
+    IDX=IDX+1
+    IDX=IDX+0.5
+
+    REM Camera etc is always visible
+    Camera = g.Text (IDX*WW, y, IDX*WW+WW, y+h, camera, FS)
+    IDX=IDX+1
+    IDX=IDX+0.5
+
+    GLOBAL CaveText
+    GLOBAL NCavesLeft
+    GLOBAL CavesPerStreak
+    level = GetLevel()
+    CaveText = g.Text (IDX*WW, y, IDX*WW+5*WW, y+h, "Level " + level, FS)
+    CaveText.Opacity = 1
+    IDX=IDX+5
+
+    GLOBAL PictureGalleryText
+    REM Why 30? Because it can't hurt to be extra long.
+    PictureGalleryText = g.Text (IDX*WW, y, IDX*WW+10*WW, y+h, "GALL", FS)
+    UpdatePictureGallery()
+    IDX=IDX+10
+
+    GLOBAL ScoreText
+    GLOBAL Score
+    ScoreText = g.Text (IDX*WW, y, IDX*WW+10*WW, y+h, ""+Score, FS+5)
+    IDX=IDX+10
+RETURN
+
+FUNCTION MakeWarningsPanel(g)
+    GLOBAL MWarn
+    GLOBAL BWarn
+    GLOBAL PWarn
+    GLOBAL Camera
+
+    GLOBAL bat
+    GLOBAL monster
+    GLOBAL pit
+    GLOBAL camera
+
+    g.Fill = BLACK
+
+    h = 40
+    w = 200
+    x = g.W - w
+    y = g.H - 10 - h
+
+     FS  =  30
+
+    BWarn = g.Text (x, y, x+w, y+h, bat, 20)
+    BWarn.Opacity = 0
+    y = y - h
+
+    PWarn = g.Text (x, y, x+w, y+h, pit, FS)
+    PWarn.Opacity = 0
+    y = y - h
+
+    MWarn = g.Text (x, y, x+w, y+h, monster, FS)
+    MWarn.Opacity = 0
+    y = y - h
+    y = y - h
+
+    REM Camera etc is always visible
+    g.Text (x, y, x+w, y+h, "Take Picture", 30)
+    y = y - h
+    Camera = g.Text (x, y, x+w, y+h, camera, FS)
+    y = y - h
+    y = y - h
+    
+
+    g.Text (x, y, x+w, y+h, "Scoring", FS)
+    y = y - h
+    GLOBAL CaveText
+    GLOBAL NCavesLeft
+    CaveText = g.Text (x, y, x+w, y+h, "Cvs="+NCavesLeft, FS)
+    CaveText.Opacity = 1
+    y = y - h
+
+    GLOBAL ScoreText
+    GLOBAL Score
+    ScoreText = g.Text (x, y, x+w, y+h, ""+Score, FS+5)
+    y = y - h
+    y = y - h
+
+    g.Text (x, y, x+w, y+h, "Picture Gallery", 30)
+    y = y - h
+    y = y - h*4
+    GLOBAL PictureGalleryText
+    PictureGalleryText = g.Text (x, y, x+w, y+h*4, "GALL", FS)
+    UpdatePictureGallery()
+    y = y - h*4
+RETURN
+
+FUNCTION UpdatePictureGallery()
+    GLOBAL PictureGalleryText
+    GLOBAL PictureGallery
+    GLOBAL ScoreType
+    IF (PictureGallery.Count = 0)
+        PictureGalleryText.Text = ""
+        RETURN
+    END IF
+    txt = ""
+    col = 0
+    FOR i = PictureGallery.Count TO 1 STEP -1
+        IF (col >= 3) 
+            col = 0
+            IF (ScoreType = "P") THEN txt = txt + "\n"
+        END IF
+        txt = txt + PictureGallery[i]
+        col = col +  1
+    NEXT i
+    PictureGalleryText.Text = txt
+RETURN
+
+FUNCTION UpdateScoreDisplay()
+    GLOBAL ScoreText
+    GLOBAL Score
+    ScoreText.Text = ""+Score
+
+    GLOBAL CaveText
+    GLOBAL NCavesLeft
+    GLOBAL CavesPerStreak
+    level = GetLevel()
+    CaveText.Text = "Level "+level
+RETURN
+
+FUNCTION RandomRoom()
+    GLOBAL MapNRow
+    GLOBAL MapNCol
+    NROOM = MapNRow * MapNCol
+10 REM LoopTop
+    roomIndex = Math.Floor (RND * NROOM) + 1
+    IF (NOT RoomIsValid(roomIndex)) THEN GOTO 10
+RETURN roomIndex
+
+FUNCTION TEST_RandomRoom()
+    GLOBAL MapNRow
+    GLOBAL MapNCol
+    NROOM = MapNRow * MapNCol
+
+    FOR i = 1 TO 4
+        room = RandomRoom()
+        ASSERT (room >= 1)
+        ASSERT (room <= NROOM)
+    NEXT i
+RETURN
+
+FUNCTION PrintMap()
+    GLOBAL Map
+    FOR i = 1 TO Map.Count
+        room = Map[i]
+        PRINT i, room[1], room[2], room[3]
+    NEXT i
+RETURN
+
+
+FUNCTION RemoveRandomRooms (NToRemove)
+     GLOBAL Map
+    FOR i = 1 TO NToRemove
+        index = RandomRoom()
+        IF (RoomHasBat(index)) THEN NEXT i
+        IF (RoomHasPit(index)) THEN NEXT i
+        IF (RoomHasMonster(index)) THEN NEXT i
+        RemoveRoomIndex(Map, index)
+    NEXT i
+RETURN
+
+FUNCTION  RemoveRoomIndex(Map, index)
+    room = Map[index]
+    room[1] = -1
+
+    DIM roomOld()
+    FOR ii = 1 TO 7
+        roomOld[ii] = room[ii]
+    NEXT ii
+
+    REM Add a curved corridor!
+    REM Start by adding in all the curved corridors!
+    FOR iFindPort = 4 TO 7
+        REM There is a chance of adding in curved corridors.
+        REM IF (RND > .2) THEN NEXT iFindPort
+
+        jFindPort = NextRoomPort (iFindPort)
+        iindex = roomOld[iFindPort]
+        jindex = roomOld[jFindPort]
+        connected = RoomsConnected (Map, iindex, jindex)
+        REM i and j are room indexes that can get a curved corridor.
+        IF ((iindex > 0 AND jindex > 0) AND connected = 0)
+            iPort = FindRoomPort(Map, iindex, index)
+            jPort = FindRoomPort(Map, jindex, index)
+
+           str = "" + iindex + ":" + iPort + "..." + jindex + ":" + jPort
+           REM PRINT "NOTE: connect: " + str
+           UnconnectRoom (Map, iindex, iPort)
+           UnconnectRoom (Map, jindex, jPort)
+           ConnectRooms (Map, iindex, iPort, jindex, jPort)
+        END IF
+    NEXT iFindPort
+
+    FOR port = 4 TO 7
+        nextRoomIndex = room[port]
+        RemoveRoomFrom (Map, nextRoomIndex, index)
+        RemoveRoomFrom (Map, index, nextRoomIndex)
+        room[port] = -1
+    NEXT port
+RETURN
+
+REM Whatever index/port points to, remove it.
+FUNCTION UnconnectRoom (Map, roomIndex, port)
+    IF (roomIndex < 0) THEN RETURN
+    IF (port < 0) THEN RETURN
+    room = Map[roomIndex]
+    nextRoomIndex = room[port]
+    IF (nextRoomIndex > 0)
+        RemoveRoomFrom(Map, nextRoomIndex, index)
+        RemoveRoomFrom(Map, index, nextRoomIndex)
+    END IF
+RETURN
+ 
+FUNCTION RoomsConnected(Map, index1, index2)
+    room = Map[index1]
+    FOR i = 4 TO 7
+        idx = room[i]
+        IF (idx = index2) THEN RETURN idx
+    NEXT i
+RETURN 0
+
+FUNCTION ConnectRooms (Map, iindex, iPort, jindex, jPort)
+    IF (iPort < 0) THEN RETURN
+    IF (jPort < 0) THEN RETURN
+    IF (iindex  < 0) THEN RETURN
+    IF (jindex < 0) THEN RETURN
+
+               REM iOppositePort = OppositePort(iPort)
+               iroom  = Map[iindex]
+               iroom[iPort] = jindex
+
+               jroom = Map[jindex]
+               REM jOppositePort = OppositePort(jPort)
+               jroom[jPort] = iindex
+RETURN
+
+FUNCTION NextRoomPort(port)
+    Retval = port + 1
+    IF (Retval > 7) THEN Retval = Retval - 4
+RETURN Retval
+
+FUNCTION OppositePort(port)
+    Retval = port + 2
+    REM N-->S and E-->W (and S-->N and W-->E)
+    IF (Retval > 7) THEN Retval = Retval - 4
+RETURN Retval
+
+REM Given a roomIndex which connects to roomToRemoveIndex,
+REM find the port in the room that points to roomToRemoveIndex
+REM and set it to -1 (removed).
+REM Does not remove the reverse (so you might need to call it twice)
+FUNCTION RemoveRoomFrom(Map, roomIndex, roomToRemoveIndex)
+    IF (roomIndex <= 0) THEN RETURN
+    room = Map[roomIndex]
+    FOR port = 4 TO 7
+        nextRoomIndex = room[port]
+        IF (nextRoomIndex = roomToRemoveIndex)
+            room[port] = -1
+        END IF
+    NEXT port
+RETURN
+ 
+REM  Finds which port in a room points to a specified room.
+FUNCTION FindRoomPort (Map, roomIndex, findRoomIndex)
+    room = Map[roomIndex]
+    FOR port = 4 TO 7
+        nextRoomIndex = room[port]
+        IF (nextRoomIndex = findRoomIndex)
+             RETURN  port
+        END IF
+    NEXT port
+RETURN -1
+
+REM Map contents
+REM 1. Room name
+REM 2, 3 ROW+COL location (zero based, 0,0 is top-left)
+REM 4, 5, 6, 7: NESW rooms (0==no room)
+REM 8: Circle for the room
+REM A common map size is 3 columns by 4 rows
+FUNCTION MakeMap(g)
+    GLOBAL Map
+    GLOBAL MapNRow
+    GLOBAL MapNCol
+    GLOBAL RoomRadius
+
+    GLOBAL DARK_BROWN
+    GLOBAL MEDIUM_BROWN
+    g.Fill = MEDIUM_BROWN
+    g.Stroke = MEDIUM_BROWN
+
+    Map.Clear()
+    roomIndex = 1
+    FOR r = 1 TO MapNRow
+        FOR c = 1 TO MapNCol
+                roomIndex = ((r-1)*MapNCol) + c
+                n = roomIndex - MapNCol
+                IF (r = 1) THEN n = 0
+                e = roomIndex + 1
+                IF (c = MapNCol) THEN e = 0
+                s = roomIndex + MapNCol
+                IF (r = MapNRow) THEN s = 0
+                w = roomIndex - 1
+                IF (c = 1) THEN w = 0
+                x = RoomColX (c)
+                y = RoomRowY (r)
+                circle = g.Circle (x, y, RoomRadius)
+                circle.Opacity = 0
+
+                Map.AddRow (roomIndex, r, c, n, e, s, w, circle)
+                roomIndex = roomIndex + 1
+        NEXT c
+    NEXT r
+RETURN
+
+FUNCTION MakeMsgBox(g)
+    GLOBAL DARK_TAN
+    GLOBAL VDARK_BROWN
+    GLOBAL Size
+
+    fontsize = 36
+    IF (Size = "S") THEN fontsize = 28
+    twidth = g.W
+    theight = 140 
+    IF (twidth > 400) THEN twidth = 400
+    r = g.Rectangle (0, 0, twidth, theight)
+    r.Stroke =DARK_TAN
+    r.Fill = DARK_TAN
+    r.CX = g.W / 2
+    r.CY = g.H / 2
+    g.Stroke = VDARK_BROWN
+    g.Fill = VDARK_BROWN
+    txt = g.Text (0, 0, twidth-20, theight-20, "The monster got you!", fontsize)
+    txt.CX = r.CX
+    txt.CY  = r.CY - 10
+    txt.Alignment = "CC"
+    r.Data = txt
+RETURN r
+
+FUNCTION SetMessage(msg)
+    GLOBAL MsgBox
+    ClearMessage()
+    GLOBAL g
+    MsgBox = MakeMsgBox(g)
+
+    text = MsgBox.Data
+    text.Text = msg
+    MsgBox.Opacity = 1
+    text.Opacity = 1
+RETURN
+
+FUNCTION FadeMessage()
+    GLOBAL MsgBox
+    IF (0 = MsgBox) THEN RETURN
+    IF (MsgBox.Opacity <= 0) THEN RETURN
+    text = MsgBox.Data
+    MsgBox.Opacity = MsgBox.Opacity * .92
+    text.Opacity = text.Opacity * .92
+    IF (MsgBox.Opacity < .02) 
+        MsgBox.Opacity = 0
+        text.Opacity = 0
+        MsgBox = 0
+    END IF
+RETURN
+
+FUNCTION ClearMessage()
+    GLOBAL MsgBox
+    IF (0 = MsgBox) THEN RETURN
+    text = MsgBox.Data
+    text2 = text.Data
+    MsgBox.Opacity = 0
+    text.Opacity = 0
+    IF (text2 <> 0) THEN text2.Opacity = 0
+    MsgBox = 0
+RETURN
+
+FUNCTION MakeSplashScreen(g, title, help)
+    GLOBAL DARK_TAN
+    GLOBAL VDARK_BROWN
+
+    Border = 40
+    FontSize = 24
+    TitleFontSize = 54
+    GLOBAL Size
+    IF (Size = "S") 
+        Border = 5
+        FontSize =18
+        TitleFontSize = 32
+    END IF
+
+    twidth = g.W - (Border*2)
+    theight = g.H - (Border*2)
+    r = g.Rectangle (Border, Border, twidth, theight)
+    r.Stroke =DARK_TAN
+    r.Fill = DARK_TAN
+    r.CX = g.W / 2
+    r.CY = g.H / 2
+    g.Stroke = VDARK_BROWN
+    g.Fill = VDARK_BROWN
+    y = g.H - (Border+20)
+    h = 80
+    IF (Size = "S") THEN h = 60
+    txt = g.Text (Border+20, y, twidth-(2*20), y-80, title, TitleFontSize)
+    txt.Alignment = "CC"
+    r.Data = txt
+
+    y = y - (h*1.25)
+    txt2 = g.Text (Border+20, y, twidth-(2*20), Border+2, help, FontSize)
+    txt2.Alignment = "LT"
+    txt.Data = txt2
+RETURN r
+
+FUNCTION FinishScreen(g)
+    GLOBAL NMonsters
+    GLOBAL DoorPct
+    GLOBAL NDoorsTotal
+    GLOBAL CavesPerStreak
+    GLOBAL Score
+
+    REM Add a bonus for efficient dungeon work
+    REM The bonus should be up to 2x the normal score (it's a big bonus)
+    REM [a] luck bonus for levels with <.33
+    REM [b] fast bonus for any level < .4
+    REM [b] streak bonus for all levels < .45 AND all monsters
+
+    luck = ""
+    fast = ""
+    streak = 1
+    FOR i = 1 TO  DoorPct.Count
+        pct = DoorPct[i]
+        IF (pct < .20) THEN luck = "Lucky level  bonus!"
+        IF (pct < .42) THEN fast = "Fast level bonus!"
+        IF (pct > .45) THEN streak = 0
+    NEXT i
+    IF (streak = 1) THEN streak = "Fast on all level bonus!"
+    mult = 1
+    IF (luck <>"") THEN mult = mult + .2
+    IF (fast <> "") THEN mult = mult + .3
+    IF (streak <> 0) THEN mult = mult + .5
+
+    Score = Score * mult
+
+    ClearMessage()
+    GLOBAL MsgBox 
+    help = ""
+    help = help + "You got " + NMonsters + " pictures\n"
+    help = help + "You went through " + NDoorsTotal + " doors\n"
+    IF (luck <> "") THEN help = help + luck + "\n"
+    IF (fast <> "") THEN help = help + fast + "\n"
+    IF (streak <> 0) THEN help = help + streak + "\n"
+    help = help + "\n"
+    help = help + "Your final  score is " +Score + "\n"
+    help = help + "\n"
+    MsgBox = MakeSplashScreen(g, "Game Over", help)
+RETURN
+
+FUNCTION SplashScreen(g)
+    GLOBAL State
+    State = "s"
+    HallOfTheMountainKings()
+
+    GLOBAL Size
+    IF (Size = "M") THEN SplashScreenMedium(g)
+    IF (Size = "S") THEN SplashScreenSmall(g)
+RETURN
+
+FUNCTION SplashScreenMedium(g)
+bat= "🦇"
+monster = "🐉"
+pit = "🕳"
+camera = "🎥"
+door = "🚪"
+    GLOBAL CavesPerStreak
+
+    ClearMessage()
+    GLOBAL MsgBox 
+    help = ""
+    help = help + "To complete each level, you must take a picture of the monster with your\n"
+    help = help + "drone (or die). The drone only has enough power to make 10 flights for\n"
+    help = help + "the entire game, so choose your pictures well.\n"
+    help = help + "To take a picture, first click on 🎥 and then on a location in the cave\n"
+    help = help + "\n"
+    help = help + "To move to a new cavern in the cave, click on a door (🚪)\n"
+    help = help + "In each room you can hear what's in a nearby room. You can hear\n"
+    help = help + "the monster (🐉), pits (🕳), and the bats (🦇). Use your logic skills\n"
+    help = help + "to deduce which are the safe and unsafe rooms.\n"
+    help = help + "\n"
+    help = help + "There are " + CavesPerStreak + " levels in the game. The more pictures of monsters you take,\n " 
+    help = help + "the higher your score.\n"
+    help = help + "\n"
+    help = help + "\n"
+    help = help + "\n"
+    MsgBox = MakeSplashScreen(g, "Hunt the Wumpus", help)
+RETURN
+
+FUNCTION SplashScreenSmall(g)
+bat= "🦇"
+monster = "🐉"
+pit = "🕳"
+camera = "🎥"
+door = "🚪"
+    GLOBAL CavesPerStreak
+
+    ClearMessage()
+    GLOBAL MsgBox 
+    help = ""
+    REM                "To complete each level, you must\n"
+    help = help + "On each level, you take a picture\n"
+    help = help + "of the monster with drone (or die). \n"
+    help = help + "You can take up tp 10 pictures.\n"
+    help = help + "Click on 🎥 and then on a room\n"
+    help = help + "\n"
+    help = help + "Click on a door (🚪) to move. In\n"
+    help = help + "each room you can hear nearby\n"
+    help = help + "monster (🐉), pits (🕳), and bats\n"
+    help = help + " (🦇). Avoid them!\n"
+    help = help + "\n"
+    help = help + "There are " + CavesPerStreak + " levels in the game.\n" 
+    help = help + "The more pictures of monsters\n"
+    help = help + "you take in fewer moves, the higher\n"
+    help = help + "your score will be.\n"
+    help = help + "\n"
+    help = help + "\n"
+    MsgBox = MakeSplashScreen(g, "Hunt the Wumpus", help)
+RETURN
+```
+### MusicForGames
+Different sounds effects you can use in your games.
+```BASIC
+CLS
+PRINT "Pick your music"
+PRINT " "
+PRINT "1. Funeral March" , "D.  Death"
+PRINT "2. Hall of the mountain" , "S. Space"
+PRINT "3. Bat" , " ", "T. Triumph"
+PRINT "4. Pit" , " ", "W. Warning"
+PRINT "5. Monster"
+PRINT " "
+PRINT "Type X to Exit"
+10 REM
+    cmd = INKEY$
+    IF (cmd = "")
+        PAUSE 10
+        GOTO 10
+    END IF
+    PLAY STOP
+    IF (cmd = "1") THEN FuneralMarchChopin()
+    IF (cmd = "2") THEN HallOfTheMountainKings()
+    IF (cmd = "3") THEN Bat()
+    IF (cmd = "4") THEN Pit()
+    IF (cmd = "5") THEN Monster()
+    IF (cmd = "D") THEN Death1()
+    IF (cmd = "S") THEN Space1()
+    IF (cmd = "T") THEN Triumph1()
+    IF (cmd = "W") THEN Warning1()
+    IF (cmd = "X") THEN STOP
+    GOTO 10
+PRINT "All done!"
+REM dd
+
+FUNCTION Death1()
+    PLAY STOP
+    PLAY "T220 I41 O3 EDC<BA1"
+RETURN
+
+FUNCTION Space1()
+    PLAY STOP
+    PLAY "T100 I102 O7 F8 G8 A2"
+RETURN
+
+FUNCTION Triumph1()
+    PLAY STOP
+    PLAY "T220 I57 O6 C3 C8 C8 C8 C3 D4 E1"
+RETURN
+
+FUNCTION Warning1()
+    PLAY STOP
+    PLAY "T220 I99 O2 A4 A4"
+RETURN
+
+
+
+FuneralMarchChopin()
+PLAY WAIT
+
+FUNCTION FuneralMarchChopin()
+    instr = "I21"
+    tempo = "T60 "
+    bar1 = "L4A L8A L16A L2A"
+    bar2 = "L4A L8A L16A L2A"
+    bar3 = "L4A L8A L16A L4A >L8C< L16B"
+    bar4 = "L8B L16A L8A L16G# L2A"
+    REM Original score had the L16G# as a L16A. I like
+    REM mine a little better.
+    music = instr + tempo + "<<" + bar3 + bar4
+    PLAY music
+RETURN
+
+FUNCTION HallOfTheMountainKings()
+    instr = "I10 "
+    tempo = "T138 "
+    bar1 = "L8 << GAB>CD<B> L4 D"
+    bar2 = "L8 C# < A# > L4C#  L8 C < A >L4C"
+    bar3 = "L8 <G A# B>C D<B>DG"
+    bar4 = "L8 FD<B>D  L2 F"
+    music = instr + tempo + bar1 + bar2 + bar3 + bar4
+PLAY music
+RETURN
+
+FUNCTION Bat()
+    REM I124 is the bird sounds
+    REM Setting T100 and L(length)1 means that
+    REM we have a longer sound. And the >>>A
+    REM has a kind of sci-fi sound
+    PLAY "I124 L1 T100 >>>A"
+RETURN
+
+FUNCTION Pit()
+    REM I123 is the ocean sounds.
+    REM Setting T100 and L(length)1 means that
+    REM we have a nice long sound with a 
+    REM wind quality.
+    PLAY "I123 L1 T100 <D"
+RETURN
+
+FUNCTION Monster()
+    REM I120  is the reverse cymbol sound.
+    REM Setting T100 and L(length)1 means that
+    REM we have a nice long sound with a 
+    REM breathy monster quality
+    PLAY "I120 L1  O1 D"
+RETURN
+```
+### P🏐NG
+An update of a classic! This completely new version is a two-person game with slick modern graphics
+**Default Key**: 🏐
+```BASIC
+CLS
+PRINT "PONG, the game"
+BW = 20
+g = Screen.FullScreenGraphics()
+g.Background = "#226622"
+g.Fill  = "#999999"
+g.Stroke = g.Fill
+side1 = g.Rectangle (0, 0, BW, g.H)
+side2 = g.Rectangle (g.W-BW, 0, g.W, g.H)
+side3 = g.Rectangle (0, g.H-BW, g.W, g.H)
+side4 = g.Rectangle (0, 0, g.W, BW)
+BW = BW * .8
+centerline = g.Rectangle (g.W/2-BW/2, 0, g.W/2+BW/2, g.H)
+score1 = 0
+score2 = 0
+
+scoreh = 100
+scoregap = 40
+g.Fill = WHITE
+scoretext1 = g.Text (0, g.H-scoreh-60, g.W/2 - scoregap, g.H-60, score1, 60)
+scoretext1.Alignment = "RB"
+scoretext2 = g.Text (g.W/2+scoregap, g.H-scoreh-60, g.W, g.H-60, score2, 60)
+scoretext2.Alignment = "LB"
+scoretitle = g.Text (0, g.H-100, g.W, g.H-BW, "SCORE", 40)
+scoretitle.Alignment = "CT"
+
+
+REM make the two goals
+g.Fill = BLUE
+g.Stroke = BLUE
+goalx = 0
+goalw = BW+10
+goalh = g.H / 3
+goal1 = g.Rectangle (goalx, g.H/2-goalh/2, goalx+goalw, g.H/2+goalh/2)
+goal2 = g.Rectangle (g.W-goalx-goalw, g.H/2-goalh/2, g.W-goalx, g.H/2+goalh/2)
+
+REM make the ball
+ballsize=40
+ball = g.Text (100, g.H-200, 100+ballsize, g.H-200+ballsize, "🏐", 30)
+ball.Alignment="CC"
+dx = 25
+dy = -1
+
+REM
+REM Make the paddles!
+REM
+g.Fill = "#FFFFFF"
+g.Stroke = "#FFFFFF"
+paddledist = 30
+paddleh = g.H/6
+paddlew = 10
+x = BW+paddledist
+paddle1 = g.Rectangle (x, g.H/2-paddleh/2, x+paddlew, g.H/2+paddleh/2)
+x = g.W - BW - paddledist - paddlew
+paddle2 = g.Rectangle (x, g.H/2-paddleh/2, x+paddlew, g.H/2+paddleh/2)
+
+REM if you move a paddle, p{12}dy is set to pdyvalue (possibly negative)
+REM each frame, the p{12}dy values get smaller (multiplied by pdyewma)
+REM when the ball hits a paddle, the y value gets an additional p{12}dy
+REM result: players can "spin" the ball, adding some skill to the game
+p1dy = 0
+p2dy = 0
+pdyvalue = 4
+pdyewma= .9
+
+REM the hitline is used for debugging
+g.Stroke = YELLOW
+g.Fill = YELLOW
+hitline = g.Rectangle (0, 40, g.W, 41) 
+hitline.Opacity = 0
+
+goalanimationtime =20
+goaltimeleft = 0
+DIM stars()
+FOR i = 1 TO 40
+    star = g.Text (0, 0, 75, 75, "🌟", RND*20+30)
+    star.Opacity = 0
+    stars[i] = star
+NEXT i
+
+winanimationtime =20
+wintimeleft = 0
+DIM flowers()
+FOR i = 1 TO 40 STEP 5
+    flowers[i+0] = MakeFlower (g, "🌷")
+    flowers[i+1] = MakeFlower (g, "🌸")
+    flowers[i+2] = MakeFlower (g, "🌹")
+    flowers[i+3] = MakeFlower (g, "🍁")
+    flowers[i+4] = MakeFlower (g, "🏵")
+NEXT i
+FUNCTION MakeFlower(g, str)
+    flower = g.Text (0, 0, 150, 150, str, RND*20+30)
+    flower.Opacity = 0
+RETURN flower
+
+trophy = g.Text (0, 0, 200, 200, "🏆", RND*70+80)
+trophy.Opacity = 0
+trophy.Alignment = "CC"
+
+NEXTW = 250
+NEXTH = 60
+nextrect = g.Rectangle (g.W/2-NEXTW/2, 30, g.W/2+NEXTW/2, NEXTH+30)
+nextrect.Fill = BLACK
+nexttext = g.Text (g.W/2-NEXTW/2, 30, g.W/2+NEXTW/2, NEXTH+30, "Press N for next game\nor X to exit", 20)
+nexttext.Alignment="CC"
+nextrect.Opacity = 0
+nexttext.Opacity = 0
+
+
+REM states r=running s=stopped g=goal w=winning
+state = "r"
+System.SetInterval ("Frame", 50, "")
+FOREVER
+STOP
+
+FUNCTION Frame(arg)
+    cmd = INKEY$
+    GLOBAL g
+    GLOBAL state
+    GLOBAL paddle1
+    GLOBAL paddle2
+    GLOBAL goaltimeleft
+    GLOBAL wintimeleft
+    GLOBAL score1
+    GLOBAL score2
+    GLOBAL scoretext1
+    GLOBAL scoretext2
+
+    GLOBAL p1dy
+    GLOBAL p2dy
+    GLOBAL pdyvalue
+    GLOBAL pdyewma
+
+    p1dy = p1dy * pdyewma
+    p2dy = p2dy * pdyewma
+    speed = 30
+    IF (cmd = "A") 
+        paddle1.CY = paddle1.CY + speed
+        IF (paddle1.CY > g.H) THEN paddle1.CY = g.H
+        p1dy = p1dy + pdyvalue
+    END IF
+    IF (cmd = "Z")
+        paddle1.CY = paddle1.CY - speed
+        IF (paddle1.CY < 0) THEN paddle1.CY = 0
+        p1dy = p1dy - pdyvalue
+    END IF
+    IF (cmd = "K")
+        paddle2.CY = paddle2.CY + speed
+        IF (paddle2.CY > g.H) THEN paddle2.CY = g.H
+        p2dy = p2dy + pdyvalue
+    END IF
+    IF (cmd = "M")
+        paddle2.CY = paddle2.CY - speed
+        IF (paddle2.CY < 0) THEN paddle2.CY = 0
+        p2dy = p2dy - pdyvalue
+    END IF
+    IF (state = "w" AND cmd = "N")
+        state = "r"
+        score1 = 0
+        score2 = 0
+        scoretext1.Text = score1
+        scoretext2.Text = score2
+
+        WinAnimationEnd()
+    END IF
+    IF (state = "w" AND cmd = "X")
+        FOREVER STOP
+    END IF
+
+    REM debugging commands
+    IF (cmd = "G") THEN GoalAnimationStart()
+    IF (cmd = "W") THEN WinAnimationStart(1)
+    IF (cmd = "E") THEN WinAnimationStart(2)
+    GLOBAL ball
+    IF (cmd  = "D") THEN ball.CY = ball.CY+25
+    IF (cmd  = "C") THEN ball.CY = ball.CY-25
+
+    IF (cmd = "S")
+        newstate = "s"
+        IF (state = "s") THEN  newstate = "r"
+        state = newstate
+    END IF
+
+    IF (state = "r") THEN MoveBallWithBounce ()
+
+    IF (state = "g")
+        GoalAnimation()
+        goaltimeleft = goaltimeleft - 1
+        IF (goaltimeleft <= 0)
+            state = "r"
+            GoalAnimationEnd()
+        END IF
+    END IF
+
+    IF (state = "w")
+        WinAnimation()
+        wintimeleft = wintimeleft - 1
+        IF (wintimeleft <= 0)
+            WinAnimationEnd()
+            winner = IsWinner (score1, score2)
+            WinAnimationStart(winner)
+        END IF
+    END IF
+RETURN
+
+FUNCTION TEST_IsWinner()
+    ASSERT (IsWinner (1, 10) = 0)
+    ASSERT (IsWinner (1, 11) = 2)
+    ASSERT (IsWinner (1, 12) = 2)
+    ASSERT (IsWinner (11, 1) = 1)
+
+    REM Verify the "win by two"
+    ASSERT (IsWinner(11,9) = 1)
+    ASSERT (IsWinner(11,10) = 0)
+    ASSERT (IsWinner(12,10) = 1)
+
+    ASSERT (IsWinner(9,11) = 2)
+    ASSERT (IsWinner(10,11) = 0)
+    ASSERT (IsWinner(10,12) = 2)
+RETURN 
+
+FUNCTION IsWinner(score1, score2)
+    WINSCORE = 11
+    WINBY = 2
+    IF (Math.Max(score1, score2) < WINSCORE) THEN RETURN 0
+    IF (Math.Abs(score1 - score2) < WINBY)  THEN RETURN 0
+    IF (score1 > score2) THEN RETURN 1
+    RETURN 2
+RETURN
+
+FUNCTION WinAnimation()
+    GLOBAL flowers
+    FOR i = 1 TO flowers.Count
+        flower= flowers[i]
+        flower.CX = flower.CX + RND * 10
+        flower.CY = flower.CY + RND * 10
+    NEXT i
+    GLOBAL trophy
+    trophy.FontSize = trophy.FontSize + 5
+RETURN
+
+REM winner is 1 or 2
+FUNCTION WinAnimationStart(winner)
+    PLAY "I57 L8 GGG  L4 A L4 B > L2 C"
+
+    GLOBAL flowers
+    GLOBAL g
+    FOR i = 1 TO flowers.Count
+        flower= flowers[i]
+        flower.CX = RND * g.W
+        flower.CY = RND * g.H
+        flower.Opacity = 1
+    NEXT i
+
+    GLOBAL nextrect
+    GLOBAL nexttext
+    nextrect.Opacity = 1
+    nexttext.Opacity = 1
+
+    GLOBAL trophy
+    w = g.W / 2
+    REM display in left or right half
+    trophy.CX = w/2 + (winner-1)*w
+    trophy.CY = g.H/2
+    trophy.FontSize = 40
+    trophy.Opacity = 1
+
+    GLOBAL state
+    GLOBAL wintimeleft
+    GLOBAL winanimationtime
+    state = "w"
+    wintimeleft = winanimationtime
+RETURN
+
+FUNCTION WinAnimationEnd()
+    GLOBAL flowers
+    FOR i = 1 TO flowers.Count
+        flower= flowers[i]
+        flower.Opacity = 0
+    NEXT i
+
+    GLOBAL trophy
+    trophy.Opacity = 0
+
+    GLOBAL nextrect 
+    GLOBAL nexttext
+    nextrect.Opacity = 0
+    nexttext.Opacity = 0
+RETURN
+
+FUNCTION GoalAnimation()
+    GLOBAL stars
+    FOR i = 1 TO stars.Count
+        star= stars[i]
+        star.CX = star.CX + RND * 10
+        star.CY = star.CY + RND * 10
+    NEXT i
+RETURN
+
+FUNCTION GoalAnimationStart()
+    PLAY "I57 L8 GGG  L4 A L4 B > L2 C"
+
+    GLOBAL stars
+    GLOBAL g
+    FOR i = 1 TO stars.Count
+        star= stars[i]
+        star.CX = RND * g.W
+        star.CY = RND * g.H
+        star.Opacity = 1
+    NEXT i
+
+    GLOBAL state
+    GLOBAL goaltimeleft
+    GLOBAL goalanimationtime
+    state = "g"
+    goaltimeleft = goalanimationtime
+RETURN
+
+FUNCTION GoalAnimationEnd()
+    GLOBAL stars
+    FOR i = 1 TO stars.Count
+        star= stars[i]
+        star.Opacity = 0
+    NEXT i
+RETURN
+
+FUNCTION MoveBallWithBounce()
+    GLOBAL ball
+    GLOBAL dx
+    GLOBAL dy
+    GLOBAL p1dy
+    GLOBAL p2dy
+    GLOBAL g
+    GLOBAL BW
+    GLOBAL paddle1
+    GLOBAL paddle2
+    GLOBAL goal1
+    GLOBAL goal2
+    GLOBAL score1
+    GLOBAL score2
+    GLOBAL scoretext1
+    GLOBAL scoretext2
+
+    newx = ball.CX + dx
+    newy = ball.CY + dy
+
+
+    REM check for paddles
+    xtest = paddle1.X2
+    IF (newx <= xtest)
+        REM Potential hit on the paddle.  Where would it have hit?
+        xratio = (ball.CX-xtest) / dx
+        yhit = ball.CY+dy/xratio
+        IF (yhit >= paddle1.Y1 AND yhit <= paddle1.Y2)
+            REM HIT paddle!
+            REM I116=instrument 116=Woodblock L16=16th note O4=4rth octave F=F note
+            PLAY "I116 L16 O4 F"
+            over = xtest - newx
+            newx = xtest + over
+            dx = -dx
+            dy = dy + p1dy
+
+            GLOBAL hitline
+            hitline.CY = yhit
+        END IF
+    END IF
+    xtest = paddle2.X1
+    IF (newx >= xtest)
+        REM Potential hit on the paddle.  Where would it have hit?
+        xratio = (ball.CX-xtest) / dx
+        yhit = ball.CY+dy/xratio
+        IF (yhit >= paddle2.Y1 AND yhit <= paddle2.Y2)
+            REM HIT paddle!
+            REM I116=instrument 116=Woodblock L16=16th note O4=4rth octave G=G note
+            PLAY "I116 L16 O4 G"
+            over = xtest - newx
+            newx = xtest + over
+            dx = -dx
+            dy = dy + p2dy
+
+            GLOBAL hitline
+            hitline.CY = yhit
+        END IF
+    END IF
+
+    REM check for goals
+    goalspeed = 15
+    xtest = goal1.X2
+    IF (newx <= xtest)
+        REM Potential hit on the paddle.  Where would it have hit?
+        xratio = (ball.CX-xtest) / dx
+        yhit = ball.CY+dy/xratio
+        IF (yhit >= goal1.Y1 AND yhit <= goal1.Y2)
+            REM SCORE for player2!
+            score2 = score2 + 1
+            scoretext2.Text = score2
+
+            newx = g.W/2
+            newy = g.H/2
+            dx = -goalspeed
+            dy= 0
+            winner = IsWinner (score1, score2)
+            IF (winner <> 0 AND state <> "w")
+                WinAnimationStart(winner)
+            ELSE
+                GoalAnimationStart()
+            END IF
+        END IF
+    END IF
+    xtest = goal2.X1
+    IF (newx >= xtest)
+        REM Potential hit on the paddle.  Where would it have hit?
+        xratio = (ball.CX-xtest) / dx
+        yhit = ball.CY+dy/xratio
+        IF (yhit >= goal2.Y1 AND yhit <= goal2.Y2)
+            REM SCORE for player1!
+            score1 = score1 + 1
+            scoretext1.Text = score1
+
+            newx = g.W/2
+            newy = g.H/2
+            dx = goalspeed
+            dy= 0
+            winner = IsWinner (score1, score2)
+            IF (winner <> 0 AND state <> "w")
+                WinAnimationStart(winner)
+            ELSE
+                GoalAnimationStart()
+            END IF
+        END IF
+    END IF
+
+    REM bounce off of the walls
+    IF (newx < BW)
+        over = BW - newx
+        newx = BW + over
+        dx = -dx
+    END IF
+    IF (newx > g.W - BW)
+        over = newx - (g.W-BW)
+        newx = (g.W-BW) - over
+        dx = -dx
+    END IF
+
+
+    IF (newy <BW)
+        over = BW - newy
+        newy = BW + over
+        dy = -dy
+    END IF
+    IF (newy > g.H - BW)
+        over = newy - (g.H-BW)
+        newy = (g.H-BW) - over
+        dy = -dy
+    END IF
+
+
+    ball.CX = newx
+    ball.CY = newy    
+RETURN
+```

@@ -1,0 +1,280 @@
+## BT: Dotti
+Demonstrates how to control the Dotti device (from Witti design company).  The DOTTI device is a small desktop device with an 8x8 array of pixels.  Each pixel can be programmed individually.  The Pairing code is 123456.
+### An introduction
+An introduction to using the DOTTI specialization
+```BASIC
+CLS BLUE
+PRINT "An introduction to the DOTTI specialization"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    PRINT "Dotti Device"
+    PRINT "Name", device.Name
+    Dotti = device.As (“DOTTI”)
+    PRINT "Methods", Dotti.Methods
+    PRINT "GetName()", Dotti.GetName()
+    PRINT "GetPower()", Dotti.GetPower()
+    PRINT " "
+END IF
+```
+### Change Mode
+Changes the mode of the Dotti device (clock, animation, etc)
+```BASIC
+CLS BLUE
+PRINT "Set DOTTI mode"
+PRINT "0=default on"
+PRINT "1=Animation"
+PRINT "2=Clock"
+PRINT "3=Dice Game"
+PRINT "4=Battery Indicator"
+PRINT "5=Off"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    device = devices.Get(i)
+    Dotti = device.As (“DOTTI”)
+    mode = INPUT DEFAULT 1 PROMPT "What mode?"
+    Status = Dotti.ChangeMode(mode)
+    PRINT “status”, Status
+END IF
+```
+### List BT Devices
+Lists all of the available paired Bluetooth devices and prints both the Windows version of the name and the BLE (Bluetooth device) version of the name.  These can be different on DOTTI devices: when you use the DOTTI commands to change the name, the BLE name will change.  But the Windows name might only change after restarting or re-pairing the device.
+```BASIC
+CLS BLUE
+PRINT "Read Bluetooth Power"
+
+REM
+REM How many Bluetooth devices are available?
+REM
+devices = Bluetooth.Devices ()
+
+FOR i = 1 TO devices.Count
+    device = devices.Get(i)
+    PRINT “NAME”, device.Name
+    GetPowerInfo(device)
+NEXT i
+
+REM Get power data using the RAW bluetooth routines
+FUNCTION GetPowerInfo(bt)
+    PRINT "Init", bt.Init()
+    PRINT “POWER”, bt.ReadRawByte(“180f”, “2a19”)
+    PRINT “CACHE”, bt.ReadCachedByte(“180f”, “2a19”)
+    PRINT “BLE_Name”, bt.BLE_Name
+END
+```
+### Load screen from memory
+Loads the screen from memory (animation, dice, notifications, etc)
+```BASIC
+Status = Dotti.ChangeMode(2)
+
+CLS BLUE
+PRINT "Load Screen"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    device = devices.Get(i)
+    Dotti = device.As (“DOTTI”)
+    ez = INPUT DEFAULT 24 PROMPT "What icon?"
+    Part1=EZValueToPart1(ez)
+    Part2=EZValueToPart2(ez)
+    PRINT "ez", ez
+    PRINT "Part1", Part1
+    PRINT "Part2", Part2
+    Dotti.LoadScreenFromMemory(Part1, Part2)
+END IF
+
+FUNCTION ShowAllScreens(Dotti)
+    FOR ez = 1 TO 9
+        Part1=EZValueToPart1(ez)
+        Part2=EZValueToPart2(ez)
+        PRINT ez, Part1, Part2
+        Dotti.LoadScreenFromMemory(Part1, Part2)
+        PAUSE 50
+    NEXT ez
+END
+
+FUNCTION EZValueToPart1(ez)
+IF (ez = 0) THEN RETURN 0
+IF (ez < 9) THEN RETURN 2
+IF (ez < 17) THEN RETURN 1
+IF (ez < 23) THEN RETURN 2
+IF (ez = 23) THEN RETURN 0x10
+IF (ez = 24) THEN RETURN 0x20
+IF (ez = 25) THEN RETURN 0x30
+IF (ez = 26) THEN RETURN 0x40
+IF (ez = 27) THEN RETURN 0x50
+IF (ez = 28) THEN RETURN 0x60
+IF (ez = 29) THEN RETURN 0x70
+IF (ez = 30) THEN RETURN 0x80
+IF (ez = 31) THEN RETURN 0x90
+PRINT "p1"
+RETURN 0
+
+FUNCTION EZValueToPart2(ez)
+IF (ez = 0) THEN RETURN 0
+IF (ez < 9) THEN RETURN ((ez-1)*16+0x80)
+IF (ez < 17) THEN RETURN ((ez-9)*16)
+IF (ez < 23) THEN RETURN ((ez-17)*16)
+IF (ez < 32) THEN RETURN 0
+PRINT "p2"
+RETURN 0
+```
+### Raw Bluetooth commands
+Writes a single red dot into position (2,2) on a Dotti device using the raw Bluetooth commands
+```BASIC
+CLS BLUE
+PRINT "Write red dot onto DOTTI device"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    device = devices.Get(i)
+    IF (device.Name = “Dotti”) THEN WriteDot(device, 10, 255, 0, 0)
+END IF
+
+FUNCTION WriteDot(bt, pos, r, g, b)
+    bt.Init()
+    REM The fff0 is the service for many DOTTI commands
+    REM The fff3 is the characteristic used by service fff0
+    REM     for many of the DOTTI commands
+    REM the 7 and 2 are the bytes that define the DOTTI 
+    REM command to send (0x0702 means set LED color)
+    REM the pos is the position from 1 to 64
+    REM the r g and b are the color to set.
+    bt.WriteBytes (“fff0”, “fff3”, 7, 2, pos, r, g, b) 
+END
+```
+### SetAnimationSpeed
+Sets the animation speed (and does a ChangeMode to the animation)
+```BASIC
+CLS BLUE
+PRINT "Set Dotti animation speed"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    device = devices.Get(i)
+    Dotti = device.As (“DOTTI”)
+    speed = INPUT DEFAULT 1 PROMPT "What speed (1 to 6)?"
+    Status = Dotti.ChangeMode(1)
+    Status = Dotti.SetAnimationSpeed(speed)
+
+    PRINT “status”, Status
+END IF
+```
+### SetColumn and SetRow to random lines
+Draw random color lines on a Dotti device using SetColumn and SetRow
+```BASIC
+CLS BLUE
+PRINT "Write random lines"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Dotti = device.As (“DOTTI”)
+
+   CLS GREEN
+    PRINT device.Name
+    Dotti.SetPanel (50, 50, 50) 
+    REM set to a medium kind of green
+   FOR n = 1 TO 200
+        x = Math.Ceiling(RND * 8)
+        green = Math.Ceiling(RND*255)
+        red = Math.Ceiling(RND*255)
+        blue = Math.Ceiling(RND*255)
+        Dotti.SetColumn (x, red, green, blue)
+
+        x = Math.Ceiling(RND * 8)
+        green = Math.Ceiling(RND*255)
+        red = Math.Ceiling(RND*255)
+        blue = Math.Ceiling(RND*255)
+        Dotti.SetRow (x, red, green, blue)
+
+    NEXT n
+END IF
+```
+### SetName of a Dotti device
+Sets the name of a Dotti device
+```BASIC
+CLS BLUE
+PRINT "Change the name of a Dotti device"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    PRINT device.Name
+    Dotti = device.As (“DOTTI”)
+    Status = Dotti.SetName ("Dotti")
+    PRINT “status”, Status
+END IF
+```
+### SetPixel to random green dots
+Displays random green dots on the Dotti using the dotti.SetPixel command.
+```BASIC
+CLS BLUE
+PRINT "Write green dot onto DOTTI device"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Dotti = device.As (“DOTTI”)
+
+    CLS GREEN
+    PRINT device.Name
+    Dotti.SetPanel (0, 10, 0) 
+    REM set to a medium kind of green
+    FOR n = 1 TO 200
+        x = Math.Ceiling(RND * 8)
+        y = Math.Ceiling(RND*8)
+        green = Math.Ceiling(RND*255)
+        Status = Dotti.SetPixel (x, y, 0, green, 0)
+    NEXT n
+END IF
+```
+### SetPixel to write a single green dot
+Writes a green dot to a Dotti device using the dotti.SetPixel() command
+```BASIC
+CLS BLUE
+PRINT "Write green dot onto DOTTI device"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Dotti = device.As (“DOTTI”)
+    Status = Dotti.SetPixel (3, 3, 0, 255, 0)
+    PRINT “status”, Status
+END IF
+```
+### Sync Time
+Sets the time on the Dotti device
+```BASIC
+CLS BLUE
+PRINT "SyncTime -- set Dotti time"
+
+device = Bluetooth.PickDevicesName(“*Dotti”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    Dotti = device.As (“DOTTI”)
+    PRINT "DOTTI", Dotti
+    h = INPUT DEFAULT 10 PROMPT "What hour?"
+    m = INPUT DEFAULT 10 PROMPT "What minute?"
+    s = INPUT DEFAULT 15 PROMPT "What second?"
+    Status = Dotti.ChangeMode(2)
+    Status = Dotti.SyncTime(h, m, s)
+    PRINT “status”, Status
+END IF
+```

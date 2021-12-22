@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ColumnStatsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:stats="using:Statistics"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <!-- World's silliest setup.  If I have two things, they each need a key, and become almost unusal.  
+            But if there is only one, then using a x:Key is forbidden.
+        -->
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.Resources>
+            <local:GraphTypeConverter x:Key="GraphTypeConverter" />
+        </local:FourPanel.Resources>
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Statistics</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0" VerticalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" MinWidth="240" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="auto" MinWidth="240" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" MaxHeight="200" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" MinHeight="300" />
+                </Grid.RowDefinitions>
+
+                <ComboBox  Name="uiGraphTypeSelect" Grid.Row="0"
+                       ItemsSource="{Binding Source={StaticResource GraphTypeConverter}, Path=EnumValues}" 
+                      SelectedItem="{Binding CurrGraphType, Mode=TwoWay}">
+                    <!-- In order to display the strings from the DisplayAttribute you need to add a converter. -->
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock FontSize="14" Text="{Binding Converter={StaticResource GraphTypeConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <stats:BoxplotControl x:Name="uiBoxplot0" Grid.Row="1" Grid.Column="0"  />
+                <TextBlock Grid.Row="2" Grid.Column="0" IsTextSelectionEnabled="True" TextWrapping="Wrap">
+                    <Run FontSize="20" FontWeight="Bold">Results</Run><LineBreak />
+                    <Run FontSize="18" FontWeight="Bold">Robust</Run><LineBreak />
+                    <Run x:Name="uiRobustResults0" /><LineBreak />
+                    <Run FontSize="18" FontWeight="Bold">Classical</Run><LineBreak />
+                    <Run x:Name="uiClassicalResults0" /><LineBreak />
+                </TextBlock>
+                <TextBox x:Name="uiData0" Grid.Row="3" Header="{Binding DataTitle0}" AcceptsReturn="True" VerticalAlignment="Stretch" TextChanged="OnDataChanged0" MaxHeight="300" />
+
+
+                <stats:BoxplotControl x:Name="uiBoxplot1" Grid.Row="1" Grid.Column="2" />
+                <TextBlock Grid.Row="2" Grid.Column="2" IsTextSelectionEnabled="True" >
+                    <Run FontSize="20" FontWeight="Bold">Results</Run><LineBreak />
+                    <Run FontSize="18" FontWeight="Bold">Robust</Run><LineBreak />
+                    <Run x:Name="uiRobustResults1" /><LineBreak />
+                    <Run FontSize="18" FontWeight="Bold">Classical</Run><LineBreak />
+                    <Run x:Name="uiClassicalResults1" /><LineBreak />
+                    <Run FontSize="18" FontWeight="Bold">Compare</Run><LineBreak />
+                    <Run x:Name="uiCompareResults1" /><LineBreak />
+                    <Run FontSize="18" FontWeight="Bold">Regression</Run><LineBreak />
+                    <Run x:Name="uiRegressionResults1" /><LineBreak />
+                </TextBlock>
+                <TextBox x:Name="uiData1" Grid.Row="3" Grid.Column="2" Header="{Binding DataTitle1}" AcceptsReturn="True" VerticalAlignment="Stretch" TextChanged="OnDataChanged1" MaxHeight="300" />
+
+                <stats:XYGraphControl x:Name="uiXYGraph" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" />
+
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                    <Bold FontSize="20" >Statistics</Bold>
+                    <LineBreak />
+                    The statistics page lets you calculate statistics on one or two sets of numbers.  
+                    If you supply two sets of numbers, you view two independant analysis and boxplots, 
+                    two correlated analysis and boxplots that share the same Y axis values, or you
+                    can perform a linear regression.  
+                    <LineBreak />
+                    <LineBreak />
+                    For full data, please see the Best Calculator Reference Guide.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

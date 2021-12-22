@@ -1,0 +1,257 @@
+## Micro Adventures #1: Space Adventure
+New Package for you to update with programs
+### Program 1: Decode
+A new program for you to edit
+```BASIC
+REM
+REM The original message has a bug
+REM The line  BDU!UFBN!SFQRSU!UP!
+REM Should be BDU!UFBN!SFQPSU!UP!
+REM The SFQRSU should be SFQPSU
+REM (a P instead of an R)
+REM
+CLS GREEN
+PRINT "Decode a message"
+10 M$ = INPUT DEFAULT "GPS!BDU!FZFT!POMZ" PROMPT "TYPE IN MESSAGE"
+L=LEN(M$) 
+FOR N=1 TO L 
+    A=ASC(MID(M$,N,1))-1 
+    PRINT CHR$(A); 
+NEXT N 
+PRINT " "
+B$ = INPUT DEFAULT "YES" PROMPT "DECODE ANOTHER MESSAGE? ANSWER YES OR NO" 
+IF B$="YES" THEN GOTO 10 
+END
+```
+### Program 2: Countdown
+A new program for you to edit
+```BASIC
+REM
+REM In the version on-line, line 20
+REM is printed incorrectly. 
+REM Original: 20 IF N < = 0 THEN GOTO 90 
+REM Correct : 20 IF N <= 0 THEN GOTO 90 
+REM
+REM There was an extra space in <=
+
+CLS GREEN
+N = 10 
+20 IF N <= 0 THEN GOTO 90 
+PRINT "T MINUS ";N;" AND COUNTING" 
+
+REM 40 N = N + 1 
+N = N - 1
+IF N >= 100 THEN GOTO 110 
+
+PAUSE 50
+
+GOTO 20 
+90 PRINT "BLAST-OFF" 
+END
+
+110 PRINT "ROCKET HAS OVERHEATED ON THE LAUNCH PAD" 
+PRINT "THIS HAS BEEN YOUR FIRST AND FINAL ACT" 
+END
+```
+### Program 3: Decode in Space
+A new program for you to edit
+```BASIC
+CLS GREEN
+PRINT "Decode a message"
+10 M$ = INPUT DEFAULT "!EJEEMF!EJEEMF" PROMPT "TYPE IN MESSAGE"
+L=LEN(M$) 
+FOR N=1 TO L 
+    REM Program 1 has this as a "-1" but
+    REM on the space station they +1
+    REM The "fix" is to switch the +1
+    REM to a -1
+    REM Original A=ASC(MID(M$,N,1))+1
+    A=ASC(MID(M$,N,1))-1 
+    PRINT CHR$(A); 
+NEXT N 
+PRINT " "
+B$ = INPUT DEFAULT "YES" PROMPT "DECODE ANOTHER MESSAGE? ANSWER YES OR NO" 
+IF B$="YES" THEN GOTO 10 
+END
+```
+### Program 4: Combination Lock
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT "Crack the combination"
+N = INPUT PROMPT "ENTER FIRST NUMBER OF COMBINATION"
+IF N = 99 THEN GOTO 130 
+IF N <> 32 THEN GOTO 100 
+N = INPUT PROMPT "ENTER SECOND NUMBER OF COMBINATION"
+IF N <> 48 THEN GOTO 100 
+N = INPUT PROMPT "ENTER THIRD NUMBER OF COMBINATION"
+IF N <> 61 THEN GOTO 100 
+PRINT "AIR LOCK IS OPEN. YOU MAY PROCEED." 
+PAPER GREEN
+END 
+
+100 PRINT "SECURITY VIOLATION!" 
+PRINT "INTRUDER IS TERMINATED" 
+PAPER RED
+END 
+
+130 PRINT "S.O.S. SENT TO CONTROL CENTER" 
+PAPER YELLOW
+END
+```
+### Program 5.5: Decode the message
+A new program for you to edit
+```BASIC
+REM The message might be printed wrong
+REM at line 3.  Note that everything should be
+REM commas.  The original has a semicolon
+REM (;) between 82 and 85.
+REM Correct: 66,82,85,84,69
+REM Original: 66,82;85,84,69
+CLS BLUE
+PRINT "DECODE THE MESSAGE"
+DIM F(99)
+
+FOR i = 1 TO 99
+    F(i) = 0
+NEXT i
+
+PRINT "TYPE IN LINE OF INTERCEPT" 
+PRINT "EXACTLY AS SHOWN WITH COMMAS" 
+PRINT "ENTER 0,0,0,0,0 TO STOP" 
+50 line  = INPUT DEFAULT "66,82,85,84,69" PROMPT "Intercept line" 
+IF (line = "") THEN END
+
+Qtable = String.Parse ("csv", line)
+FOR i = 1 TO Qtable.Count
+    Q = Qtable[i]
+   str  = ""
+    FOR j = 1 TO Q.Count
+        REM code = Q[j]
+        asc = CHR$(Q(j))
+        PRINT asc ;
+    NEXT j
+    PRINT str
+NEXT i
+PRINT "Done translating"
+
+END
+```
+### Program 5: Frequency Analysis
+A new program for you to edit
+```BASIC
+CLS BLUE
+DIM F(99)
+
+FOR i = 1 TO 99
+    F(i) = 0
+NEXT i
+
+PRINT "TYPE IN LINE OF INTERCEPT" 
+PRINT "EXACTLY AS SHOWN WITH COMMAS" 
+PRINT "ENTER 0,0,0,0,0 TO STOP" 
+50 line  = INPUT DEFAULT "66,82,85,84,69" PROMPT "Intercept line" 
+Qtable = String.Parse ("csv", line)
+Q  = Qtable[1]
+
+60 IF Q(1) = 0 THEN GOTO 110 
+FOR I = 1 TO Q.Count
+    F(Q(I)) = F(Q(I))+1 
+NEXT I 
+GOTO 50
+
+110 CLS GREEN
+PRINT "Analyzing"
+FOR K = 1 TO 99 
+    IF (F(K) = 0) THEN GOTO 165
+    J = J + 1 
+    IF (J < 18) THEN GOTO 160 
+    L$  = INPUT PROMPT "HIT ANY LETTER TO CONT"
+    J = 0 
+    REM The original has a bug: the F(1) should really
+    REM be F(K).  Otherwise we just print the same valuye
+    REM value over and over again.
+    REM Original 160 PRINT "#";K," APPEARS ";F(1);"TIMES" 
+    160 PRINT "#"+K+" APPEARS "+F(K)+" TIMES" 
+    165 REM 
+NEXT K 
+END
+```
+### Program 7: Weapons Guidance
+A new program for you to edit
+```BASIC
+REM P=power of shields U=your hits B=Brute's hits
+P=10
+U=0 
+B=0 
+C=1
+CLS 
+
+20 A=INT(RND * 4) + 1 
+CLS
+CONSOLE A
+IF (A=1) THEN GOSUB 180
+IF (A=2) THEN GOSUB 210
+IF (A=3) THEN GOSUB 290
+IF (A=4) THEN GOSUB 240
+REM 40 ON A GOSUB 180,210,290,240 
+C = INPUT DEFAULT C PROMPT "COMMAND 1..5"
+REM Here's the bug; we always do #5
+REM C = 5
+IF A <> C THEN GOTO 150 
+U = U + 1 
+P = P - 1 
+REM 90 ON C GOSUB 210,180,290,240 
+IF (C=1) THEN GOSUB 210
+IF (C=2) THEN GOSUB 180
+IF (C=3) THEN GOSUB 290
+IF (C=4) THEN GOSUB 240
+PRINT " DIRECT HIT!!!" 
+
+110 REM Replace FOR loop with PAUSE
+PAUSE 50
+IF P > 0 THEN GOTO 20 
+PRINT "ACT "; U;  " BRUTE "; B 
+END 
+
+150 PRINT "OOPS! YOU MISSED!" 
+B = B + 1
+P = P - 1 
+GOTO 110 
+
+180 CONSOLE "AT 180"
+FOR I = 1 TO 10
+    PRINT " "
+    PAUSE 10
+NEXT I 
+PRINT "**********>" 
+RETURN 
+
+210 FOR I = 1 TO 10
+    PRINT " " 
+    PAUSE 10
+NEXT I 
+PRINT "          <**********" 
+RETURN 
+
+240 FOR I = 1 TO 10
+    PRINT "          *" 
+    PAUSE 10
+NEXT I 
+PRINT "         ***" 
+PRINT  "          *" 
+RETURN 
+
+290 FOR I = 1 TO 10
+    PRINT " "
+    PAUSE 10
+NEXT I 
+PRINT  "          *" 
+PRINT "         ***" 
+REM typo in original; was FOR 1 = 1 TO 10
+FOR i = 1 TO 10
+    PRINT "          *" 
+    PAUSE 10
+NEXT I 
+RETURN
+```

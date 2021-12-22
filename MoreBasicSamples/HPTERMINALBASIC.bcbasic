@@ -1,0 +1,26 @@
+## HP TERMINAL  BASIC
+Programs from the HP manual
+### p1-3
+The first program
+**Default Key**: p1-3
+```BASIC
+10 REM…FIND THEPRODUCT
+20 PRINT “ENTER TWO NUMBERS”
+30 INPUT B
+INPUT C
+40 LET A=B*C
+50 PRINT A
+60 END
+```
+### p1-4 Weekly Pay
+A new program for you to edit
+**Default Key**: p1-4 Weekly Pay
+```BASIC
+PRINT "WEEKLY PAY CALCULATOR"
+20 INPUT hours
+IF hours =0 THEN STOP
+INPUT wage
+LET pay = hours * wage
+PRINT hours; " hours at $"; wage;" per hour =$";pay
+GOTO 20
+```

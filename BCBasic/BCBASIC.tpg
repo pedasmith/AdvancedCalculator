@@ -1,0 +1,551 @@
+//Tiny Parser Generator v1.3
+//Copyright © Herre Kuijpers 2008-2012
+//Actual language definition for Best Calculator Basic (BCBASIC) is Copyright Peter Smith, 2015
+
+<% @TinyPG Language="C#" OutputPath=".\\BCBasic.Shared\\" %>
+<% @TextHighlighter Generate="true" %>
+
+ASSERT -> @"ASSERT";
+BEEP -> @"BEEP";
+CALL -> @"CALL";
+CLS -> @"CLS";
+CONSOLE -> @"CONSOLE";
+DATA -> @"DATA";
+DIM -> @"DIM";
+DUMP -> @"DUMP";
+ELSE -> @"ELSE";
+ENDIF -> @"END IF";
+END -> @"END";
+FOR -> @"FOR";
+FOREVER -> @"FOREVER";
+FUNCTION -> @"FUNCTION";
+GLOBAL -> @"GLOBAL";
+GOSUB -> @"GOSUB";
+GOTO -> @"GOTO";
+IF -> @"IF";
+IMPORT -> @"IMPORT";
+INPUT -> @"INPUT";
+LET -> @"LET";
+NEXT -> @"NEXT";
+PAPER -> @"PAPER";
+PAUSE -> @"PAUSE";
+PLAY -> @"PLAY";
+PRINT -> @"PRINT";
+RAND -> @"RAND";
+READ -> @"READ";
+RETURN -> @"RETURN";
+REM -> @"REM";
+SPEAK -> @"SPEAK";
+STOP -> @"STOP";
+
+AT -> @"AT";
+DEFAULT -> @"DEFAULT";
+FROM -> @"FROM";
+FUNCTIONS -> @"FUNCTIONS";
+LIST -> @"LIST";
+ONNOTE -> @"ONNOTE";
+PROMPT -> @"PROMPT";
+STEP -> @"STEP";
+THEN -> @"THEN";
+TO -> @"TO";
+VOICE -> @"VOICE";
+VOICES -> @"VOICES";
+WAIT -> @"WAIT";
+
+// I have a choice: either CHR$ takes in one parameter, or CHR$ (...) can take in multiple.  But there's no way to do both.
+// Solution: CHR$ is the sinclair way; CHR() is the multiple-parameter way.
+zzSINCLAIROP -> @"(SGN)|(ABS)|(SIN)|(COS)|(TAN)|(ASN)|(ACS)|(ATN)|(LN)|(EXP)|(SQR)|(INT)|(LEN)|(STR\$)|(CODE)|(CHR\$)|(VAL)";
+SINCLAIROP -> @"(LEN)|(STR\$)|(CODE)|(CHR\$)";
+COLOR -> @"(BLACK)|(BLUE)|(RED)|(MAGENTA)|(GREEN)|(CYAN)|(YELLOW)|(WHITE)|(NONE)";
+
+HEX -> @"0x[0-9a-fA-F]*";
+
+// Minus signs are in four places: NUMBER (2 spots) OPP6 and MINUS
+// Signs are Hyphen-minus, minus sign, en dash –
+// Correct set of minus signs: -−–
+NUMBER -> @"[-−–]?[0-9]*[.]?[0-9]+(E[-−–]?[0-9]+)*";
+INFINITY -> @"∞";
+
+STRING -> @"\""([^""]|(\""\""))*\""";
+SMARTQUOTESTRING -> @"\“([^“”]|(\”\”)|(\“\“))*\”";
+INTEGER -> @"[0-9]+";
+LINE_NUMBER -> @"[0-9]+";
+
+
+CR -> @"[\r\n\v]+";
+EQUALS -> @"=";
+
+OPP2 -> @"OR";
+OPP3 -> @"AND";
+OPP4 -> @"NOT";
+OPP5 -> @"(<=|>=|<>|<|=|≅|≇|>)";
+OPP6 -> @"(\+|-|−|–)"; 
+OPP9 -> @"(\*|×|⋅|·|/)"; 
+OPP10 -> @"(\*\*)";
+MINUS -> @"(-|−|–)";
+// Square root, cube root, fourth root
+ROOT -> @"(√|∛|∜)";
+// Powers -- superscript two, superscript three, superscript 4
+POWER -> @"(²|³|⁴)";
+COMMA -> @",";
+SEMICOLON -> @";";
+LPAREN -> @"\(";
+RPAREN -> @"\)";
+LSQUARE -> @"\[";
+RSQUARE -> @"\]";
+
+VARIABLE -> @"[a-zA-Z][a-zA-Z0-9_]*([.][a-zA-Z][a-zA-Z0-9_]*)*\$?";
+
+
+RESTOFLINE -> @"[^\r\n\v]*";
+
+EOF -> @"^\s*$";
+
+// Downwards arrow with tip leftwards ↲ U+21B2
+// Downwards arrow with corner leftwaqrds U+21B5
+// Arrow pointing downwards then curving leftwards U+2936
+//⚐ WHITE FLAG U+2690
+//⚑ BLACK FLAG U+2691
+//⛳ FLAG IN HOLE U+26F3
+//⛿ WHITE FLAG WITH HORIZONTAL MIDDLE BLACK STRIPE U+26FF
+//🎌 CROSSED FLAGS U+d83c U+df8c
+//🏁 CHEQUERED FLAG U+d83c U+dfc1
+//🏳 WAVING WHITE FLAG U+d83c U+dff3
+//🏴 WAVING BLACK FLAG U+d83c U+dff4
+//📪 CLOSED MAILBOX WITH LOWERED FLAG U+d83d U+dcea
+//📫 CLOSED MAILBOX WITH RAISED FLAG U+d83d U+dceb
+//📬 OPEN MAILBOX WITH RAISED FLAG U+d83d U+dcec
+//📭 OPEN MAILBOX WITH LOWERED FLAG U+d83d U+dced
+//🚩 TRIANGULAR FLAG ON POST U+d83d U+dea9
+
+
+[Skip] 		WHITESPACE  	-> @"([ \t\u2690\u2691\u26f3\u26ff\ud83c\udf8c\ud83c\udfc1\ud83c\udff3\ud83c\udff4\ud83d\udcea\ud83d\udceb\ud83d\udcec\ud83d\udced\ud83d\udea9]*[\u21B2\u21b5\u2936][ \t\v\n\r\u2690\u2691\u26f3\u26ff\ud83c\udf8c\ud83c\udfc1\ud83c\udff3\ud83c\udff4\ud83d\udcea\ud83d\udceb\ud83d\udcec\ud83d\udced\ud83d\udea9]*)|[ \t\u2690\u2691\u26f3\u26ff\ud83c\udf8c\ud83c\udfc1\ud83c\udff3\ud83c\udff4\ud83d\udcea\ud83d\udceb\ud83d\udcec\ud83d\udced\ud83d\udea9]+";
+
+Assert_Statement -> ASSERT LPAREN ExpressionEquality RPAREN
+	{
+	return new BCBasic.AssertExpression ($ExpressionEquality as BCBasic.InfixExpression);
+	};
+
+Beep_Statement -> BEEP ( Expression COMMA Expression )*
+	{
+	if ($Expression == null) return new BCBasic.Beep ();
+	return new BCBasic.Beep ($Expression[0] as BCBasic.IExpression, $Expression[1] as BCBasic.IExpression);
+	};
+
+Call_Statement -> CALL VariableOrFunctionCall 
+	{ 
+	var exp = $VariableOrFunctionCall as BCBasic.IExpression;
+	var vv = exp as BCBasic.VariableValue;
+	if (vv  != null)
+	{
+		// Make up for a parser deficiency.  User might have entered "CALL test" w/no parens,
+		// which comes here as a VariableValue.  In that case, redo it into a function.
+		exp = new BCBasic.NumericFunction (vv.VariableName);
+	}
+	return new BCBasic.Call(exp); 
+	};
+	
+Cls_Statement -> CLS (( COLOR | Expression ) ( COLOR | Expression)? )? 
+	{ 
+	if ($COLOR != null) return new BCBasic.Cls ($COLOR as string, $COLOR[1] as string);
+	//if ($ INTEGER != null) return new BCBasic.Cls (Int32.Parse ($ INTEGER as string));
+	if ($Expression != null) return new BCBasic.Cls ($Expression as BCBasic.IExpression);
+	return new BCBasic.Cls(); 
+	};
+Console_Statement -> CONSOLE (Expression (COMMA Expression)*)?
+	{ 
+	var cmd = new BCBasic.Console();
+	for (int i=0; i<99999; i++)
+	{
+		if ($Expression[i]==null) break;
+		cmd.AddExpression($Expression[i] as BCBasic.IExpression);
+	}
+	return cmd;
+	};
+Data_Statement -> DATA ConstantList { return new BCBasic.Data ($ConstantList as IList<BCBasic.IExpression>); };
+Dim_Statement -> DIM VARIABLE LPAREN Expression? RPAREN { return new BCBasic.Dim ($VARIABLE as string, $Expression as BCBasic.IExpression);  };
+Dump_Statement -> DUMP { return new BCBasic.Dump(); };
+For_Statement -> FOR VARIABLE EQUALS Expression TO Expression (STEP Expression)? { return new BCBasic.For ($VARIABLE as string, $Expression[0] as BCBasic.IExpression, $Expression[1] as BCBasic.IExpression, $Expression[2] as BCBasic.IExpression); };
+Forever_Statement -> FOREVER (STOP | WAIT)?
+	{ 
+	if ($STOP != null) return new BCBasic.Forever (BCBasic.Forever.ForeverType.Stop);
+	if ($WAIT != null) return new BCBasic.Forever (BCBasic.Forever.ForeverType.Wait);
+	return new BCBasic.Forever (BCBasic.Forever.ForeverType.Wait); // Default is to wait
+	};
+
+
+Function_Statement -> FUNCTION VARIABLE LPAREN ( VARIABLE (COMMA VARIABLE)* )? RPAREN
+	{
+	var arglist = new BCBasic.FunctionArglistDefine();
+	for (int i=1; i<99999; i++)
+	{
+		if ($VARIABLE[i]==null) break;
+		arglist.AddArg($VARIABLE[i] as string);
+	}
+	var cmd = new BCBasic.Function ($VARIABLE as string, arglist);
+	return cmd;
+	};
+
+
+Global_Statement -> GLOBAL VARIABLE { return new BCBasic.Global ($VARIABLE as String); };
+Gosub_Statement -> GOSUB INTEGER { return new BCBasic.Gosub ($INTEGER as string); };
+Goto_Statement -> GOTO INTEGER { return new BCBasic.Goto ($INTEGER as string); };
+
+Else_Statement -> ELSE { return new BCBasic.Else(); };
+EndIf_Statement -> ENDIF { return new BCBasic.EndIf(); };
+
+If_Statement -> IF Expression (THEN Statement (ELSE Statement)?)? { return new BCBasic.If ($Expression as BCBasic.IExpression, $Statement[0] as BCBasic.IStatement, $Statement[1] as BCBasic.IStatement); };
+Import_Statement -> IMPORT FUNCTIONS FROM StringValue{ return new BCBasic.Import ($FUNCTIONS as String, $StringValue as String); };
+Input_Statement -> INPUT VARIABLE { return new BCBasic.Input ($VARIABLE as String); };
+Let_Statement -> LET? VariableOrFunctionCall ( EQUALS (COLOR | Expression) )?
+	{ 
+	if ($EQUALS != null)
+	{
+		var lhs = $VariableOrFunctionCall;
+		var vv = lhs as BCBasic.VariableValue;
+		BCBasic.IExpression exp = null;
+		if ($Expression != null) exp = $Expression as BCBasic.IExpression;
+		else if ($COLOR != null) exp = new BCBasic.StringConstant ($COLOR as String);
+		if (vv != null)
+		{
+			var name = vv.VariableName;
+			return new BCBasic.Let (name, exp); 
+		}
+		var array = lhs as BCBasic.VariableArrayValue;
+		var fnc = lhs as BCBasic.NumericFunction;
+		if (fnc != null)
+		{
+			// Construct an 'arrray' out of the function
+			array = new BCBasic.VariableArrayValue(fnc.Function, fnc.ArgList);
+		}
+		if (array != null)
+		{
+			return new BCBasic.Let (array, exp); 
+		}
+	}
+	else // No equals, must be a function call
+	{
+		return new BCBasic.Call($VariableOrFunctionCall as BCBasic.IExpression);
+	}
+	return null; // ok?
+	};
+Expression_Statement -> EQUALS Expression
+	{
+			return new BCBasic.Let ("", $Expression as BCBasic.IExpression); 
+	};
+Next_Statement -> NEXT VARIABLE { return new BCBasic.Next ($VARIABLE as string); };
+Paper_Statement -> PAPER ( COLOR | Expression )
+	{ 
+	if ($COLOR != null) return new BCBasic.Paper ($COLOR as string);
+	if ($Expression != null) return new BCBasic.Paper ($Expression as BCBasic.IExpression);
+	return new BCBasic.Paper(); 
+	};
+Pause_Statement -> PAUSE Expression { return new BCBasic.Pause ($Expression as BCBasic.IExpression); };
+
+Play_Statement -> PLAY (STOP | WAIT | (ONNOTE Expression) | Expression)
+	{ 
+	if ($STOP != null) return new BCBasic.Play (BCBasic.Play.PlayType.Stop);
+	if ($WAIT != null) return new BCBasic.Play (BCBasic.Play.PlayType.Wait);
+	if ($ONNOTE != null) return new BCBasic.Play (BCBasic.Play.PlayType.OnNote, $Expression as BCBasic.IExpression);
+	return new BCBasic.Play ($Expression as BCBasic.IExpression); 
+	};
+
+Print_Expression -> (AT Expression COMMA Expression)? Expression 
+	{
+	if ($AT == null) return new BCBasic.PrintExpression (BCBasic.PrintExpression.PrintSpaceType.Default, new BCBasic.NumericConstant (-1), new BCBasic.NumericConstant (-1), $Expression[0] as BCBasic.IExpression);
+	return new BCBasic.PrintExpression (BCBasic.PrintExpression.PrintSpaceType.Newline, $Expression[0] as BCBasic.IExpression, $Expression[1] as BCBasic.IExpression, $Expression[2] as BCBasic.IExpression);
+	};
+Print_Statement -> PRINT Print_Expression ((COMMA | SEMICOLON) Print_Expression?)*
+	{
+	var list = new List<BCBasic.PrintExpression>();
+	if ($Print_Expression[0] != null) list.Add ($Print_Expression[0] as BCBasic.PrintExpression);
+	int ncomma = 0;
+	int nsemicolon = 0;
+	for (int i=1; i<99999; i++)
+	{
+		if ($COMMA[ncomma]==null && $SEMICOLON[nsemicolon]==null && $Print_Expression[i]==null) 
+		{
+			break;
+		}
+		var item = $Print_Expression[i] as BCBasic.PrintExpression;
+		if (item == null) item = new BCBasic.PrintExpression (BCBasic.PrintExpression.PrintSpaceType.Newline, new BCBasic.NumericConstant (-1), new BCBasic.NumericConstant (-1), null);
+		if ($COMMA[ncomma] != null) { ncomma++; item.CurrSpaceType = BCBasic.PrintExpression.PrintSpaceType.Tab; }
+		if ($SEMICOLON[nsemicolon] != null) { nsemicolon++; item.CurrSpaceType = BCBasic.PrintExpression.PrintSpaceType.NoSpace; }
+		list.Add (item);
+	}
+	return new BCBasic.PrintAt (list);
+	};
+
+Rand_Statement -> RAND Expression { return new BCBasic.Rand ($Expression as BCBasic.IExpression); };
+Read_Statement -> READ VARIABLE { return new BCBasic.Read (new BCBasic.VariableValue($VARIABLE as string));  };
+Rem_Statement -> REM RESTOFLINE { return new BCBasic.Rem($RESTOFLINE as string); };
+Return_Statement -> RETURN Expression? { return new BCBasic.Return($Expression as BCBasic.IExpression); };
+Speak_Statement -> SPEAK ((LIST VOICES) | ((VOICE Expression)? Expression))
+	{
+	if ($LIST != null && $VOICES != null) return new BCBasic.SpeakListVoices();
+	if ($VOICE != null) return new BCBasic.Speak ($Expression as BCBasic.IExpression, $Expression[1] as BCBasic.IExpression);
+	return new BCBasic.Speak (null, $Expression as BCBasic.IExpression);
+	};
+
+Stop_Statement -> (END | STOP) Expression? { return new BCBasic.Stop($Expression as BCBasic.IExpression); };
+
+Statement -> Assert_Statement | Beep_Statement | Call_Statement | Cls_Statement | Console_Statement 
+	| Data_Statement | Dim_Statement | Dump_Statement 
+	| Else_Statement | EndIf_Statement | Expression_Statement 
+	| For_Statement | Forever_Statement | Function_Statement | Global_Statement | Gosub_Statement | Goto_Statement 
+	| If_Statement | Import_Statement | Input_Statement | Let_Statement | Next_Statement 
+	| Paper_Statement | Pause_Statement | Play_Statement | Print_Statement 
+	| Rand_Statement | Read_Statement | Rem_Statement | Return_Statement | Speak_Statement | Stop_Statement
+	{ 
+	return this.Nodes[0].Eval(tree); 
+	};
+Full_Statement -> WHITESPACE? LINE_NUMBER? Statement WHITESPACE* { return new BCBasic.FullStatement ($LINE_NUMBER as string, $Statement as BCBasic.IStatement); };
+
+
+Program -> (CR|WHITESPACE)* Full_Statement (CR Full_Statement?)* EOF
+	{ 
+	var p = new BCBasic.BCBasicProgram(); 
+	for (int i=0; i<99999; i++) 
+		{ 
+		var fs = $Full_Statement[i]; 
+		if (fs==null) break; 
+		p.AddStatement (fs as BCBasic.FullStatement); 
+		} 
+	return p; 
+	};
+
+Start -> Program { return $Program as BCBasic.BCBasicProgram; };
+
+
+StringValue -> STRING | SMARTQUOTESTRING
+	{
+	var str = $STRING!= null ? $STRING as string : $SMARTQUOTESTRING as string;
+	//if ($STRING != null) str = str.Replace ("\"", "");
+	//else str = str.Replace ("“", "").Replace ("”", "");
+       str = str.Substring (1, str.Length-2); // Remove the start and end quotes
+       // Replacement rules: ""--> " ““-->“  ””-->” “”-->“
+	str = str.Replace ("\"\"", "\"");
+	str = str.Replace ("““", "“");
+	str = str.Replace ("””", "”");
+	str = str.Replace ("“”", "“");
+	str = str.Replace ("&QUOT;", "\"");
+	return str;
+	};
+
+
+VariableOrFunctionCall -> VARIABLE ( (LPAREN (Expression (COMMA Expression)*)? RPAREN) | (LSQUARE Expression RSQUARE) )?
+{
+	// Definition of VariableOrFunctionCall
+	if ($VARIABLE != null && $LPAREN != null) 
+	{
+		var f = new BCBasic.NumericFunction ($VARIABLE as string);
+		for (int i=0; i<99999; i++)
+		{
+			var exp = $Expression[i] as BCBasic.IExpression;
+			if (exp == null) break;
+			f.ArgList.Add (exp);
+		}
+		return f;
+	}
+	if ($VARIABLE != null && $LSQUARE != null) 
+	{
+		return new BCBasic.VariableArrayValue ($VARIABLE as string, $Expression as BCBasic.IExpression);
+	}
+	if ($VARIABLE != null) return new BCBasic.VariableValue($VARIABLE as string);
+	return null;
+};
+
+Constant -> NUMBER | HEX | INFINITY | StringValue
+	{
+	if ($NUMBER != null) return new BCBasic.NumericConstant ($NUMBER as string); 
+	if ($INFINITY != null) return new BCBasic.NumericConstant (Double.PositiveInfinity);
+	if ($HEX != null) 
+	{
+		var hexstr = ($HEX as string).Substring (2);
+		UInt32 hexvalue = 0;
+		var ok = UInt32.TryParse(hexstr, System.Globalization.NumberStyles.AllowHexSpecifier, null, out hexvalue);
+		return new BCBasic.NumericConstant (hexvalue); 
+	}
+	if ($StringValue != null) return new BCBasic.StringConstant ($StringValue as string); 
+	return new BCBasic.NumericConstant(Double.NaN);
+	};
+
+ConstantList -> Constant (COMMA Constant)*
+	{
+	var Retval = new List<BCBasic.IExpression>();
+	for (int i=0; i<99999; i++)
+	{
+		var con = $Constant[i] as BCBasic.IExpression;
+		if (con == null) break;
+		Retval.Add (con);
+	}
+	return Retval;
+	};
+ExpressionAtom -> NUMBER | HEX | INFINITY | LPAREN Expression RPAREN | VariableOrFunctionCall | StringValue 
+	{
+	// Variables MUST have the exact same name requirements as functions.
+	var n = $NUMBER;
+	//var v = $ VARIABLE;
+	var l = $LPAREN;
+	var e = $Expression;
+
+	if ($NUMBER != null) return new BCBasic.NumericConstant ($NUMBER as string); 
+	if ($INFINITY != null) return new BCBasic.NumericConstant (Double.PositiveInfinity);
+	if ($HEX != null) 
+	{
+		var hexstr = ($HEX as string).Substring (2);
+		UInt32 hexvalue = 0;
+		var ok = UInt32.TryParse(hexstr, System.Globalization.NumberStyles.AllowHexSpecifier, null, out hexvalue);
+		return new BCBasic.NumericConstant (hexvalue); 
+	}
+	if ($StringValue != null) return new BCBasic.StringConstant ($StringValue as string); 
+
+	if ($Expression != null) return $Expression; // Handles both () and [] cases
+	if ($VariableOrFunctionCall != null) return $VariableOrFunctionCall;
+	return null;
+	};
+
+ExpressionP12 -> ExpressionAtom POWER? | (ROOT ExpressionP12)
+	{
+	if ($POWER != null)
+	{
+		double power = 2.0; // POWER -> @"(²|³|⁴)";
+		switch ($POWER as string)
+		{
+		case "²": power = 2.0; break;
+		case "³": power = 3.0; break;
+		case "⁴": power = 4.0; break;
+		}
+		return new BCBasic.InfixExpression ($ExpressionAtom as BCBasic.IExpression, "**", new BCBasic.NumericConstant(power));
+	}
+	if ($ROOT != null)
+	{
+		var power = 2;
+		switch ($ROOT as string)
+		{
+		case "√": power = 2; break;
+		case "∛": power = 3; break;
+		case "∜": power = 4; break;
+		}
+		return new BCBasic.InfixExpression (new BCBasic.NumericConstant(power), "√", $ExpressionP12 as BCBasic.IExpression);
+	}
+	return $ExpressionAtom;
+	};
+
+
+ExpressionP11 -> ExpressionP12 | (SINCLAIROP ExpressionP11)  | (MINUS ExpressionP11)
+	{
+	// You can do PRINT LN EXP 2 and expect to see 2 printed out.
+	if ($MINUS != null) 
+	{
+		return new BCBasic.InfixExpression (new BCBasic.NumericConstant(0), "-", $ExpressionP11 as BCBasic.IExpression);
+	}
+	if ($SINCLAIROP != null) 
+	{
+		var f = new BCBasic.NumericFunction ($SINCLAIROP as string);
+		f.ArgList.Add ($ExpressionP11 as BCBasic.IExpression);
+		return f;
+	}
+	return $ExpressionP12;
+	};
+
+ExpressionP10 -> ExpressionP11 (OPP10 ExpressionP11)*
+	{ 
+	if ($OPP10== null) return $ExpressionP11[0];
+	var left = new BCBasic.InfixExpression ($ExpressionP11[0] as BCBasic.IExpression, $OPP10[0] as string, $ExpressionP11[1] as BCBasic.IExpression);
+	for (int i=2; i<9999; i++)
+	{
+		var exp = $ExpressionP11[i]  as BCBasic.IExpression;
+		if (exp == null) break;
+		left = new BCBasic.InfixExpression (left, $OPP10[i-1] as string, exp);
+	}
+	return left;
+	};
+
+ExpressionP9-> ExpressionP10 (OPP9 ExpressionP10)*
+	{ 
+	if ($OPP9 == null) return $ExpressionP10[0];
+	var left = new BCBasic.InfixExpression ($ExpressionP10[0] as BCBasic.IExpression, $OPP9[0] as string, $ExpressionP10[1] as BCBasic.IExpression);
+	for (int i=2; i<9999; i++)
+	{
+		var exp = $ExpressionP10[i]  as BCBasic.IExpression;
+		if (exp == null) break;
+		left = new BCBasic.InfixExpression (left, $OPP9[i-1] as string, exp);
+	}
+	return left;
+	};
+ExpressionP6 -> ExpressionP9 (OPP6 ExpressionP9)*
+	{ 
+	if ($OPP6 == null) return $ExpressionP9[0];
+	var left = new BCBasic.InfixExpression ($ExpressionP9[0] as BCBasic.IExpression, $OPP6[0] as string, $ExpressionP9[1] as BCBasic.IExpression);
+	for (int i=2; i<9999; i++)
+	{
+		var exp = $ExpressionP9[i]  as BCBasic.IExpression;
+		if (exp == null) break;
+		left = new BCBasic.InfixExpression (left, $OPP6[i-1] as string, exp);
+	}
+	return left;
+	};
+ExpressionP5-> ExpressionP6 (OPP5 ExpressionP6)*
+	{ 
+	if ($OPP5 == null) return $ExpressionP6[0];
+	var left = new BCBasic.InfixExpression ($ExpressionP6[0] as BCBasic.IExpression, $OPP5[0] as string, $ExpressionP6[1] as BCBasic.IExpression);
+	for (int i=2; i<9999; i++)
+	{
+		var exp = $ExpressionP6[i]  as BCBasic.IExpression;
+		if (exp == null) break;
+		left = new BCBasic.InfixExpression (left, $OPP5[i-1] as string, exp);
+	}
+	return left;
+	};
+
+ExpressionEquality-> ExpressionP6 OPP5 ExpressionP6
+	{ 
+	var equality = new BCBasic.InfixExpression ($ExpressionP6[0] as BCBasic.IExpression, $OPP5[0] as string, $ExpressionP6[1] as BCBasic.IExpression);
+	return equality;
+	};
+
+ExpressionP4-> OPP4? ExpressionP5
+	{ 
+	if ($OPP4 == null) return $ExpressionP5[0];
+	var left = new BCBasic.NumericSingleExpression ($OPP4 as string, $ExpressionP5 as BCBasic.IExpression);
+	return left;
+	};
+ExpressionP3-> ExpressionP4 (OPP3 ExpressionP4)?
+	{ 
+	if ($OPP3 == null) return $ExpressionP4[0];
+	var left = new BCBasic.InfixExpression ($ExpressionP4[0] as BCBasic.IExpression, $OPP3[0] as string, $ExpressionP4[1] as BCBasic.IExpression);
+	for (int i=2; i<9999; i++)
+	{
+		var exp = $ExpressionP4[i]  as BCBasic.IExpression;
+		if (exp == null) break;
+		left = new BCBasic.InfixExpression (left, $OPP3[i-1] as string, exp);
+	}
+	return left;
+	};
+ExpressionP2-> ExpressionP3 (OPP2 ExpressionP3)?
+	{ 
+	if ($OPP2 == null) return $ExpressionP3[0];
+	var left = new BCBasic.InfixExpression ($ExpressionP3[0] as BCBasic.IExpression, $OPP2[0] as string, $ExpressionP3[1] as BCBasic.IExpression);
+	for (int i=2; i<9999; i++)
+	{
+		var exp = $ExpressionP3[i]  as BCBasic.IExpression;
+		if (exp == null) break;
+		left = new BCBasic.InfixExpression (left, $OPP2[i-1] as string, exp);
+	}
+	return left;
+	};
+InputExpression -> INPUT (DEFAULT Expression)? (PROMPT Expression)?
+	{
+	BCBasic.IExpression prompt = null;
+	BCBasic.IExpression defaultValue = null;
+	int idx = 0;
+	if ($DEFAULT != null) defaultValue = $Expression[idx++] as BCBasic.IExpression;
+	if ($PROMPT != null) prompt = $Expression[idx++] as BCBasic.IExpression;
+
+	return new BCBasic.NumericInput (prompt, defaultValue);
+	};
+Expression -> ExpressionP2 | InputExpression
+	{
+	return this.Nodes[0].Eval(tree); 
+	};

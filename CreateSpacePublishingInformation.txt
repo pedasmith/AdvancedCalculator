@@ -1,0 +1,36 @@
+PDF: 
+V33: https://bestcalculator.files.wordpress.com/2017/05/bestcalculatorbasicreference.pdf
+OLD: https://bestcalculator.files.wordpress.com/2015/09/bestcalculatorbasicreference1.pdf
+
+CreateSpace: Aspen - Majestic
+Title: BC BASIC Reference manual and tutorial
+Author: & Guide to using Best Calculator 
+Back cover text: 
+
+REM BC BASIC lets you customize Best Calculator
+REM This program calculates how long it takes to fall
+REM given a height from the calculator (in meters)
+h = Calculator.Value
+h = 20
+REM g is the gravitational constant.  It's 9.8 m/s**2 on the earth
+g = 9.8
+t = TimeToFall(h, g)
+v = Velocity (g, t)
+CLS BLUE
+PRINT " "
+PRINT "Falling Calculator"
+PRINT " "
+PRINT "Starting from a height of ";h
+PRINT "Time to fall is ";t
+PRINT "Velocity at impact is ";v
+
+REM STOP t will place the value value into the calculator displays
+STOP t
+
+FUNCTION TimeToFall(h, g)
+t = SQR (2 * h / g)
+RETURN t
+
+FUNCTION Velocity(a, t)
+v = a * t
+RETURN v

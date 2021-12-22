@@ -1,0 +1,188 @@
+﻿<Page
+    x:Name="uiMainPage"
+    x:Class="AdvancedCalculator.MainPage"
+    IsTabStop="false"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:utilities="using:Shipwreck.Utilities"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <ResourceDictionary  Source="Common/CalculatorStyles.xaml" />
+    </Page.Resources>
+
+    <!--
+    The background is a pretty involved mess (with lots of little bits left over from experiments)
+    The user can set the background color (SetColor method that sets BackgroundColor); this will
+    change the uiMainGrid background.  Normally this color is an alpha blend which assumes it will be
+    layered on black.
+    
+    Hence the new uiMainGridBackup which exists entirely so that the back-background can be black.
+
+    -->
+
+    <Grid Name="uiMainGridBackup" Background="Black">
+        <Grid  Name="uiMainGrid" Background="Black"> 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+            </Grid.Resources>
+
+
+            <Grid Name="uiBackground" Grid.ColumnSpan="3"  />
+            
+            <ScrollViewer Grid.Column="0" x:Name="uiMenuScroller">
+                <StackPanel  x:Name="uiMenuStack">
+                    <Border Style="{StaticResource menuheaderborder}" Background="{Binding cbc.colorCalcList[0]}">
+                        <TextBlock Style="{StaticResource menuheader}"  Text="Calculate" Foreground="White" />
+                    </Border>
+
+
+                    <!-- The logo button only exists so I can create a nice-looking 2/sqrt/x/3 box for my logos. -->
+                    <Button Visibility="Collapsed" Tag="uiLogoAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[0]}" Click="OnSelectMain">LOGO</Button>
+
+                    <Button Tag="uiBasicSubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[2]}" Click="OnSelectMain" FontFamily="Courier New">BC BASIC</Button>
+                    <StackPanel Name="uiBasicSubMenu" Style="{StaticResource submenu}">
+                        <Button Tag="uiCalculatorQuickConnectionPopupAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[0]}" Click="OnSelectSub" FontFamily="Courier New">Equation Input</Button>
+                        <Button Tag="uiCalculatorSigmaConnectionPopupAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}" Click="OnSelectSub" FontFamily="Courier New">Sigma Function</Button>
+                        <Button Tag="uiCalculatorNewProgramConnectionPopupAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[2]}" Click="OnSelectSub" FontFamily="Courier New">New Program</Button>
+                        <Button Tag="uiCalculatorLibraryConnectionPopupAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[3]}" Click="OnSelectSub" FontFamily="Courier New">Library</Button>
+                    </StackPanel>
+
+
+                    <Button Tag="uiCalculatorAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[0]}" Click="OnSelectMain">Calculator 🔢</Button>
+                    <Button Tag="uiAdvancedWideAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[1]}" Click="OnSelectMain">Advanced 🎓</Button>
+                    <Button Tag="uiFormatAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[2]}" Click="OnSelectMain">Format ⟺</Button>
+                    <Button Tag="uiConstantsAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[3]}" Click="OnSelectMain">Constants ⌨</Button>
+                    <Button Tag="uiMemoryAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[4]}" Click="OnSelectMain">Memory 📑</Button>
+                    <Button Tag="uiDateAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[5]}" Click="OnSelectMain">Dates 🗓</Button>
+                    <Button Tag="uiCalculatorProgrammerAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[6]}" Click="OnSelectMain">Programmer's Calculator 💽</Button>
+                    <Button Tag="uiColumnStatsAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[7]}" Click="OnSelectMain">Statistical Calculator 🗠</Button>
+                    <Button Tag="uiConversionsSubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorCalcList[8]}" Click="OnSelectMain">Conversions+Tables 📏</Button>
+                    <StackPanel Name="uiConversionsSubMenu" Style="{StaticResource submenu}" Grid.Column="1">
+                        <Button Tag="uiConversionsArea" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[0]}" Content="Area ⬚"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsEnergy" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[1]}" Content="Energy ⚡"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsLength" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[2]}" Content="Length 📏"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsTemperature" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[3]}" Content="Temperature ☀"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsWeight" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[4]}" Content="Weight ⚖"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsUSFarmVolume" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[5]}" Content="Farm Volumes (USA) 🚜"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsAsciiTableAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[0]}"  Content="Ascii Table"  Click="OnSelectSub" />
+                        <Button Tag="uiConversionsUnicodeDataAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}"  Content="Unicode Data"  Click="OnSelectSub" />
+                    </StackPanel>
+                
+                    <Rectangle Height="10" />
+                    <Border Style="{StaticResource menuheaderborder}" Background="{Binding cbc.colorSolverList[0]}">
+                        <TextBlock Style="{StaticResource menuheader}"  Text="Solve" Foreground="White"/>
+                    </Border>
+                    <Button Tag="uiElectricalEngineeringSubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorSolverList[0]}" Click="OnSelectMain">Electrical Engineering 💡</Button>
+                    <StackPanel Name="uiElectricalEngineeringSubMenu" Style="{StaticResource submenu}">
+                        <Button Tag="uiElectricalEngineeringVIR" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[0]}" Content="V=IR and P=IV"  Click="OnSelectSub" />
+                        <Button Tag="uiElectricalEngineeringResistor" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}" Content="Resistors"  Click="OnSelectSub" />
+                        <Button Tag="uiElectricalEngineeringColorCode" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[2]}" Content="Resistor Color Code"  Click="OnSelectSub" />
+                        <Button Tag="uiElectricalEngineeringCapacitor" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[3]}"  Content="Capacitors"  Click="OnSelectSub" />
+                    </StackPanel>
+
+                    <Button Tag="uiFinancialSubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorSolverList[1]}" Click="OnSelectMain">Financial 💰</Button>
+                    <StackPanel Name="uiFinancialSubMenu" Style="{StaticResource submenu}">
+                        <Button Tag="uiFinancialCAGR" Style="{StaticResource menubutton}" Content="CAGR" Background="{Binding cbc.color3List[0]}"  Click="OnSelectSub" />
+                        <Button Tag="uiFinancialMortgage" Style="{StaticResource menubutton}" Content="Mortgage" Background="{Binding cbc.color3List[1]}"  Click="OnSelectSub" />
+                        <Button Tag="uiFinancialWACC" Style="{StaticResource menubutton}" Content="WACC" Background="{Binding cbc.color3List[2]}"  Click="OnSelectSub" />
+                    </StackPanel>
+                    <Button Tag="uiGeometrySubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorSolverList[2]}" Click="OnSelectMain">Geometry  📐</Button>
+                    <StackPanel Name="uiGeometrySubMenu" Style="{StaticResource submenu}">
+                        <Button Tag="uiGeometryCircle" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[0]}" Content="Circles ◌"  Click="OnSelectSub" />
+                        <Button Tag="uiGeometryRightTriangle" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}" Content="Right Triangles 📐"  Click="OnSelectSub" />
+                        <Button Tag="uiGeometrySlope" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[2]}" Content="Slope ╱"  Click="OnSelectSub" />
+                    </StackPanel>
+                    <Button Tag="uiHealthSubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorSolverList[3]}" Click="OnSelectMain">Health 💓</Button>
+                    <StackPanel Name="uiHealthSubMenu" Style="{StaticResource submenu}" >
+                        <Button Tag="uiHealthIdealHeartRate" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[0]}" Content="Ideal Heart Rate 💗"  Click="OnSelectSub" />
+                        <Button Tag="uiHealthBMIAdult" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}" Content="BMI 👨"  Click="OnSelectSub" />
+                        <Button Tag="uiHealthBMIChildren" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[2]}" Content="BMI for Kids 👨"  Click="OnSelectSub" />
+                        <Button Tag="uiHealthPulseCounter" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[3]}" Content="Pulse 💓"  Click="OnSelectSub" />
+                    </StackPanel>
+
+                    <Button Tag="uiGamesSubMenu" Style="{StaticResource menubutton}" Background="{Binding cbc.colorSolverList[4]}" Click="OnSelectMain">Dice 🎲🎲</Button>
+                    <StackPanel Name="uiGamesSubMenu" Style="{StaticResource submenu}">
+                        <Button Tag="uiGamesDice6_1" Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[0]}" Content="🎲"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesDice6_2" Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[1]}" Content="🎲 🎲"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesDice4"   Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[2]}" Content="4-sided dice"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesDice6"   Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[3]}" Content="6-sided dice"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesDice8"   Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[3]}" Content="8-sided dice"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesDice12"  Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[4]}" Content="12-sided dice"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesDice20"  Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[5]}" Content="20-sided dice"  Click="OnSelectSub" />
+                        <Button Tag="uiGamesCoin"    Style="{StaticResource menubutton}" Background="{Binding cbc.color9List[6]}" Content="Coin Flip"  Click="OnSelectSub" />
+                    </StackPanel>
+
+                
+                    <Rectangle Height="50" />
+                    <Button Style="{StaticResource menubutton}" Background="{Binding cbc.colorFeedback}" Content="Help">
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <Button Content="Help file" MinWidth="150" Click="OnHelp" />
+                                    <Button Content="Purchase manual" MinWidth="150" Click="OnPurchase" />
+                                    <Button Content="Web site" MinWidth="150" Click="OnWebsite" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <!-- NOTE: pick icons and colors for sourse and purchase -->
+                    <Button Visibility="Collapsed" Name="uiSourceButton" Tag="uiSource" Style="{StaticResource menubutton}" Background="{Binding cbc.colorFeedback}" Click="OnSelectMain">Source Code</Button>
+                    <Button Visibility="Collapsed" Name="uiPurchaseButton" Tag="uiPurchase" Style="{StaticResource menubutton}" Background="{Binding cbc.colorFeedback}" Click="OnSelectMain">Purchase</Button>
+                    <Button Tag="uiFeedback" Style="{StaticResource menubutton}" Background="{Binding cbc.colorFeedback}" Click="OnSelectMain">Feedback 💁</Button>
+                </StackPanel>
+            </ScrollViewer>
+
+            <local:AllPagesControl Grid.Column="2" x:Name="uiAllPages" />
+            <local:TrialPopup Grid.Column="0" Grid.ColumnSpan="3" x:Name="uiTrialPopup" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  />
+
+
+            <!-- These need to be on top -->
+            <StackPanel Tag="ALL" Grid.Column="2" HorizontalAlignment="Left">
+                <!-- APPBAR GLYPH CALCULATOR -->
+                <Button Name="uiOpenButton" ToolTipService.ToolTip="Show Menu"  Style="{StaticResource cbmstyle}" Click="OnOpenButtons" Visibility="Collapsed" FontFamily="Segoe UI Symbol"></Button>
+                <Button Name="uiCloseButton"  ToolTipService.ToolTip="Hide Menu" Style="{StaticResource cbmstyle}" Click="OnCloseButtons">&lt;&lt;&lt;</Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <AppBar Padding="10,0,10,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button x:Name="uiStopProgram" Content="STOP" Click="OnStopProgram" Visibility="Collapsed" Margin="0,0,20,0" />
+                    <Button Content="Alignment">
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="▯••" Tag="Left" Click="OnSetAlignment" />
+                                <MenuFlyoutItem Text="•▯•" Tag="Center" Click="OnSetAlignment" />
+                                <MenuFlyoutItem Text="••▯" Tag="Right" Click="OnSetAlignment" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                    
+                    <Rectangle Width="20" />
+
+                    <Button Content="Appearance">
+                        <Button.Flyout>
+                            <Flyout>
+                                <local:AppearancePopup x:Name="uiAppearancePopup1"  />
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <!-- Move clipboard to the right to make it easier to click -->
+                    <Rectangle Width="20" />
+                    <Button Content="📋" Click="OnCopyToClipboard" />
+
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.BottomAppBar>
+</Page>

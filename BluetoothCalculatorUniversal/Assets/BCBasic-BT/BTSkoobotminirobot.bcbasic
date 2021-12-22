@@ -1,0 +1,414 @@
+## My BT: Skoobot mini robot
+The Skoobot (from https://www.william-weiler-engineering.com/) is a tiny 1-inch robot that's controllable from BC BASIC! Programs include a the simplest possible program to turn Rover mode on and off, a keyboard-controlled robot, and a full GUI program!
+### Light and Distance
+A very complete program that demonstrates getting the ambient light and distance values from a Skoobot robot and displays them on a graph. The Skoobot will provide a series of data values using a timing that you specify (for example, you can ask for data every 100 milliseconds). The light data is in Lux and the distance data is in centimeters (cm) (and both are approximate).
+```BASIC
+CLS WHITE BLACK
+PRINT "SKOOBOT LIGHT AND DISTANCE PROGRAM"
+
+REM
+REM Pick a Skoobot. If there's only one, select it
+REM automatically with no user intervention.
+REM
+devices = Bluetooth.DevicesName("Skoobot*")
+IF (devices.Count = 0)
+    PRINT "No Skoobot devices found!"
+END IF
+IF (devices.Count = 1)
+    device = devices[1]
+ELSE
+    device = Bluetooth.PickDevicesName ("Skoobot*")
+    IF (device.IsError) THEN
+        PRINT "No device selected"
+        STOP
+    END IF
+END IF
+skoobot = device.As ("Skoobot")
+
+REM Set up a Light array
+DIM lightData()
+lightData.MaxCount = 50
+lightData.RemoveAlgorithm = “First”
+gl = Screen.Graphics (50, 50, 100, 400)
+gl.Title = "Ambient Light (lux)"
+gl.GraphY (lightData)
+
+REM Set up a distance array
+DIM distanceData()
+distanceData.MaxCount = 50
+distanceData.RemoveAlgorithm = “First”
+gd = Screen.Graphics (50, 180, 100, 400)
+gd.Title = "Distance (cm)"
+gd.GraphY (distanceData)
+
+REM
+REM Set up the Light and Distance functions.
+REM Each will be called back about every 100 milliseceonds.
+REM
+skoobot = device.As (“Skoobot”)
+skoobot.SetupLight (“Light”, 100)
+skoobot.SetupDistance ("Distance", 100)
+FOREVER WAIT
+
+REM Called with light values in LUX
+FUNCTION Light (currskoobot, lux)
+    GLOBAL lightData
+    lightData.Add (lux)
+    Screen.ClearLine (2)
+    PRINT "Ambient", lux
+RETURN
+
+REM Called with an approximate distance in cm (centimeter)
+FUNCTION Distance (currskoobot, cm)
+    GLOBAL distanceData
+    distanceData.Add (cm)
+    Screen.ClearLine (3)
+    PRINT "Distance", cm
+RETURN
+```
+### A first control program
+The simplest possible Skoobot control program puts the Skoobot into Rover mode! Press "X" to get out of rover mode.
+```BASIC
+CLS
+PRINT "SKOOBOT CONTROL PROGRAM"
+PRINT "Sets the Skoobot into Rover mode"
+PRINT "Will automatically stop after 5 seconds"
+
+device = Bluetooth.PickDevicesName ("Skoobot*")
+IF (device.IsError) THEN
+    PRINT "No device selected"
+    STOP
+END IF
+
+skoobot = device.As ("Skoobot")
+skoobot.RoverMode()
+
+REM Run for about 5 seconds
+PAUSE 50*5
+skoobot.Stop()
+
+STOP
+```
+### Control program for Skoobot
+A GUI control program for the Skoobot robot.
+```BASIC
+CLS WHITE BLACK
+PRINT "SKOOBOT CONTROL PROGRAM"
+
+devices = Bluetooth.DevicesName("Skoobot*")
+IF (devices.Count = 0)
+    PRINT "No Skoobot devices found!"
+END IF
+IF (devices.Count = 1)
+    device = devices[1]
+ELSE
+    device = Bluetooth.PickDevicesName ("Skoobot*")
+    IF (device.IsError) THEN
+        PRINT "No device selected"
+        STOP
+    END IF
+END IF
+skoobot = device.As ("Skoobot")
+skoobot.SetupLight (“Light”, 1000)
+skoobot.SetupDistance ("Distance", 100)
+
+REM Create UI
+PADDING = 4
+idealw = Math.Min (300, Screen.GW-PADDING)
+IF (Screen.GW < 400) THEN idealw = Screen.GW-PADDING
+idealx = (Screen.GW - idealw) / 2
+
+idealh = Math.Min (400, Screen.GH-PADDING)
+idealy = (Screen.GH - idealh)/2
+g = Screen.Graphics (idealx, idealy, idealh, idealw)
+REM g = Screen.FullScreenGraphics()
+g.Background = WHITE
+g.Stroke = BLACK
+g.Fill = BLACK
+g.Border = BLACK
+MakeSkoobotUI(g)
+
+REM STOP
+FOREVER WAIT
+
+REM Simple function to create the Skoobot
+FUNCTION MakeSkoobotUI(g)
+    GLOBAL LightText
+    GLOBAL DistanceText
+
+    MakeButton (g, 2, 1, "Forward", "GO_FORWARD")
+    MakeButton (g, 1, 0, "LEFT", "GO_LEFT")
+    MakeButton (g, 1, 1, "STOP", "GO_STOP")
+    MakeButton (g, 1, 2, "RIGHT", "GO_RIGHT")
+    MakeButton (g, 0, 1, "Back", "GO_BACKWARD")
+
+    MakeButton (g, 5, 0, "Buzz", "GO_BUZZER")
+    LightText = MakeText (g, 5, 1, "Light")
+    DistanceText = MakeText (g, 5, 2, "Distance")
+
+    MakeButton (g, 4, 0, "Rover", "GO_ROVER")
+    MakeButton (g, 4, 1, "..Rev", "GO_ROVERREV")
+    MakeButton (g, 4, 2, "Fotov", "GO_FOTOVORE")
+
+    txt = g.Text (0, g.H-40, g.W, g.H, "Skootbot Control", 20)
+    txt.Alignment = "CT"
+RETURN
+
+REM
+REM The buttons are laid out on a grid. This function will put the
+REM right button in the right spot based on a passed-in row+col
+REM Note that the r,c is zero based, not 1 based.
+REM
+FUNCTION MakeButton(g, r, c, text, function)
+    w = g.W
+    xoffset = 5
+    bw = ((w-xoffset*2)/3)
+    bh = 50
+    yoffset = bh+10
+
+    x = xoffset+bw*c
+    y = yoffset+(r-1)*bh
+    b = g.Button (x, y, x+bw-xoffset, y+bh-xoffset, text, function)
+RETURN b
+
+FUNCTION MakeText(g, r, c, text)
+    w = g.W
+    xoffset = 5
+    bw = ((w-xoffset*2)/3)
+    bh = 50
+    yoffset = bh+10
+
+    x = xoffset+bw*c
+    y = yoffset+(r-1)*bh
+    y = y - 9
+    t = g.Text (x, y, x+bw-xoffset, y+bh-xoffset, text, 18)
+RETURN t
+
+REM
+REM All of the functions that actually call into the Skoobot
+REM These should all look pretty much exactly the same:
+REM they are called when a button is pressed
+REM they grab the skootbot
+REM and then call the correct function
+REM
+REM Progamming tip: a super common error is to
+REM copy-and-paste these kinds of common functions
+REM and then not change the functions correctly!
+REM
+FUNCTION GO_LEFT (button)
+    GLOBAL skoobot
+    skoobot.Left30()
+RETURN
+
+FUNCTION GO_RIGHT (button)
+    GLOBAL skoobot
+    skoobot.Right30()
+RETURN
+
+FUNCTION GO_FORWARD (button)
+    GLOBAL skoobot
+    skoobot.Forward()
+RETURN
+
+FUNCTION GO_BACKWARD (button)
+    GLOBAL skoobot
+    skoobot.Backward()
+RETURN
+
+FUNCTION GO_STOP (button)
+    GLOBAL skoobot
+    skoobot.Stop()
+RETURN
+
+FUNCTION GO_BUZZER (button)
+    GLOBAL skoobot
+    skoobot.PlayBuzzer()
+RETURN
+
+FUNCTION GO_ROVER (button)
+    GLOBAL skoobot
+    skoobot.RoverMode()
+RETURN
+
+FUNCTION GO_FOTOVORE (button)
+    GLOBAL skoobot
+    skoobot.FotovoreMode()
+RETURN
+
+FUNCTION GO_ROVERREV (button)
+    GLOBAL skoobot
+    skoobot.RoverModeRev()
+RETURN
+
+FUNCTION Distance (skoobot, cm)
+    GLOBAL DistanceText
+    DistanceText.Text = cm
+    REM Screen.ClearLine (4)
+    REM PRINT "Distance", cm
+RETURN
+
+FUNCTION Light (skoobot, lux)
+    GLOBAL LightText
+    LightText.Text = lux
+    REM Screen.ClearLine (5)
+    REM PRINT "Light", lux
+RETURN
+```
+### Gopher-of-things for SKOOBOT
+A Gopher-of-things SKOOBOT control program. This uses INLINE buttons
+```BASIC
+REM
+REM The device side of the gateway
+REM
+device = Bluetooth.PickDevicesName ("Skoobot*")
+IF (device.IsError) THEN
+    PRINT "No device selected"
+    STOP
+END IF
+
+skoobot = device.As ("Skoobot")
+skoobot.SetupLight (“Light”, 1000)
+skoobot.SetupDistance ("Distance", 100)
+
+REM
+REM The Gopher side of the gateway program
+REM
+Gopher.AddRoute ("", "SKOOBOT_MAIN")
+Gopher.AddRoute ("/command/{command}", "SKOOBOT_COMMAND")
+Gopher.AddRoute ("/status", "SKOOBOT_STATUS")
+
+start = Gopher.Start ("Skoobot")
+CLS
+PRINT "RUNNING GOPHER with Skoobot"
+PRINT start
+
+FOREVER WAIT
+
+FUNCTION SKOOBOT_AddCommands(menu)
+    menu.Add ("1", "🔊", "/command/beep", "", "", "INLINE")
+    menu.Add ("1", "⇑", "/command/forward", "", "", "INLINE")
+    menu.Add ("1", "🛰", "/command/rover", "", "", "INLINE")
+
+    menu.Add ("1", "⇐", "/command/left", "", "", "INLINE")
+    menu.Add ("1", "STOP", "/command/stop", "", "", "INLINE")
+    menu.Add ("1", "⇒", "/command/right", "", "", "INLINE")
+
+    menu.Add ("1", "📏", "/command/measure", "", "", "INLINE")
+    menu.Add ("1", "⇓", "/command/backward", "", "", "INLINE")
+RETURN
+
+FUNCTION SKOOBOT_MAIN (selector, ids, search)
+    menu = Gopher.NewMenu()
+    menu.Add ("i", "Skoobot commands")
+    SKOOBOT_AddCommands (menu)
+
+    menu.Add ("i", "--status--")
+RETURN menu
+
+FUNCTION SKOOBOT_COMMAND (selector, ids, search)
+    menu = Gopher.NewMenu()
+
+    cmd = ids.command
+    GLOBAL skoobot
+    Screen.ClearLine (3)
+    PRINT "Incoming command", cmd
+
+    IF (cmd  = "beep") THEN skoobot.PlayBuzzer()
+    IF (cmd = "left") THEN skoobot.Left30()
+    IF (cmd = "right") THEN skoobot.Right30()
+    IF (cmd = "forward") THEN skoobot.Forward()
+    IF (cmd = "backward") THEN skoobot.Backward()
+    IF (cmd = "stop") THEN skoobot.Stop()
+    IF (cmd = "rover") THEN skoobot.RoverMode()
+    IF (cmd = "roverrev") THEN skoobot.RoverRevMode()
+    REM Ignore the measure command...
+
+    GLOBAL DistanceCM
+    GLOBAL LightLux
+    menu.Add ("i", "Distance=" + DistanceCM + " Light=" + LightLux)
+    SKOOBOT_AddCommands (menu)
+RETURN menu
+
+
+FUNCTION Distance (skoobot, cm)
+    GLOBAL DistanceCM
+    DistanceCM = cm
+RETURN
+
+FUNCTION Light (skoobot, lux)
+    GLOBAL LightLux
+    LightLux = lux
+RETURN
+```
+### Keyboard-driven Skoobot program
+A complete control program for the Skoobot device!
+```BASIC
+CLS
+PRINT "SKOOBOT CONTROL PROGRAM"
+PRINT "Uses keyboard command to control the robot"
+PRINT "Press X to exit"
+PRINT "Left, right, up down arrows to move"
+PRINT "Spacebar to stop"
+
+device = Bluetooth.PickDevicesName ("Skoobot*")
+IF (device.IsError) THEN
+    PRINT "No device selected"
+    STOP
+END IF
+
+skoobot = device.As ("Skoobot")
+REM The light sensor tends to cause slowdowns on the skoobot
+skoobot.SetupLight (“Light”, 1000)
+skoobot.SetupDistance ("Distance", 100)
+REM Wait for an X key
+
+10 REM LOOP TOP
+key = INKEY$
+IF (key = "") THEN
+    PAUSE 50
+    GOTO 10
+END IF
+Screen.ClearLine (6)
+IF (key = "Left") THEN
+    skoobot.Left30()
+    GOTO 10
+END IF
+IF (key = "Right") THEN
+    skoobot.Right30()
+    GOTO 10
+END IF
+IF (key = "Up") THEN
+    skoobot.Forward()
+    GOTO 10
+END IF
+IF (key = "Down") THEN
+    skoobot.Backward()
+    GOTO 10
+END IF
+IF (key = " ") THEN
+    skoobot.MotorsSleep()
+    GOTO 10
+END IF
+IF (key = "B") THEN
+    skoobot.PlayBuzzer()
+    GOTO 10
+END IF
+IF (key = "X") THEN
+    GOTO 20
+END IF
+PRINT "Unknown key " + key
+GOTO 10
+
+20 REM LOOP BOTTOM
+skoobot.Stop()
+
+FUNCTION Distance (skoobot, cm)
+    Screen.ClearLine (10)
+    PRINT "Distance", cm
+RETURN
+
+FUNCTION Light (skoobot, lux)
+    Screen.ClearLine (11)
+    PRINT "Light", lux
+RETURN
+```

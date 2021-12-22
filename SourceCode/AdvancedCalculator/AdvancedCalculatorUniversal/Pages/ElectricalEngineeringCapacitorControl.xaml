@@ -1,0 +1,124 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ElectricalEngineeringCapacitorControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Electrical Engineering: Series and Parallel Capacitors</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Parallel Capacitors</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">C1</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1P1" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1P1" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1P1" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">C2</TextBlock>
+                <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1P2" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1P2" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1P2" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">C3</TextBlock>
+                <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1P3" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1P3" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1P3" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Result</TextBlock>
+                <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1Parallel" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1Parallel" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1Parallel" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Series Capacitors</TextBlock>
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">C4</TextBlock>
+                <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1S1" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1S1" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1S1" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">C5</TextBlock>
+                <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1S2" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1S2" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1S2" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">C6</TextBlock>
+                <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1S3" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1S3" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1S3" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource solverblock}">Result</TextBlock>
+                <TextBox  Grid.Row="9" Grid.Column="1" Tag="autotbeq1Series" Style="{StaticResource solverbox}" IsReadOnly="True"/>
+                <Button Grid.Row="9" Grid.Column="2" Tag="autotbeq1Series" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="9" Grid.Column="3" Tag="autotbeq1Series" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ElectricalEngineeringCapacitors.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                        <Bold FontSize="20" >About series and parallel capacitors</Bold>
+                        <LineBreak />
+                        Capacitors in <Bold>parallel</Bold>  (where the current can flow between all of the capacitors)
+                        will work as one capacitor whose value is the sum of 
+                        the seperate capacitances.  For example, two 100 microFarad capacitors in series will be equal to a
+                        single 100 microFarad capacitor.
+
+                       
+                        <LineBreak />
+                        Capacitors in <Bold>series</Bold> (one after the other)are  more complex.
+                        The final capacitance will be the 1 / ((1/C1) + (1/C2)).  You have to take the reciprocal of each capacitor (1/C),
+                        add them up, and then take the reciprocal of that total.
+                        
+                        <LineBreak />
+                        In this solver, simply enter in the series or parallel capacitor values; the solver will calculate the
+                        series and parallel values.  This solver doesn't work backwards -- you can't enter the final value
+                        and get the original capacitance values.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

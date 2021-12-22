@@ -1,0 +1,62 @@
+## BT: An Overview of Bluetooth
+Introduces Bluetooth programming.  Call the Bluetooth.Devices() method to get a list of paired Bluetooth devices for a system.  For each individual device, you can get the name or you can make Bluetooth calls into individual devices.  The device.Init() call is needed to get real Bluetooth device data.
+### List Bluetooth devices
+Call the Bluetooth.Devices() method to get a list of paired Bleutooth devices.  For each device in the list you can get the name even without call the device.Init() method.  The list.Count property is the way to get the length of the list.
+**Default Key**: LIST
+```BASIC
+CLS BLUE
+PRINT "Available Bluetooth devices"
+
+devices = Bluetooth.Devices ()
+
+FOR i = 1 TO devices.Count
+    device = devices.Get(i)
+    PRINT “NAME”, device.Name
+NEXT i
+
+n = devices.Count
+PRINT " "
+PRINT "" + n + " devices were found"
+```
+### Pick a Bluetooth device
+The Bluetooth.PickDevicesName(<name pattern>) method lets the user select a single Bluetooth device from a matching list.
+```BASIC
+CLS BLUE
+PRINT "PickDevicesName lets the user select"
+PRINT "a single Bluetooth device from a list"
+PRINT " "
+device = Bluetooth.PickDevicesName("*")
+IF (device.IsError) 
+    PRINT "Sorry, no device was picked"
+ELSE
+    PRINT "Device ";device.Name;" was picked!"
+    PRINT device.Properties
+END IF
+```
+### Power
+Get real data from each Bluetooth device using the raw Bluetooth read commands.  This program builds on the List program: each device is initialized with the device.Init() call.  Once initialized, standard Power data is retrieved from each device.
+
+There are two types of reads: cached reads (like device.ReadRawByte) are faster because they use the data that the operating already knows.  The raw reads will use the Bluetooth radio and will ask the device for data.  Each raw call gets the most up to date data (but will be slower).
+```BASIC
+CLS BLUE
+PRINT "Read Bluetooth Power"
+
+REM
+REM How many Bluetooth devices are available?
+REM
+devices = Bluetooth.Devices ()
+
+FOR i = 1 TO devices.Count
+    device = devices.Get(i)
+    PRINT “NAME”, device.Name
+    GetPowerInfo(device)
+NEXT i
+
+REM Get power data using the RAW bluetooth routines
+FUNCTION GetPowerInfo(bt)
+    PRINT "Init", bt.Init()
+    PRINT “POWER”, bt.ReadRawByte(“180f”, “2a19”)
+    PRINT “CACHE”, bt.ReadCachedByte(“180f”, “2a19”)
+    PRINT “BLE_Name”, bt.BLE_Name
+END
+```

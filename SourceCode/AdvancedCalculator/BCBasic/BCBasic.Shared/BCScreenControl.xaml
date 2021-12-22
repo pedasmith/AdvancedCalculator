@@ -1,0 +1,80 @@
+﻿<Page
+    x:Class="BCBasic.BCScreenControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BCBasic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" 
+    IsTabStop="True" KeyUp="OnKeyUp" KeyDown="OnKeyDown" 
+    >
+
+    <Border x:Name="uiBorder" BorderBrush="Blue" 
+            BorderThickness="2" HorizontalAlignment="Stretch"  VerticalAlignment="Top" Padding="2"
+            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+            PointerEntered="OnBorderPointerEntered" 
+            PointerExited="OnBorderPointerExited" 
+            PointerPressed="OnBorderPointerPressed" 
+            PointerReleased="OnBorderPointerReleased" 
+            PointerMoved="OnBorderPointerMoved" 
+             >
+
+        <Grid x:Name="uiMainGrid" 
+              PointerEntered="OnMainGridPointerEntered" 
+              PointerExited="OnMainGridPointerExited">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" x:Name="uiMenu">
+                <TextBlock FontSize="30" x:Name="uiScreenSize">10x20</TextBlock>
+                <!-- Menu bar at top -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,0,0,0">
+                    <Button x:Name="uiFlyout" Content="..." IsTabStop="False" IsTapEnabled="False">
+                        <Button.Flyout>
+                            <Flyout >
+                                <Border Background="Black" BorderBrush="White" BorderThickness="1" Margin="4" Padding="4">
+                                    <StackPanel>
+                                        <local:MenuIcon MenuTextEZ="F-" AltText="Smaller font" Tapped="OnFontSize" Tag="-2"  />
+                                        <local:MenuIcon MenuTextEZ="F+" AltText="Larger font" Tapped="OnFontSize" Tag="2"  />
+                                        <local:MenuIcon MenuTextEZ="[_]" AltText="Hide the console" Tapped="OnConsoleToggle"/>
+                                        <local:MenuIcon MenuTextEZ="S-" AltText="Make the screen smaller" Tapped="OnScreenSize" Tag="-50"/>
+                                        <local:MenuIcon MenuTextEZ="S+" AltText="Make the screen larger" Tapped="OnScreenSize" Tag="50" />
+                                    </StackPanel>
+                                </Border>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <local:MenuIcon x:Name="uiClose" MenuTextEZ="X" AltText="Close the screen" Tapped="OnScreenClose"/>
+                </StackPanel>
+            </Grid>
+            <Border Grid.Row="1" x:Name="uiBackground" VerticalAlignment="Top"  HorizontalAlignment="Stretch" Background="BlueViolet">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" xml:space="preserve" x:Name="uiFixedScreen" VerticalAlignment="Top"  HorizontalAlignment="Stretch" TextWrapping="NoWrap"
+                                FontFamily="Consolas" FontSize="30"
+                               LayoutUpdated="OnTextLayoutUpdated"
+                               IsTextSelectionEnabled="True"
+                               Text="01)                                                                                       "
+                               >
+                    </TextBlock>
+                    <Grid Grid.Row="0" x:Name="uiGraphics" VerticalAlignment="Top" HorizontalAlignment="Left" />
+
+
+                    <!-- The console -->
+                    <ScrollViewer Grid.Row="1" x:Name="uiConsoleViewer" Height="200" 
+                                  HorizontalScrollBarVisibility="Visible" HorizontalScrollMode="Enabled"
+                                  VerticalScrollBarVisibility="Visible" VerticalScrollMode="Enabled"
+                                  Padding="0,0,15,15">
+                        <TextBlock x:Name="uiConsole" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxWidth="800"
+                                   TextWrapping="Wrap"
+                                   FontSize="24" IsTextSelectionEnabled="True" Text=""/>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Page>

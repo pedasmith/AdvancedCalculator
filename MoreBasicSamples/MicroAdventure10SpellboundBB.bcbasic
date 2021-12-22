@@ -1,0 +1,396 @@
+## Micro Adventure #10: Spellbound
+Your code name is Orion, and you must defeat a master of murderous magic! Someone or something is after the nation's top athletes.  They claim it's voodoo or black magic. As the computer whiz of ACT (Adventure Connection Team) you're not sure. You must use your micro to play a strategy game against a deadly cheat, intercept the enemies secret transmission and stop a computerized countdown a split second before a nuclear missile is detonated.
+
+The programs from Micro Adventure #10 have been converted into BC BASIC for your enjoyment!
+### Program 1: Decoder
+When you run this program, it will ask for a password -- which is "STARLIGHT"
+```BASIC
+100 REM DECODE
+REM The code used to use a DATA/READ statement
+REM The original MX$ value was printed wrong!
+REM It was "off by two" -- the QA at the end of
+REM the string was at the start.
+MX$ = "ZPLOWSXIKECDUJMVRFYNHBTGQA"
+CLS BLUE
+AA = CODE("A")
+PW$ = INPUT DEFAULT "STARLIGHT" PROMPT "Input a password" 
+PRINT "Type 'stop' to end"
+160 MG$ = INPUT DEFAULT "SKTAWII WX TQTB" PROMPT "Enter your message" 
+MG$ = String.ToUpper (MG$)
+IF (MG$ = "STOP") THEN GOTO 320
+FOR i = 1 TO LEN (MG$)
+    REM The old code did a GOSUB to 800 to make
+    REM it easy to swap out "wierd" parts of BASIC
+    REM to support different computer models. 
+    XC$ = MID(MG$, i, 1)
+    LT = CODE(XC$)-AA
+    IF ((LT < 0) OR (LT > 25)) THEN GOTO 290
+    L = L + 1
+    IF (L>LEN(PW$)) THEN L = 1
+    XC$ = MID(PW$, L, 1)
+    CP = CODE(XC$)-AA +1
+    X = CP+LT
+    IF (X > 26) THEN X = X - 26
+    XC$ = MID(MX$, X, 1)
+    290 PRINT XC$;
+NEXT i
+PRINT " "
+PRINT " "
+GOTO 160
+
+320 END
+```
+### Program 2: Airplane Landing
+A new program for you to edit
+```BASIC
+REM PLANE
+TROFF
+CLS BLUE
+NU$=CHR$(0)
+SW = Screen.W
+SH = Screen.H
+KZ = -16384
+KW = -16368
+
+120 RM=SW
+BM=SH-4
+LP=SW-1
+H=30
+
+130 PV=1
+PH=1
+NV=1
+NH=1
+
+REM Pick some nice starting values
+REM for DC (descent) and SP (speed)
+DC=3
+SP=300
+
+FOR x=1 TO SW
+    PRINT AT BM,x "_"
+NEXT x
+140 PRINT AT BM,SW-1 "⇩"
+150 REM need a line 150!
+160 PRINT AT PV,PH "  "
+180 PRINT AT NV,NH "🛬"
+PV=NV
+PH=NH
+210 RX=30
+RD=INT(RND*RX+1)
+HW = HW+RD-15
+220 PRINT AT 1, BM+1 "Headwind is "; HW; " "
+DC = INPUT DEFAULT DC PROMPT "Descent? "
+SP = INPUT DEFAULT SP PROMPT "Speed? "
+250 NV  = INT(PV+DC)
+NH = INT(PH+(SP-240)/10)
+260 IF (((NV=BM) AND (NH=LP)) AND ((DC<3) AND (SP<300))) THEN GOTO 300
+270 IF (((NV<1) OR (NH<1)) OR (NH > SW)) THEN GOTO 320
+280 IF (NV>BM) THEN GOTO 320
+GOTO 150
+
+300 PRINT "Successful Landing!"
+END
+
+310 PRINT "Out of sky!"
+END
+
+320 PRINT "Crash!"
+CONSOLE "NV="+NV
+CONSOLE "NH="+NH
+CONSOLE "SW="+SW
+CONSOLE "BM="+BM
+
+END
+```
+### Program 3: Transmit
+A new program for you to edit
+```BASIC
+REM Transmit
+DIM MS(50)
+REM These weren't dimensioned in the 
+REM original program
+DIM V(9)
+DIM H(9)
+L1$="!---!---!---!"
+L2$="!   !   !   !"
+REM From line 960
+NU$=CHR$(0)
+SW=Screen.W
+SH=Screen.H
+KZ=-16384
+KW=-16368
+REM From Line 970
+WU=10
+REM From Line 900
+CLS BLUE
+REM Print a grid on the screen.
+150 PRINT AT 1,1 L1$
+FOR i=1 TO 3
+    FOR j = 1 TO 3
+        PRINT L2$;
+    NEXT j
+    PRINT L1$;
+NEXT i
+
+READ MN
+FOR i = 1 TO MN
+    READ MX
+    MS(i)=MX
+NEXT i
+FOR i = 1 TO 9
+    READ VX
+    V(i) = VX
+NEXT i
+FOR i = 1 TO 9
+    READ HX
+    H(i) = HX
+NEXT i
+260 XT=INT(RND*9)+1
+270 BX = INT(RND*9)+1
+IF (BX <> XT)
+    320 REM Converted into a 
+    REM much neater IF/ELSE
+    RD=INT(RND*25)
+    C$=CHR$(RD + CODE("A"))
+ELSE 
+    N=N+1
+    C$=CHR$(MS(N)+CODE("A"))
+    REM Add this helper to see the
+    REM message more clearly!
+    PRINT AT SH-4,N+1 C$
+    IF (N=MN) THEN N=0
+END IF
+
+330 REM 
+PRINT AT V(BX),H(BX) C$;
+350 FOR i=1 TO WU
+    KY$ = INKEY$
+    IF (KY$="") THEN GOTO 410
+    KK=CODE(KY$)-CODE("0")
+    IF (KK=XT)
+        PRINT AT SH-2,1 KK; " CLANDESTINE TRANS."
+    ELSE 
+        PRINT AT SH-2,1 KK; " NORMAL TRANSMISSION"
+    END IF
+410 NEXT i
+
+REM If you don't pause, the screen goes
+REM by much too fast to see!
+PAUSE 5
+GOTO 270
+
+
+
+
+
+
+
+430 DATA 22,11,14,6,8,13,1,17,20,19,4
+DATA 5,14,17,2,4,13,4,19,22,14,17,10
+DATA 3,3,3,7,7,7,11,11,11
+DATA 3,7,11,3,7,11,3,7,11
+```
+### Program 4: Stones
+Voodoo stones is an unusual game.  It's a bit like NIM, where you lose if you take the last stone, but the rules are different.  In Voodoo Stones, the game master "hears double".  No matter what number you give, the game master will double it. And after your play, the game master will always take exactly one stone.
+```BASIC
+CLS BLUE
+PRINT "The last stone is death"
+N = INPUT DEFAULT 5 PROMPT "Pick a number and I will double it"
+N = INT(N)*2
+170 PRINT "I will take 1"
+N=N-1
+PRINT "That leaves ";N
+IF (N=1) THEN GOTO 280
+K = INPUT DEFAULT K PROMPT "How many for you?"
+PRINT "I will double it and take them away"
+N=N-INT(K)*2
+IF (N<=1) THEN GOTO 280
+PRINT "That leaves "; N
+GOTO 170
+280 PAPER RED
+PRINT "You got the last one. You die"
+END
+```
+### Program 5: Voice
+A new program for you to edit
+```BASIC
+100 REM Voice
+CLS BLUE
+SW=Screen.W
+SH=Screen.H
+READ V
+SF=100/(SW-1)
+FOR K=1 TO V
+    READ N$
+    PRINT AT 1,1 N$ ;
+    FOR Y=2 TO 14
+        READ VP
+        VP=INT(VP/SF)
+        IF (VP>SW) THEN VP=SW
+        PRINT AT Y+1,1 "*" ;
+        FOR J=1 TO VP
+            PRINT "=";
+        NEXT J
+    NEXT Y
+    junk = INPUT DEFAULT " " PROMPT "Press Return to continue"
+NEXT K
+END
+
+DATA 3
+DATA "ORION", 10, 14, 13, 19, 35, 69, 23, 22, 17, 19, 29, 39, 24
+DATA "SKULL", 15, 19, 11, 29, 2, 39, 49, 59, 68, 77, 50, 23, 55
+DATA "PARROT", 35, 47, 59, 78, 91, 55, 34, 22, 10, 19, 10, 4, 8
+```
+### Program 6: Mines
+A new program for you to edit
+```BASIC
+CLS BLUE
+DIM MH(80)
+DIM MV(80)
+NU$=CHR$(0)
+SW=Screen.W
+SH=Screen.H
+KZ=-16384
+KW=-16368
+130 NM=2*SW
+ZH=3
+150 FOR VT=SH-1 TO SH-4 STEP -1
+    PRINT AT VT,SW-1 "/"
+NEXT VT
+170 FOR I=1 TO NM
+    RD=INT(RND*SW-2)
+    MH(I)=RD+1
+
+    RD=INT(RND*SH-3)
+    MV(I)=RD+1
+NEXT I
+
+210 FOR I=1 TO NM
+    PRINT AT MV(I),MH(I) "*"
+NEXT I
+
+250 PV=1
+PH=1
+NV=PV
+NH=PH
+270 PRINT AT NV,NH "A"
+GOSUB 390
+NH=PH+1
+IF((PH > SW-1) AND (PV>SH-5)) THEN GOTO 470
+IF (((PH>SW-1) OR (PV < 1)) OR (PV>SH)) 
+    PRINT AT NV,NH " "
+    GOTO 250
+END IF
+
+310 KY$=INKEY$
+IF (KY$="") THEN GOTO 360
+IF(KY$<>"U" AND KY$<>"D") THEN GOTO 360
+IF(KY$="D")
+    NV=PV+1
+    IF (NV > SH) THEN NV = SH
+END IF
+IF (KY$="U")
+    NV=PV-1
+    IF (NV < 1) THEN NV = 1
+END IF
+360 IF (DZ) 
+    DZ=0
+    GOTO 380
+END IF
+370 PRINT AT PV,PH " "
+380 PV=NV
+PH=NH
+PRINT AT NV,NH "A"
+CONSOLE "PV="+PV+" PH="+PH
+PAUSE 50
+
+GOTO 270
+
+REM
+REM Detect if we've hit a mine or not
+REM
+390 FOR I=1 TO NM
+IF (MV(I) <> PV) THEN GOTO 450
+IF (MH(I) <> PH) THEN GOTO 450
+Z=Z+1
+IF (Z>ZH)
+    PRINT "BOOOM!!"
+    END
+    REM END here is "end of program"!
+END IF
+PRINT AT PV,PH "+"
+DZ=1
+450 NEXT I
+RETURN
+
+470 PRINT "You made it!"
+END
+```
+### Program 7: Typo
+A new program for you to edit
+```BASIC
+REM Typo
+CLS BLUE
+
+SW=Screen.W
+SH=Screen.H
+CK=200
+DIM S(10)
+AA=ASC("A")-1
+Z=ASC("0")-1
+LN=10
+140 FOR i = 1 TO LN
+    RD=INT(RND*36)+1
+    IF (RD < 27) THEN C=RD+AA
+    REM The original code had a funny bug.
+    REM This next line didn't take into account
+    REM the bias of 26 in the results.  So the
+    REM C value was always 26 too high.
+    REM That puts it right in the path of the
+    REM upper-case letters.
+    REM Final result: instead of letters+numbers,
+    REM there were only letters, but not evenly
+    REM distributed.
+    IF (RD>26) THEN C=RD+Z-26
+    S(i) = C
+NEXT i
+PRINT AT 3,1 "CODE: "; 
+FOR i=1 TO LN
+    PRINT CHR(S(i)) ;
+NEXT i
+PRINT AT 4,1 "                  "
+PRINT AT 5,1 "                  "
+
+start  = DateTime.GetNow()
+NError = 0
+TM = 0
+FOR i = LN TO 1 STEP -1
+    260 TM = TM + 1
+    REM IF (NError > 0) THEN GOTO 305
+    KY$ = INKEY$
+    IF KY$ = "." THEN END
+    IF KY$ = ""
+        PAUSE 5
+        GOTO 260
+    END IF
+    IF (ASC(KY$)<>S(i)) 
+       NError = NError + 1
+       CONSOLE "KY$="+KY$+" NError="+NError
+       PRINT AT 5,i+6 "X"
+    END IF
+    PRINT AT 4,i+6 KY$
+    305 REM loop bottom
+NEXT i
+REM BC BASIC includes DateTime functions
+REM to calculate extact time deltas.
+end = DateTime.GetNow()
+delta = end.Subtract (start)
+IF (NError = 0) 
+    PRINT AT 7, 1 "GOT IT IN " + delta + " SECONDS"
+ELSE
+    PRINT AT 7,1 "MISSED!"
+END IF
+GOTO 140
+GOTO 140
+```

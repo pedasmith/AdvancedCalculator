@@ -1,0 +1,61 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.AllPagesControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:bcbasic="using:BCBasic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid x:Name="uiMainGrid">
+        <!-- Note: these can all be deleted; they've been moved over to the new "auto-create" mechanism
+        These are all generated on the fly as needed instead of being pre-created.
+        <local:KeyboardCalculatorFourPanelControl x:Name="uiCalculatorAlign"  HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Visible" />
+        <local:KeyboardAdvancedWideFourPanelControl x:Name="uiAdvancedWideAlign" Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" />
+        <local:KeyboardAdvancedNarrowFourPanelControl x:Name="uiAdvancedNarrowAlign" Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" />
+        <local:KeyboardProgrammerFourPanelControl x:Name="uiCalculatorProgrammerAlign" Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" />
+        <local:LogoControl x:Name="uiLogoAlign"  HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Visible" Background="Black" Margin="50" />
+        <local:KeyboardConstantsFourPanelControl x:Name="uiConstantsAlign"  Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top"  Visibility="Collapsed" />
+        <local:FeedbackFourPanelControl x:Name="uiFeedback"  Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top"  Visibility="Collapsed" />
+        <local:KeyboardFormatFourPanelControl x:Name="uiFormatAlign"  Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top"  Visibility="Collapsed" />
+        <local:MemoryControl x:Name="uiMemoryAlign" Margin="0,5,0,-5" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" />
+
+        <local:ConversionsAreaControl x:Name="uiConversionsArea" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFAreaSolver" Visibility="Collapsed" />
+        <local:AsciiTableControl x:Name="uiConversionsAsciiTableAlign" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Visible" />
+        <local:ConversionsEnergyControl x:Name="uiConversionsEnergy" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFEnergySolver" Visibility="Collapsed" />
+        <local:ConversionsLengthControl x:Name="uiConversionsLength" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFLengthSolver" Visibility="Collapsed" />
+        <local:ConversionsTemperatureControl x:Name="uiConversionsTemperature" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFTemperatureSolver" Visibility="Collapsed" />
+        <local:UnicodeTableControl x:Name="uiConversionsUnicodeDataAlign" HorizontalAlignment="Left"  VerticalAlignment="Top" Visibility="Collapsed"/>
+        <local:ConversionsUSFarmVolumeControl x:Name="uiConversionsUSFarmVolume" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFVolumeSolver" Visibility="Collapsed"/>
+        <local:ConversionsWeightControl x:Name="uiConversionsWeight" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFWeightSolver" Visibility="Collapsed" />
+        <local:GeometryCircleControl x:Name="uiGeometryCircle" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFGeometryCircleSolver" Visibility="Collapsed" />
+        <local:GeometryRightTriangleControl x:Name="uiGeometryRightTriangle" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFGeometryRightTriangleSolver" Visibility="Collapsed" />
+        <local:GeometrySlopeControl x:Name="uiGeometrySlope" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFGeometrySlopeSolver" Visibility="Collapsed" />
+        <local:ElectricalEngineeringVIRControl x:Name="uiElectricalEngineeringVIR" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFElectricalEngineeringVIRSolver" Visibility="Collapsed" />
+        <local:ElectricalEngineeringResistorControl x:Name="uiElectricalEngineeringResistor" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFElectricalEngineeringResistorSolver" Visibility="Collapsed" />
+        <local:ElectricalEngineeringCapacitorControl x:Name="uiElectricalEngineeringCapacitor" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFElectricalEngineeringCapacitorSolver" Visibility="Collapsed" />
+        <local:ElectricalEngineeringColorCodeControl x:Name="uiElectricalEngineeringColorCode" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" />
+        <local:FinancialCAGRControl x:Name="uiFinancialCAGR" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFFinancialCAGR" Visibility="Collapsed" />
+        <local:FinancialMortgageControl x:Name="uiFinancialMortgage" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFFinancialMortgage" Visibility="Collapsed" />
+        <local:HealthBMIAdultControl x:Name="uiHealthBMIAdult" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFHealthBMIAdult" Visibility="Collapsed" />
+        <local:HealthBMIChildrenControl x:Name="uiHealthBMIChildren" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFHealthBMIChildren" Visibility="Collapsed" />
+        <local:HealthIdealHeartRateControl x:Name="uiHealthIdealHeartRate" HorizontalAlignment="Center" VerticalAlignment="Top" Tag="usingWPFHealthIdealHeartRate" Visibility="Collapsed" />
+
+        <local:GamesCoinControl x:Name="uiGamesCoin"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice4Control x:Name="uiGamesDice4"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice6Control x:Name="uiGamesDice6"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice6_1Control x:Name="uiGamesDice6_1"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice6_2Control x:Name="uiGamesDice6_2"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice8Control x:Name="uiGamesDice8"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice12Control x:Name="uiGamesDice12"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+        <local:GamesDice20Control x:Name="uiGamesDice20"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,150,0,0" Visibility="Collapsed" />
+
+        <local:HealthPulseCounterControl x:Name="uiHealthPulseCounter" HorizontalAlignment="Center" VerticalAlignment="Top"  Visibility="Collapsed" />
+
+        <bcbasic:CalculatorConnectionControl x:Name="uiCalculatorConnectionPopupAlign" HorizontalAlignment="Stretch"  />
+        -->
+    </Grid>
+</UserControl>

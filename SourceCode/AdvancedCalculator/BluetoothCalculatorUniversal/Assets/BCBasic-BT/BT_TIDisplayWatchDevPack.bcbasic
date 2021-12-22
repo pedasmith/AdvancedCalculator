@@ -1,0 +1,167 @@
+## BT: TI Display (Watch) DevPack
+The Display (Watch) DevPack is a 96x96 display that connects to the SensorTag.  You have to update the firmware to use this; see the manual and the TI web site for details.  Once it's running, you can write text to the LCD.
+### Clock
+A very simple Clock example shows the basics of using the Display (Watch) DevPack using the tag.WatchCls() and tag.WatchPrintAt(line, column, text) methods.
+```BASIC
+device = Bluetooth.PickDevicesName(“*SensorTag*”)
+IF (device.IsError)
+    CLS RED
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    tag.WatchCls()
+
+    MAXTIME = 10
+    FOR time = 1 TO MAXTIME
+        now = DateTime.GetNow()
+        tag.WatchPrintAt(4,3,now.Date)
+        REM I only want hh:mm:ss (8 chars)
+        tag.WatchPrintAt(6,4, LEFT(now.Time,8))
+        PAUSE 50
+    NEXT time
+END IF
+```
+### Invert
+The display can be either white-on-silver or silver-on-white.  It starts as white-on-silver; WatchInvert() will flip it to silver-on-white.  Calling WatchInvert() again flips it back.  In all cases, the display is reset; the contents are cleared and the display shows the SensorTag type and battery voltage.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Display (Watch) DevPack"
+
+REM
+REM The WatchInvert command  resets the display, 
+REM clearing it and redisplaying the basic information.
+REM
+REM
+
+device = Bluetooth.PickDevicesName(“*SensorTag*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+
+    MAXTIME = 4
+    FOR time = 1 TO MAXTIME 
+        tag.WatchInvert()
+        tag.WatchCls()
+        tag.WatchPrintAt (5, 2, "Watch DevPack")
+        tag.WatchPrintAt (7, 1, time)
+
+        PAUSE 5
+        PRINT AT 7,1 time, MAXTIME
+    NEXT time
+END IF
+```
+### Print, PrintAt and Cls and ClearLine
+Simple program that shows how to use the basic Watch methods.  The Print(text) method prints data at the current position; PrintAt(line, column, text) prints at a specific spot where the first line is 0 and the first column is zero.  Cls() and ClearLine(line) clear the entire screen or just one line.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Display (Watch) DevPack"
+
+device = Bluetooth.PickDevicesName(“*SensorTag*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    tag.WatchInvert()
+    tag.WatchCls()
+    tag.WatchPrint ("Hello!")
+    tag.WatchPrintAt (4,0, "[4,0] on left")
+
+    REM Now make a clock on the display
+    MAXTIME = 10
+    FOR time = 1 TO MAXTIME
+        now = DateTime.GetNow()
+        clock = now.Time + "                "
+        REM trim to 16 chars
+        clock = LEFT (clock, 16)
+        REM Originally I use WatchClearLine
+        REM to clear the line.  But that turns
+        REM out to be slow and looks really
+        REM ugly on the display (watch)
+        REM tag.WatchClearLine (6)
+        tag.WatchPrintAt(6,1, clock)
+        PAUSE 50
+    NEXT time
+END IF
+```
+### Screen Fill
+Fills the screen, demonstrating the overall size of the watch display.  The screen has 12 lines (0 to 11) and 16 columns (0 to 15).  For example, tag.WatchPrintAt(11, 15, "*") will print in the bottom-right corner and tag.WatchPrintAt(0,0,"*") will print in the upper-left corner.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Display (Watch) DevPack"
+
+device = Bluetooth.PickDevicesName(“*SensorTag*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    tag.WatchCls()
+    tag.WatchPrintAt(0,0, "0123456789012345")
+    FOR r = 1 TO 11
+        tag.WatchPrintAt(r, 0, "[" + r + ",0]")
+    NEXT r
+    tag.WatchPrintAt(0,0, "*")
+    tag.WatchPrintAt(0,15, "*")
+    tag.WatchPrintAt(11,0, "*")
+    tag.WatchPrintAt(11,15, "*")
+END IF
+```
+### Screen Fill with Characters
+Fills the screen with characters starting with a character point you pick.  For example, start at 32 to print all the ASCII characters. The Watch only display ASCII characters.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Display (Watch) DevPack"
+
+device = Bluetooth.PickDevicesName(“*SensorTag*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+    STOP
+END IF 
+tag = device.As(“SensorTag1350”)
+tag.WatchCls()
+start =INPUT DEFAULT 32 PROMPT "What index to start at?"
+str = ""
+tag.WatchPrint("Start at " + start + "\n")
+row = 1
+FOR i = 0 TO 175
+    str = str + CHR$(i + start)
+    IF (LEN(str) = 16)
+        tag.WatchPrintAt(row, 0, str)
+        PRINT str
+        str = ""
+        row = row + 1
+    END IF
+NEXT i
+IF (str <> "") THEN tag.WatchPrintAt(row, 1, str)
+PRINT str
+```
+### WatchOn and WatchOff
+The Watch can be either on or off; this program shows how to use the WatchOn() and WatchOff() methods to turn it on and off. When the screen is turned on, it's filled with the default information about the SensorTag type and battery voltage.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Display (Watch) DevPack"
+
+device = Bluetooth.PickDevicesName(“*SensorTag*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag1350”)
+    tag.WatchCls()
+
+    MAXTIME = 4
+    FOR time = 1 TO MAXTIME 
+
+        PRINT AT 7,1 time, "On"
+        tag.WatchOn()
+        tag.WatchPrintAt (5, 2, "Watch DevPack")
+        tag.WatchPrintAt (7, 1, time)
+        PAUSE 20
+
+        PRINT AT 7,1 time, "Off"
+        tag.WatchOff()
+        tag.WatchPrintAt (7, 1, time)
+        PAUSE 20
+
+    NEXT time
+END IF
+```

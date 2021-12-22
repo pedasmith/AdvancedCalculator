@@ -1,0 +1,26 @@
+﻿{
+"Name":"BCBasic samples",
+"Description":"Multiple simple samples that you can use to learn and understand BCBasic programming or use directly.",
+"Programs":[
+{
+"Name": "mpg",
+"Description":"Converts Miles and Gallons into Miles per Gallon.",
+"Code":"\r\nINPUT Miles\r\nINPUT Gallons\r\nFUNCTION mpg (Miles, Gallons)\r\nRetval = Miles / Gallons\r\nPRINT \"MPG\", Retval\r\nRETURN Retval\r\nRetval = mpg(Miles, Gallons)\r\nSTOP Retval\r\n"
+},
+{
+"Name": "b",
+"Description":"Returns a little message",
+"Code":"\r\nSTOP \"Hello Everyone!\"\r\n"
+},
+{
+"Name": "black",
+"Description":"clear to black",
+"Code":"\r\nCLS BLACK\r\n"
+},
+{
+"Name": "blue",
+"Description":"clear to blue",
+"Code":"\r\nCLS BLUE\r\n"
+}
+]
+}

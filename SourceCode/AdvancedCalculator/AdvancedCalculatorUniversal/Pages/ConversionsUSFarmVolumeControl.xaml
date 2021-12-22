@@ -1,0 +1,134 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ConversionsUSFarmVolumeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Common Farm Volumes (USA, Dry)</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Grain (farm) Volumes</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Cups</TextBlock>
+                    <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Pints</TextBlock>
+                    <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Quarts</TextBlock>
+                    <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Gallons</TextBlock>
+                    <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Pecks</TextBlock>
+                    <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Bushels</TextBlock>
+                    <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Liters</TextBlock>
+                    <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1Liters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1Liters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1Liters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource solverblock}">Pounds Per Bushel</TextBlock>
+                    <TextBox  Grid.Row="10" Grid.Column="1" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="10" Grid.Column="2" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="10" Grid.Column="3" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="11" Grid.Column="0" Style="{StaticResource solverblock}">Pounds</TextBlock>
+                    <TextBox  Grid.Row="11" Grid.Column="1" Tag="autotbeq1Pounds" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="11" Grid.Column="2" Tag="autotbeq1Pounds" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="11" Grid.Column="3" Tag="autotbeq1Pounds" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                </Grid>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ConversionsFarmVolume.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                        <Bold FontSize="20" >Farm Volumes</Bold>
+                        <LineBreak />
+                        Many crops in the United States of America are measured in bushels.  For example, the 2012 Kansas wheat 
+                        harvest was reported to average 60 to 70 bushels per acre.  Wheat weighs about 60 pounds per bushel.
+                        <LineBreak />
+                        The measurements here are <Italic>dry</Italic> volumes; a dry gallon is about 15% larger than a liquid gallon.
+                        <LineBreak />
+                        The measurements here are <Italic>USA</Italic> measures; they are somewhat smaller than the British measure.
+                        
+                        <LineBreak />
+                        Farm items are also measured in <Bold>MMT: Millions of Metric Tons</Bold>.  The conversion of crops from Bushels to MMT
+                        depends on the crop (because bushels are volume and MMT measures mass [weight]).  A bushel of wheat, for
+                        example, weighs about 60 pounds; a bushel of oats weighs about 32 pounds.  To convert to MMT, move the 'Pounds' 
+                        value to the main calculator.  Then go to the Weight conversion, and on the Pounds are bring the value back
+                        from the main calculator.  The value will be shown in the MMT line.
+
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

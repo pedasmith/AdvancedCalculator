@@ -1,0 +1,208 @@
+## EX: Graphics
+Demonstrates the Screen.Graphics() command for making a screen and then drawing lines and graphs
+### 1_Hello_World with g=Screen.Graphics() and g.Line()
+The quickest, smallest graphics example draws some lines on the screen.  A graphics screen is made with g=Screen.Graphics() and lines are drawn on the graphics window with g.Line (x1, y1, x2, y2)
+```BASIC
+CLS WHITE BLACK
+PRINT "Simple Example"
+g = Screen.Graphics()
+g.Background = WHITE
+g.Stroke = BLACK
+
+REM 1,1 is the lower-left corner
+REM 100, 200 is over 100 (x direction)
+REM and up to 200 (y direction)
+g.Line (1, 1, 100, 200)
+g.Line(100, 200, 110, 100)
+g.Line(110, 100, 1, 1)
+```
+### Circle, Line, Rectangle
+Demonstrates how to draw Circles, Lines and Rectangles.  Circles and Rectangles can be filled or unfilled
+```BASIC
+CLS WHITE BLACK
+PRINT "Circles, Lines, Rectangles"
+g = Screen.Graphics()
+g.SetSize (200, 200)
+g.SetPosition (100, 100)
+g.Background = WHITE
+g.Stroke = BLACK
+g.Fill = RED
+REM 1,1 is the lower left corner
+REM 100, 200 is halfway x and at the top for y
+g.Line (1, 1, 100, 200)
+
+REM Make a rect from 1,1 to 25,50
+g.Rectangle (1, 1, 25, 50)
+
+REM At 75,150 make a circle 25 across
+g.Circle (75, 150, 25)
+
+REM At 75, 50 make two arcs
+REM    Inner radius is 15, outer radius is 25
+g.Arc (75, 50, 15, 25, PI/4, PI*3/4)
+g.Arc (75, 50, 15, 25, PI*5/4, PI*7/4)
+
+REM Set the fill to "none"
+g.Fill = NONE
+g.Rectangle (125,1, 175, 50)
+g.Circle (150, 150, 25)
+
+g.Fill = BLUE
+tri = g.Polygon()
+tri.SetPoints (70, 80, 95, 130, 120, 80)
+```
+### Colors and thickness
+Uses the g.Thickness and g.Stroke to set the thickness and colors of the lines to be drawn.  The Stroke color is any of the colors used by CLS
+```BASIC
+CLS WHITE BLACK
+PRINT "Color and Thickness"
+g = Screen.Graphics()
+
+REM 1,1 is the lower-left corner
+REM 100, 200 is over 100 (x direction)
+REM and up to 200 (y direction)
+g.Thickness = 1
+g.Background = WHITE
+g.Stroke  = RED
+g.Line (1, 1, 100, 200)
+
+g.Thickness = 5
+g.Stroke = BLUE
+g.Line(100, 200, 110, 100)
+
+g.Thickness = 10
+g.Stroke = GREEN
+g.Line(110, 100, 1, 1)
+```
+### Display Y data with graph.GraphY(data)
+Demonstrates how to make a simple line graph of data using the graph.GraphY(data) method
+```BASIC
+CLS WHITE BLACK
+PRINT "Display some data"
+DIM data()
+data.Add(1.1)
+data.Add(2.2)
+data.Add(3.3)
+data.Add(2.5)
+data.Add(3.3)
+data.Add(2.0)
+data.Add(.8)
+
+g = Screen.Graphics()
+g.Background = WHITE
+g.Stroke = BLACK
+g.Title = "My data looks like a volcano"
+g.GraphY (data)
+```
+### Interactivity with Sliders and Buttons
+Shows how to use sliders and buttons with a graphics area
+```BASIC
+REM Sliders and Buttons demo. You can add 
+REM buttons and vertical or horizontal sliders 
+REM and get a callback when the values change 
+REM or the button is pressed.
+
+CLS BLACK WHITE
+PRINT "Sliders and Button Demo"
+g = Screen.Graphics (50, 70,300, 200)
+g.Background = GRAY
+hslider = g.Slider (0, 0, 200, 100, ↲
+    "My Horizontal", "OnHSliderChange")
+vslider = g.Slider (150, 100, 200, 300, ↲
+    "Verti.", "OnVSliderChange")
+button = g.Button (0, 200, 90, 230, ↲
+    "Button", "OnButtonClick")
+
+FOREVER
+
+FUNCTION OnButtonClick(button)
+    Screen.ClearLine (4)
+    PRINT "Button clicked!"
+    FOREVER STOP
+RETURN
+
+FUNCTION OnHSliderChange(slider, value)
+    Screen.ClearLine (2)
+    PRINT "HSlider", value
+RETURN
+
+FUNCTION OnVSliderChange(slider, value)
+    Screen.ClearLine (3)
+    PRINT "VSlider", value
+RETURN
+```
+### Position Graphics windows and set title
+Shows how to move, resize and add a title to the graphics windows
+```BASIC
+CLS
+PRINT "Position and resize the graphics windows"
+
+g1 = Screen.Graphics()
+g1.Background = WHITE
+g1.Stroke = BLACK
+g1.Cls()
+g1.Title = "First window: vertical lines"
+g1.SetPosition (100, 50)
+g1.SetSize (50, 200)
+g1.Line (140, 1, 140, 50)
+g1.Line (150, 1, 150, 50)
+
+g2 = Screen.Graphics()
+g2.Background = WHITE
+g2.Stroke = BLACK
+g2.Cls()
+g2.Title = "Second window: horizontal lines"
+g2.SetPosition (100, 150)
+g2.SetSize (50, 200)
+g2.Line (1, 20, 200, 20)
+g2.Line (1, 25, 200, 25)
+```
+### SIN COS TAN
+A richer sample program that shows how to dynamically update multiple graph by simply updating the underlying data arrays.
+```BASIC
+CLS WHITE BLACK
+
+PRINT "SIN, COS and TAN updates"
+gSin = Screen.Graphics()
+gSin.Background = WHITE
+gSin.Stroke = BLACK
+gSin.SetPosition(100, 50)
+gSin.SetSize(75, 200)
+gSin.Title = "SIN wave"
+
+DIM sinData()
+sinData.MaxCount = 100
+sinData.RemoveAlgorithm = "First"
+gSin.GraphY(sinData)
+
+gCos = Screen.Graphics()
+gCos.Background = WHITE
+gCos.Stroke = BLACK
+gCos.SetPosition(100, 150)
+gCos.SetSize(75, 200)
+gCos.Title = "COS wave"
+
+DIM cosData()
+cosData.MaxCount = 100
+cosData.RemoveAlgorithm = "First"
+gCos.GraphY(cosData)
+
+gTan = Screen.Graphics()
+gTan.Background = WHITE
+gTan.Stroke = BLACK
+gTan.SetPosition(100, 250)
+gTan.SetSize(75, 200)
+gTan.Title = "TAN wave"
+
+DIM tanData()
+tanData.MaxCount = 100
+tanData.RemoveAlgorithm = "First"
+gTan.GraphY(tanData)
+
+FOR angle = 0 TO 25 STEP .1
+    sinData.Add (SIN(angle))
+    cosData.Add (COS(angle))
+    tanData.Add (TAN(angle))
+    PAUSE 1
+NEXT angle
+```

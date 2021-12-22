@@ -1,0 +1,69 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.DateControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}">Date Calculations</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <StackPanel>
+                    <ComboBox SelectedIndex="0" x:Name="uiAction" SelectionChanged="OnActionChanged">
+                        <ComboBoxItem Tag="COMPARE">Compare Dates</ComboBoxItem>
+                        <ComboBoxItem Tag="TO_GREGORIAN">Convert to Gregorian</ComboBoxItem>
+                        <ComboBoxItem Tag="ADD_DAYS">Add days</ComboBoxItem>
+                    </ComboBox>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <DatePicker x:Name="uiFrom"  CalendarIdentifier="GregorianCalendar" DateChanged="OnDateChanged" Header="Starting Date"/>
+                        <ComboBox x:Name="uiFromType"  VerticalAlignment="Bottom" MinWidth="100" SelectionChanged="OnCalendarTypeChange"/>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0" x:Name="uiSecondDate">
+                        <DatePicker x:Name="uiTo"  CalendarIdentifier="GregorianCalendar" DateChanged="OnDateChanged" Header="Ending Date"/>
+                        <ComboBox x:Name="uiToType"  VerticalAlignment="Bottom" MinWidth="100" SelectionChanged="OnCalendarTypeChange"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,20,0,0"  x:Name="uiAddDay" Visibility="Collapsed">
+                        <TextBox Header="Number of days to add" Text="1" InputScope="Number" MinWidth="60" TextChanged="OnAddTextChanged" x:Name="uiDaysToAdd" />
+                    </StackPanel>
+                    <Rectangle Height="20" />
+                    <TextBlock TextWrapping="Wrap" IsTextSelectionEnabled="True" MinHeight="100" >
+                        <Run FontSize="30" FontWeight="Bold" x:Name="uiResultsMain" />
+                        <LineBreak />
+                        <Run  x:Name="uiResultsFull" />
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/50yearcalendarSmall.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                    <Bold FontSize="20" >Calendar Calculations</Bold>
+                    <LineBreak />
+                    <Run>You can compare two dates, convert a date into a gregorian date, or add days to date.</Run>
+
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

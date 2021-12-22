@@ -1,0 +1,118 @@
+## EX: Real Estate
+Convert square feet to acres and more
+### Acres to square feet
+Converts acres from from the calculator display into square feet
+**Default Key**: Acres to square feet
+```BASIC
+value = Calculator.Value
+retval=AcresToSquareFeet (value)
+Calculator.Message = "Converted " + value + " acres into square feet"
+STOP retval
+
+FUNCTION AcresToSquareFeet (acres)
+    squareFeet = acres*43560
+RETURN squareFeet
+
+FUNCTION TEST_Simple()
+    ASSERT (AcresToSquareFeet (1) = 43560)
+    ASSERT (AcresToSquareFeet(5.73921028) ≅ 250000)
+RETURN
+```
+### Debt to Income calculations
+Given two numbers -- the borrower's yearly income and the bank's income limit (e.g., 31 for 31% allowed for housing), calculates the allowed amount per month for housing.
+**Default Key**: Debt to Income calculations
+```BASIC
+income = INPUT DEFAULT 100000 PROMPT "What is the person's yearly income"
+monthlyIncome = income / 12
+
+housingPercent = INPUT DEFAULT 31 PROMPT "What is the allowed housing debt to income ratio?"
+maxPercent = INPUT DEFAULT 43 PROMPT "What is the allowed debt to income ratio? "
+
+allowedMonthlyHousing = INT (monthlyIncome * housingPercent/100)
+allowedMonthlyTotal = INT (monthlyIncome * maxPercent/100)
+
+CLS
+PRINT "Income per month="; INT(monthlyIncome)
+PRINT "Housing per month=";allowedMonthlyHousing
+PRINT "Total monthly debt=";allowedMonthlyTotal
+PRINT "Other debt=";allowedMonthlyTotal-allowedMonthlyHousing
+Calculator.Message = "For year income of " + income + " housing per month is " + allowedMonthlyHousing
+STOP allowedMonthlyHousing
+```
+### Minimum and Maximum density
+Demonstrates one way to calculate the minimum and maximum number of units that can be built on a lot given its size in acres.  The rules roughly match those of Redmond, WA for residential neighborhoods (Redmond code 20C.30.25) as of 2015.  You will need to suply the R type (e.g., 1 for R1, 4 for R4).
+**Default Key**: Minimum and Maximum density
+```BASIC
+R = INPUT DEFAULT 6 PROMPT "What is the R type zoning district?  Enter .2 for type RA-5"
+grossAcres = INPUT DEFAULT 2 PROMPT "What is the gross site area (acres)?"
+netAcres = INPUT DEFAULT grossAcres PROMPT "What is the net buildable area (acres)?"
+
+REM Sample: R=6 grossAcres=2 netAcres=1.5 result in minimum 7 maximum 12 house
+
+allowed = Math.Round (RtoAllowedDensity(R) * grossAcres)
+minimum = Math.Round (RtoMinimumDensity(R) * RtoAllowedDensity(R) * netAcres)
+
+REM How much more land do you need to build 1 more house?
+start = RtoAllowedDensity(R) * grossAcres
+fraction = start - Math.Floor (start)
+IF fraction >= .5 THEN next = Math.Ceiling(start) + .5
+IF fraction < .5 THEN next = Math.Floor(start) + .5
+delta = next - start
+deltaAcres = delta / RtoAllowedDensity(R)
+
+CLS
+PRINT "You can build up to "; allowed; " houses"
+PRINT "You must build at least "; minimum; " houses"
+PRINT "You need "; deltaAcres; " more acres to build 1 more house"
+STOP
+
+
+REM The R number exactly matches the allowed density for all values
+REM Except RA-5 which must be entered as .2
+FUNCTION RtoAllowedDensity (R)
+RETURN R
+
+REM There are three minimum density sizes in Redmond
+FUNCTION RtoMinimumDensity(R)
+IF R < 8 THEN RETURN .8
+IF R < 18 THEN RETURN .75
+RETURN .65
+```
+### Rectangle in feet to acres
+Given a lot size in feet, calculates the lot size in acres
+**Default Key**: Rectangle in feet to acres
+```BASIC
+length = INPUT DEFAULT 80 PROMPT "Enter the first length in feet"
+width =  INPUT DEFAULT 11 PROMPT "Enter the second length in feet"
+sqfeet = length * width
+acres=SquareFeetToAcres (sqfeet)
+Calculator.Message = "Lot " + length + "x" + width + " is " + Math.Round(acres,3) + " acres"
+STOP retval
+
+FUNCTION SquareFeetToAcres (squareFeet)
+    acres = squareFeet / 43560
+RETURN acres
+
+FUNCTION TEST_Simple()
+    ASSERT (SquareFeetToAcres (43560) = 1)
+    ASSERT (SquareFeetToAcres(250000) ≅ 5.73921028)
+RETURN
+```
+### Square feet to acres
+Converts the current values in the calculator from square feet to acres.
+**Default Key**: Square feet to acres
+```BASIC
+value = Calculator.Value
+retval=SquareFeetToAcres (value)
+Calculator.Message = "Converted " + value + " square feet into acres"
+STOP retval
+
+FUNCTION SquareFeetToAcres (squareFeet)
+    acres = squareFeet / 43560
+RETURN acres
+
+FUNCTION TEST_Simple()
+    ASSERT (SquareFeetToAcres (43560) = 1)
+    ASSERT (SquareFeetToAcres(250000) ≅ 5.73921028)
+RETURN
+```

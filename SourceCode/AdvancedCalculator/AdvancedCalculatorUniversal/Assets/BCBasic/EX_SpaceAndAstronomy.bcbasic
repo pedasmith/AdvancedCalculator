@@ -1,0 +1,183 @@
+## EX: Space and Astronomy
+Programs for astronomy and space
+### Arc Length
+A COGO program to calculate an arc length or a circle given the radius and the angle (in degrees)
+**Default Key**: Arc Length
+```BASIC
+REM 3959 is the radius of the earth in miles
+
+radius = INPUT DEFAULT 3959 PROMPT "Radius of the circle"
+degrees = INPUT DEFAULT 45 PROMPT "Angle in degrees"
+arc = ArcLength(degrees, radians)
+Calculator.Message = "Given radius=" + radius  + " and angle=" + angle + " arc is  "  +  arc
+STOP arc
+
+FUNCTION ArcLength(degrees, radius)
+radians = Math.DtoR (degrees)
+circum = Math.PI * 2 * radius
+arc = circum * radians  / (2 *Math.PI)
+RETURN arc
+
+
+FUNCTION TEST ()
+    ASSERT (ArcLength (3959, 45) ≅ 3109.391)
+    ASSERT (ArcLength (10, 90) ≅ 15.707963)
+    ASSERT (ArcLength (0, 90) = 0)
+    ASSERT (ArcLength (10, 0) = 0)
+RETURN
+```
+### AU to Meters
+Converts a distance in AU (Astronomical units) to a distance in meters
+**Default Key**: AU to Meters
+```BASIC
+IMPORT FUNCTIONS FROM "Conversion Library"
+
+from = Calculator.Value
+m = ConvertToMeters(from, "au")
+Calculator.Message = "Convert " + from + " au into " + m  + " meters"
+STOP m
+```
+### Conversion Library
+A set of functions to convert between AU and kilometer and between Parsecs, Lightyears and Meters
+**Default Key**: Conversion Library
+```BASIC
+FUNCTION ConvertToMeters(distance, units)
+IF units = "au" THEN RETURN distance * 149597870700
+IF units = "earthradius" THEN RETURN distance * 6371000
+IF units = "lightsecond" THEN RETURN distance * 299792458
+IF units = "lightyear" THEN RETURN distance * 9.4605284E15
+IF units = "parsec" THEN RETURN distance * 3.08567758E16
+CONSOLE "ERROR: Astronomy Conversion library: Unknown units " + units
+RETURN Math.NaN
+
+
+FUNCTION TEST_Simple ()
+    REM Test AU with data from Mercury and Neptune
+    ASSERT (ConvertToMeters (.387, "au") ≅ 5.7894E10)
+    ASSERT (ConvertToMeters (30.06, "au") ≅ 4.4969E12)
+
+    ASSERT (ConvertToMeters (1, "lightsecond") ≅ 299792.458E3)
+    REM Wikipedia says the distance Earth to Moon is 1.282
+    ASSERT (ConvertToMeters (1.28222, "lightsecond") ≅ 384400E3)
+
+    REM data from Bing.com
+    ASSERT (ConvertToMeters (1, "lightyear") ≅ 9.4605284E15)
+    ASSERT (ConvertToMeters (1, "earthradius") ≅ 6371E3)
+    ASSERT (ConvertToMeters (1, "parsec") ≅ 3.08567758E16)
+    ASSERT (Math.IsNaN(ConvertToMeters (1, "NOSUCHUNIT")) = 1)
+RETURN
+```
+### Distance to horizon
+Calculates the distance to the horizon in miles given a height above the Earth in feet.
+**Default Key**: Distance to horizon
+```BASIC
+h = Calculator.Value
+TEST ()
+d = Distance (h)
+Calculator.Message = "Given a height of " + h + " feet, the distance to horizon in miles is "    + d
+STOP d
+
+FUNCTION Distance (height)
+d = 1.22 * SQR(height)
+RETURN d
+
+FUNCTION TEST_Simple ()
+    ASSERT (Distance (100) ≅ 12.2)
+    ASSERT (Distance (22841) ≅ 184.382)
+RETURN
+```
+### Lightyears to Parsecs
+Converts a distance in parsecs to a distance in light-years
+**Default Key**: Lightyears to Parsecs
+```BASIC
+IMPORT FUNCTIONS FROM "Conversion Library"
+
+from = Calculator.Value
+m = ConvertToMeters(from, "lightyear")
+inv = ConvertToMeters(1, "parsec")
+to = m / inv
+Calculator.Message = "Convert " + from + " into " + to  + " parscecs"
+STOP to
+```
+### Meters to AU
+Converts a distance in meters to a distance in AU (Astronomical units)
+**Default Key**: Meters to AU
+```BASIC
+IMPORT FUNCTIONS FROM "Conversion Library"
+
+from = Calculator.Value
+inv = ConvertToMeters(1, "au")
+to = from / inv
+Calculator.Message = "Convert " + from + " into " + to + " au"
+STOP to
+```
+### Parsecs to Lightyears
+Converts a distance in parsecs to a distance in light-years
+**Default Key**: Parsecs to Lightyears
+```BASIC
+IMPORT FUNCTIONS FROM "Conversion Library"
+
+from = Calculator.Value
+m = ConvertToMeters(from, "parsec")
+inv = ConvertToMeters(1, "lightyear")
+to = m / inv
+Calculator.Message = "Convert " + from + " into " + to  + " light years"
+STOP to
+```
+### Rocket Equation
+The Tsiolkovsky rocket equation will tell you how much fuel you have to burn in order to achieve some change in velocity (delta-v).  You have to provide the starting rocket weight (including fuel) and the rocket effective exhaust velocity.  The Space Shuttle effective exhaust velocity is 4,400 m/s.
+**Default Key**: Rocket Equation
+```BASIC
+REM From https://en.wikipedia.org/wiki/Tsiolkovsky_rocket_equation
+REM deltav = ve* ln (m0 / m1)
+REM m0=initial mass
+REM m1=final mass (after fuel is burnt)
+REM ve = effective exhaust velocity (about 4400 for Space Shuttle main engines)
+
+REM Solve the equation for m1 to return (m0-m1), the amount of propellant to burn
+REM deltav = ve* ln (m0 / m1)
+REM deltav / ve = ln(m0/m1)
+REM exp(deltav / ve) = m0/m1
+REM m0 / exp (deltav / ve) = m1
+REM fuelburned = m0 - (m0 / exp(deltav/ve))
+
+m0 = INPUT DEFAULT 727 PROMPT "Starting mass of the rocket (any units)"
+
+REM Sample specific impulse is from the Centaur rocket
+isp = INPUT DEFAULT 450.5 PROMPT "Specific Impulse (in seconds)"
+
+REM delta-v of about 6,900,000 is (approximately) the amount needed to get to low earth orbit
+deltav = INPUT DEFAULT 5000 PROMPT "What delta-v do you need? (in meters/second)"
+
+CLS GREEN
+
+ve = SpecificImpulseToEffectiveVelocity(isp)
+fuelburned  = FuelBurned (m0, deltav, ve)
+m1 = m0-fuelburned
+
+PRINT "Starting rocket mass="; m0
+PRINT "Specific Impulse="; isp
+PRINT "Exhaust Velocity="; ve
+PRINT "Change in velocity=";deltav; "(m/s)"
+PRINT "Fuel burned=";fuelburned
+PRINT "Final rocket mass=";m1
+IF (m1 > 0) THEN GOTO 10
+PRINT "Ran out of fuel!"
+PAPER RED
+10 REM done
+
+Calculator.Message = "You used " + fuelburned + "fuel"
+STOP fuelburned
+
+
+FUNCTION SpecificImpulseToEffectiveVelocity (Isp)
+g0 = 9.81
+Ve = g0 * Isp
+RETURN Ve
+
+FUNCTION FuelBurned (m0, deltav, ve)
+ratio = 1 / EXP (deltav / ve)
+m1 = m0 * ratio
+fuelburned = m0 - m1
+RETURN fuelburned
+```

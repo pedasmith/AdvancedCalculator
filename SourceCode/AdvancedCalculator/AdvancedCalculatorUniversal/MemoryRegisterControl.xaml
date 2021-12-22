@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Name="MemoryRegister"
+    x:Class="AdvancedCalculator.MemoryRegisterControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="60"
+    d:DesignWidth="580" >
+    
+    <Grid Background="Black">
+        <Grid.Resources>
+                <ResourceDictionary Source="Common/CalculatorStyles.xaml" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="65" />
+            <ColumnDefinition Width="65" />
+            <ColumnDefinition Width="45" />
+            <ColumnDefinition Width="45" />
+            <ColumnDefinition Width="45" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" Grid.Column="0" Name="uiName" MinWidth="176" ToolTipService.ToolTip="Memory Name"  FontSize="{Binding cbm.SmallLabelFontSize}" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Black" Foreground="White" />
+        <TextBox Grid.Row="0" Grid.Column="1" Name="uiValue" ToolTipService.ToolTip="Value" Tag="{Binding Path=MemoryTag, ElementName=MemoryRegister}" Margin="4" InputScope="Number" VerticalAlignment="Center" TextAlignment="Right" />
+        <Button Grid.Row="0" Grid.Column="2" Tag="{Binding Path=MemoryTag, ElementName=MemoryRegister}" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+        <Button Grid.Row="0" Grid.Column="3" Tag="{Binding Path=MemoryTag, ElementName=MemoryRegister}" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+        <Button Grid.Row="0" Grid.Column="4" ToolTipService.ToolTip="Increment memory" Tag="{Binding Path=MemoryTag, ElementName=MemoryRegister}" Content="+"  Click="OnMemoryPlus"/>
+        <Button Grid.Row="0" Grid.Column="5" ToolTipService.ToolTip="Decrement memory" Tag="{Binding Path=MemoryTag, ElementName=MemoryRegister}" Content="-"  Click="OnMemoryMinus"/>
+        <Button Grid.Row="0" Grid.Column="6" ToolTipService.ToolTip="Clear memory" Tag="{Binding Path=MemoryTag, ElementName=MemoryRegister}" Content="C"  Click="OnMemoryClear"/>
+    </Grid>
+</UserControl>

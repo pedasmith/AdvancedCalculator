@@ -1,0 +1,252 @@
+## EX: Files, CSV and JSON, HTML, Flow
+Demonstrates how to read and write files, including CSV and JSON data using the File object and the String.Escape and String.Parse function. Demonstrates how to use the HTML functionality and includes a longer example with Microsoft Flow.
+### Appending to a file
+Demonstrates picking and appending to a file.  Each call to AppendLine() and AppendText() will write to the end of the file.
+```BASIC
+REM
+REM Demonstrate AppendPicker, AppendText and AppendLine
+REM
+
+file = File.AppendPicker("CSV file", “.csv”, "test.csv")
+IF (file.IsError)
+    REM file will have a error message
+    PRINT file
+    STOP
+END IF
+PRINT "SIZE", file.Size()
+IF (file.Size( )= 0) THEN file.AppendLine(“time,data”)
+now = DateTime.GetNow()
+
+REM
+REM Use an array to make 
+REM perfect CSV data
+REM
+DIM data(2)
+data(1) = now.Time
+data(2) = 42.42
+file.AppendText (String.Escape(“csv”, data))
+```
+### Http.Get(url, headers) reads data from the internet
+Demonstrates downloading data from the internet using Http.Get(url, headers).  The resulting JSON data is parsed into an array.
+```BASIC
+REM Demonstrate downloading from the internet
+REM
+REM Download content from a news feed
+REM Make sure the download was OK
+REM Parse the JSON into data
+REM
+
+url = "https://hacker-news.firebaseio.com/v0/item/8863.json?print=pretty"
+result = Http.Get (url)
+IF (result.IsError)
+    REM Did not get data
+    CLS RED
+    PRINT "Unable to download URL"
+    PRINT "ErrorCode", result.ErrorCode
+    PRINT "ErrorString", result.ErrorString
+ELSE
+    REM All OK
+    CLS GREEN
+    PRINT "Downloaded from URL"
+    PRINT "Status", result.StatusCode
+    PRINT "Reason", result.ReasonPhrase
+    REM PRINT "Content", result.Content
+
+    REM Now parse it as json
+    REM You can pull individual bits out
+    data = String.Parse("json", result.Content)
+    PRINT "data.by", data.by
+    PRINT "data.title", data.title
+    PRINT "data", data.Count
+
+    REM You can also pull data by index
+    FOR i=1 TO data.Count
+        PRINT i, data[i]
+    NEXT i
+
+
+END IF
+```
+### Microsoft Flow example
+A longer example showing how to trigger Microsoft Flow using HTML.  Data is put into an array and converted to JSON format using String.Escape ("json", list); the value is then sent to a Microsoft trigger HTML endpoint using the Http.Post(url, data, headers) method.
+```BASIC
+CLS BLUE
+
+REM
+REM The Microsoft Flow trigger URL is stored in the memory area
+REM
+memory = "Microsoft.Flow Example URL"
+url = Memory.GetOrDefault (memory, "")
+url = INPUT  DEFAULT  url PROMPT "Microsoft Flow URL" 
+Memory[memory] = url
+
+
+REM
+REM Set up the constant monitoring values
+REM
+min = 30
+max = 40
+deviceName = "My device"
+sensor = "temperature"
+
+REM
+REM Set up the sensor device.
+REM This program uses data from the MetaWear device
+REM
+device = Bluetooth.PickDevicesName (“MetaWear”)
+IF device.IsError 
+    CLS RED
+    PRINT "No device picked"
+    STOP
+END IF
+meta = device.As ("MetaMotion")
+meta.TemperatureSetup(1, "Temperature")
+
+REM
+REM Main loop; will keep on spinning and
+REM asking for updated temperature readings.
+REM
+ExitRequested = 0
+MAXTIME=1000
+FOR time=0 TO MAXTIME 
+    PAUSE 50
+    meta.TemperatureRead()
+    IF (ExitRequested > 0) THEN time = MAXTIME
+NEXT time
+
+REM
+REM Callback when temperature changes
+REM
+FUNCTION Temperature(ble, celcius)
+    GLOBAL url
+    GLOBAL deviceName
+    GLOBAL sensor
+    GLOBAL min
+    GLOBAL max
+
+    time = DateTime.GetNow()
+    REM Convert to Fahrenheit
+    data = celcius * 9 / 5 + 32
+
+    Screen.ClearLine (9)
+    Screen.ClearLine (10)
+    Screen.ClearLine (11)
+    PRINT AT 9,2 "TIME", time.Time
+    PRINT AT 10,2 "TEMP", data
+    
+    IF (data < min OR data > max)
+        PRINT AT 11,1 "SENDING DATA"
+        SendData (url, data, time, deviceName, sensor, min, max)
+        GLOBAL ExitRequested
+        ExitRequested = 1
+    END IF
+END
+
+REM
+REM Format and send data to Microsoft Flow
+REM
+FUNCTION SendData(url, data, time, deviceName, sensor, min, max)
+    REM
+    REM Put the data into correct JSON form
+    REM
+    DIM datalist()
+    datalist.AddRow ("data", data)
+    datalist.AddRow ("time", time)
+    datalist.AddRow ("device", deviceName)
+    datalist.AddRow ("sensor", sensor)
+    datalist.AddRow ("min", min)
+    datalist.AddRow ("max", max)
+    json = String.Escape ("json", datalist)
+
+    PRINT json
+
+    REM Microsoft Flow demands that data be passed using the
+    REM a Content-Type of application/json.
+    DIM header()
+    header[1] = "Content-Type: application/json"
+    result = Http.Post (url, json, header)
+RETURN result
+```
+### Read Entire File
+Demonstrates how to use File.ReadPicker to pick and read an entire file
+```BASIC
+REM 
+REM  Demonstrate the File.ReadPicker
+REM 
+
+CLS GREEN
+PRINT "Demonstrate reading a file"
+file = File.ReadPicker (".txt")
+IF (file.IsError)
+    REM file has an error message
+    PRINT "file.IsError is TRUE"
+    PRINT file
+    STOP
+END IF
+PRINT "Size is ", file.Size()
+
+REM ReadAll will read the entire file as  single text.
+fulltext = file.ReadAll()
+PRINT "The entire file"
+PRINT fulltext
+PRINT " "
+
+REM
+REM ReadLines will read the entire file and split it
+REM into individual lines.
+REM
+lines = file.ReadLines()
+
+PRINT "Count of lines", lines.Count
+IF (lines.Count > 1) THEN PRINT "First line", lines[1]
+```
+### Reading a CSV file
+Ues the File.ReadPicker() to pick a CSV file.  It's read in and parsed using String.Parse ("csv", data-string) and the results are printed
+```BASIC
+CLS BLUE
+file = File.ReadPicker (".csv")
+IF (file.IsError)
+    REM file will contain an error string
+    PRINT "ERROR", file
+    STOP
+END IF
+
+alltext = file.ReadAll()
+REM will print several lines of data
+PRINT "All text", alltext
+
+csv = String.Parse ("csv", alltext)
+header = csv[1]
+data = csv[2]
+PRINT "HEADER", header(1), header(2)
+FOR index = 2 TO csv.Count
+    data = csv(index)
+    PRINT index-1, data(1), data(2)
+NEXT index
+```
+### Writing to a file (including CSV)
+Demonstrates picking and writing to a file.  The first WriteText to a picked file will overwrite the contents; after that each additional WriteText will append to the file.  It's easy to make a CSV (comma seperated file) using the String.Escape("csv", data) method.
+```BASIC
+REM
+REM Demonstrate WritePicker, WriteText and WriteLine
+REM
+
+file = File.WritePicker("CSV file", “.csv”, "test.csv")
+IF (file.IsError)
+    REM file will have a error message
+    PRINT file
+    STOP
+END IF
+
+file.WriteLine(“time,data”)
+now = DateTime.GetNow()
+
+REM
+REM Use an array to make 
+REM perfect CSV data
+REM
+DIM data(2)
+data(1) = now.Time
+data(2) = 42.42
+file.WriteText (String.Escape(“csv”, data))
+```

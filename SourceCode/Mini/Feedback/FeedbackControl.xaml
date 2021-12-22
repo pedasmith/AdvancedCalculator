@@ -1,0 +1,63 @@
+﻿<UserControl
+    x:Class="Shipwreck.Utilities.FeedbackControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="700"
+    d:DesignWidth="540">
+    <UserControl.Resources>
+        <Style x:Name="cbmstyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Center"  />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch" MaxWidth="640">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0"  FontSize="{Binding cbm.FeedbackFontSize}" Text="Subject" />
+        <TextBox Margin="4,4,14,4" Name="uiFeedbackSubject"  Grid.Column="1" Grid.Row="0"  FontSize="{Binding cbm.FeedbackFontSize}" Text="Wish it had..."/>
+
+        <TextBlock Grid.Column="0" Grid.Row="1"  FontSize="{Binding cbm.FeedbackFontSize}" Text="I like..."/>
+        <TextBox Margin="4,4,14,4" Name="uiFeedbackLike" Grid.Column="1" Grid.Row="1"  FontSize="{Binding cbm.FeedbackFontSize}" Text=" " TextWrapping="Wrap" MinHeight="140" />
+
+        <TextBlock Grid.Column="0" Grid.Row="2"  FontSize="{Binding cbm.FeedbackFontSize}" Text="I don't like..."/>
+        <TextBox Margin="4,4,14,4" Name="uiFeedbackDislike" Grid.Column="1" Grid.Row="2"  FontSize="{Binding cbm.FeedbackFontSize}" Text=" " TextWrapping="Wrap" MinHeight="140" />
+
+        <Button Content="Send" Grid.Column="1" Grid.Row="3" Style="{StaticResource cbmstyle}" FontSize="{Binding cbm.FontSize}"    Height="{Binding cbm.ButtonHeight}" Click="OnSendFeedbackButton" />
+
+        <TextBlock Grid.Column="0" Grid.Row="4"  FontSize="{Binding cbm.FeedbackFontSize}" Text="Status:"/>
+        <TextBlock Name="uiFeedbackStatus" Grid.Column="1" Grid.Row="4"  FontSize="{Binding cbm.FeedbackFontSize}" Text=" "/>
+
+        <Grid x:Name="uiFeedbackSwitcher" Grid.ColumnSpan="2" Grid.RowSpan="6" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Visibility="Collapsed" >
+            <StackPanel>
+                <TextBlock FontSize="{Binding cbm.FeedbackFontSize}" TextWrapping="Wrap">
+                    <Run FontStyle="Italic">We aim to please!</Run>
+                    <LineBreak />
+                    <Run>Are you happy enough to give a 5-star review?</Run>
+                </TextBlock>
+                <Button Content="Yes!" Click="OnStartReview" />
+
+
+                <TextBlock FontSize="{Binding cbm.FeedbackFontSize}" TextWrapping="Wrap">
+                    <LineBreak />
+                    <Run>Can you tell us what would make this a better app?</Run>
+                </TextBlock>
+                <Button Content="Yes!" Click="OnStartFeedback" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

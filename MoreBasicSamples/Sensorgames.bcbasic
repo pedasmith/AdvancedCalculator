@@ -1,0 +1,694 @@
+## Fun games
+A bunch of games and parts of games that you can use, read, and understand and use as the basis for your own games.
+### Boop the Snoot
+Boop the nose of each animal and get points. You
+```BASIC
+CLS BLUE
+PRINT "Boop the Snoot!"
+REM g = Screen.Graphics (50, 50, 300, 400)
+g = Screen.FullScreenGraphics()
+
+NPlayer = 2
+
+REM Draw the board
+IF (NPlayer = 2)
+    w = g.W / NPlayer
+    g.Fill = "#005500"
+    g.Rectangle (0, 0, w, g.H)
+    g.Fill = "#000055"
+    g.Rectangle (w, 0, g.W, g.H)
+END IF
+
+REM
+REM Set up the scoring
+REM 
+Score = 0
+Level = 1
+ScoreTextTitle = g.Text(g.W-140-120, g.H-80, g.W-120-15, g.H-20, "Score", 50)
+ScoreTextTitle.Alignment = "RB"
+ScoreText = g.Text(g.W-120, g.H-80, g.W-30, g.H-20, Score, 50)
+ScoreText.Alignment = "RB"
+
+
+DIM Animals()
+InitAnimals (Animals)
+DIM Faces()
+SetupFaces (g, Animals, Faces, 1)
+
+
+REM
+REM Set up the tap last because it's on top
+REM of everything else
+REM
+Tap = g.Circle (g.W/2, g.H/2, 20)
+Tap.Fill = BLUE
+Tap.Stroke = BLUE
+Tap.Opacity = 0
+
+g.SetTapped ("OnTap")
+System.SetInterval ("Frame", 50, "")
+
+FOREVER
+
+FUNCTION Frame()
+    opacityDelta = .1
+    GLOBAL Tap
+    Screen.ClearLine (3)
+    PRINT tap.Opacity
+    IF (Tap.Opacity > 0) THEN Tap.Opacity = Tap.Opacity - opacityDelta
+
+    GLOBAL Faces
+    GLOBAL g
+    GLOBAL NPlayer
+    FOR i = 1 TO Faces.Count
+        face = Faces[i]
+        IF (face.Opacity > 0)
+            face.Opacity = face.Opacity - opacityDelta / 15*(i/NPlayer)
+            IF (face.Opacity <= 0)
+                MoveFace (face, i, Faces.Count)
+                face.Opacity = 1
+            END IF
+        END IF
+    NEXT i
+RETURN
+
+FUNCTION MoveFace(face, i, max)
+        GLOBAL g
+        GLOBAL NPlayer
+        half = max / NPlayer
+        REM e.g. with 10 faces, half is 1 and 1..5 is player 1 and 6..10 is player2
+        player = 1
+        IF (i>half) THEN player = 2
+        w =  g.W / NPlayer
+        x = (player-1) * w
+        face.CX = (RND * w) + x
+        face.CY = RND * g.H
+RETURN
+
+FUNCTION OnTap(g, x, y)
+    Screen.ClearLine (2)
+    PRINT x, y
+    GLOBAL Tap
+    Tap.Opacity = 1
+    Tap.CX = x
+    Tap.CY = y
+
+    REM Did I hit any faces?
+    GLOBAL Faces
+    GLOBAL Score
+    GLOBAL ScoreText
+    nvisible = 0
+    FOR i = 1 TO Faces.Count
+        face = Faces[i]
+        IF (Tap.Intersect (face) AND face.Opacity > 0) 
+            face.Opacity = 0
+            Score = Score + face.Data
+            ScoreText.Text = Score
+        END IF
+        IF (face.Opacity > 0) THEN nvisible = nvisible + 1
+    NEXT i
+
+    REM Next round!
+    IF (nvisible = 0)
+        GLOBAL Animals
+        GLOBAL Level
+        Level = Level + 1
+        SetupFaces (g, Animals, Faces, Level)
+    END IF
+RETURN
+
+FUNCTION InitAnimals(animals)
+    animals.Clear()
+    animals.Add ("🐶")
+    animals.Add ("😼")
+    animals.Add ("🐯")
+    animals.Add ("🐮")
+    animals.Add ("🐭")
+    animals.Add ("🐰")
+    animals.Add ("🐱")
+    animals.Add ("🐵")
+    animals.Add ("🐷")
+    animals.Add ("🐸")
+    animals.Add ("🐹")
+    animals.Add ("🐺")
+    animals.Add ("🐻")
+    animals.Add ("🐼")
+    animals.Add ("💆")
+RETURN
+
+FUNCTION SetupFaces(g, animals, faces, level)
+    GLOBAL NPlayer
+
+    animal  = animals[Math.Mod (level, animals.Count) + 1]
+    REM lower-case version of faces and level because
+    REM they are being passed in.
+    faces.Clear()
+    count = 4
+
+    FOR player = 1 TO NPlayer
+        pw = g.W / NPlayer
+        px = (player-1) * pw
+        FOR i = 1 TO count
+            fw = 70
+            fh = 80
+            cx = (RND * pw) + px
+            cy = RND * g.H
+            face = g.Text(cx-fw/2, cy-fh/2, cx+fw/2, cy+fw/2, animal, 50)
+
+            face.Alignment = "CC"
+            IF (NPlayer > 1)
+                IF (player = 1) THEN face.Rotate = PI/2
+                IF (player = 2) THEN face.Rotate = -PI/2
+            END IF
+            face.Data = 1
+            REM 1 point
+
+            faces.Add (face)
+    NEXT i
+    NEXT player
+RETURN
+```
+### Balloon Game #2: Avoid the ground
+Phase two of designing the Balloon game. The ground is now something to avoid, and the balloon keeps sinking unless you press the up key enough.
+```BASIC
+CLS "#3377BB"
+PRINT "BALLOON GAME"
+g = Screen.Graphics (50, 50, 200, 200)
+REM g.Border = "#3377BB"
+
+x1 = (g.W-40) / 2
+y1 = (g.H -60) / 2
+balloon = g.Text (x1, y1, x1+40, y1+60, "🎈", 40)
+DIM floor()
+DrawFloor (g, floor)
+
+REM You have to avoid death, of course.
+REM When the health drops to zero, you
+REM have lost. When you touch the floor,
+REM your health is deducted by the amount
+REM in the ".Data" value.
+Health = 10
+
+REM Call the BlowBalloon very so often
+REM so that we can push it around
+System.SetInterval ("BlowBalloon", 50, .2) 
+
+
+10 REM Top
+PAUSE 10
+cmd = INKEY$
+IF (cmd <> "") THEN PlayerMovesBalloon(cmd, balloon, 3)
+IF (cmd = "X") THEN STOP
+IF (health < 0) THEN STOP
+GOTO 10
+
+REM
+REM This new function draws a floor consisting of
+REM a series of boxes on the bottom of the playing
+REM area. The boxes are drawn at random. We always
+REM draw the same number of boxes regardless of
+REM the size of the graphics.
+REM
+FUNCTION DrawFloor(g, floor)
+    NBOX = 5
+    maxh = g.H * .2
+    w = g.W / NBOX
+    g.Push()
+    g.Fill = "#44BB44"
+    g.Stroke = "#44BB44"
+    FOR i = 0 TO NBOX-1
+        box =g.Rectangle (i*w, 0, (i+1)*w, RND*maxh)
+        REM -10 means that the floor is very deadly.
+        box.Data = -10
+        floor.Add (box)
+    NEXT i
+    g.Pop()
+RETURN
+
+FUNCTION BlowBalloon(delta)
+    GLOBAL health
+    IF (health < 0) THEN RETURN
+
+    GLOBAL balloon
+    balloon.Y1 = balloon.Y1 - delta
+
+    REM See if we are touching the floor.
+    GLOBAL health
+    GLOBAL floor
+    FOR i = 1 TO floor.Count
+        item = floor[i]
+        IF (balloon.Intersect (item))
+            dhealth = item.Data
+            health = health + dhealth
+            Screen.ClearLine (1)
+            PRINT "Health", health
+            IF (health < 0)
+                CONSOLE "POP!"
+            END IF
+        END IF
+    NEXT i
+RETURN
+
+REM
+REM The code to move the balloon is moved into
+REM this function. Once it's in this function, it won't
+REM clutter up the main program loop any more
+REM
+FUNCTION PlayerMovesBalloon(cmd, balloon, speed)
+    xd = 0
+    yd = 0
+    REM Figure out how we want to move.
+    IF (cmd = "W") THEN yd = speed
+    IF (cmd = "A") THEN xd = -speed
+    IF (cmd = "S") THEN yd = -speed
+    IF (cmd = "D") THEN xd = speed
+    balloon.X1 = balloon.X1 + xd
+    balloon.Y1 = balloon.Y1 + yd
+RETURN
+```
+### Balloon Game #1 (simple)
+Just enough code to move a red balloon around based on user controls!
+**Default Key**: 🎈
+```BASIC
+CLS "#3377BB"
+PRINT "BALLOON GAME"
+g = Screen.Graphics (50, 50, 200, 200)
+g.Border = "#3377BB"
+
+REM Start the balloon in the center of the screen.
+x1 = (g.W-40) / 2
+y1 = (g.H -60) / 2
+balloon = g.Text (x1, y1, x1+40, y1+60, "🎈", 40)
+
+REM Main program loop.  Read in a command from the user
+REM and then act on it.  The commands are WASD for up, left, 
+REM down and right.
+
+10 REM Top
+PAUSE 10
+cmd = INKEY$
+
+xd = 0
+yd = 0
+REM Figure out how we want to move.
+IF (cmd = "X") THEN STOP
+IF (cmd = "W") THEN yd = 3
+IF (cmd = "A") THEN xd = -3
+IF (cmd = "S") THEN yd = -3
+IF (cmd = "D") THEN xd = 3
+balloon.X1 = balloon.X1 + xd
+balloon.Y1 = balloon.Y1 + yd
+GOTO 10
+```
+### Hit the Target
+Maze game.  This game use the Inclinometer to move around the screen.  On each level you play a different fun character (a rocket, a boat, and more).  Yellow items will drain your health; green one recharge you.  Get to all of the exit points without dying to advance to the next level.
+**Default Key**: 🚀
+```BASIC
+CLS BLUE
+PRINT "Hit the target"
+PRINT System.Errors
+REM The 'g' variable is the overall screen
+g = Screen.FullScreenGraphics()
+
+IMPORT FUNCTIONS FROM "MusicForGames"
+
+REM AllRects is the set of things that can block 
+REM the player.  Each rect has a Data value 
+REM which is the amount by which touching
+REM the block reduces the player health.
+DIM AllRects()
+
+Health = 5
+NDest = 0
+GoalNDest = 5
+Difficulty = 1
+
+PlayedWarning = 0
+g.Fill = GREEN
+x = 40
+y = 40
+dx = 1
+dy = 1
+THICKNESS  = 10
+SIZE = 25
+REM player = g.Rectangle (40, 240, 40+SIZE, 240+SIZE)
+
+healthText = ""
+destText = ""
+
+FRICTION = .80
+FramesToPause = 0
+MustSetup = 0
+
+Setup()
+System.SetInterval ("frame", 50, "frame")
+inclinometer = Sensor.Inclinometer ("inclinometer")
+
+FOREVER
+
+REM difficulty ranges from 1 to 10
+FUNCTION Setup()
+    GLOBAL g
+    GLOBAL AllRects
+    GLOBAL GoalNDest
+    GLOBAL healthText
+    GLOBAL destText
+    GLOBAL Difficulty
+    GLOBAL NDest
+    GLOBAL Health
+
+    NDest = 0
+    Health = 5
+    AllRects.Clear()
+    g.Clear()
+
+    area = g.W * g.H
+    blocksize = 50*50
+    nbadblock = Math.Ceiling (area * Difficulty * 0.05 / blocksize)
+    ngoodblock = Math.Ceiling (area * 0.01 / blocksize)
+    IF (Difficulty < 3) THEN ngodblock = ngoodblock * 3
+    IF (Difficulty > 6) THEN ngoodblock = 2
+
+    DrawWalls(g)
+    SetupLevel1(g, AllRects, 40, 100, nbadblock, ngoodblock, GoalNDest)
+
+    g.Fill = WHITE
+    healthTitle  = g.Text (50, g.H-90, 150, g.H-50, "Health", 30)
+    healthText = g.Text (150, g.H-90, 350, g.H-50, Health, 30)
+
+    destTitle  = g.Text (50, g.H-140, 150, g.H-100, "Dest", 30)
+    destText = g.Text (150, g.H-140, 350, g.H-100, NDest, 30)
+    
+END
+
+FUNCTION SetupLevel1(g, AllRects, minsize, maxsize, nbad, ngood, ndest)
+    GLOBAL THICKNESS
+    g.Background = BLACK
+    FOR i = 1 TO nbad
+        g.Fill = BLACK
+        g.Stroke = BLACK
+        size = minsize + (RND * (maxsize-minsize))
+        x = RND * (g.W - size - THICKNESS*2) + THICKNESS
+        y = RND * (g.H - size - THICKNESS*2) + THICKNESS
+        IF (x < 200 AND y > g.H-150) THEN x = x + 300
+        txt  = g.Text (x, y+5, x+size, y+size, "🌑", SizeToFontSize(size))
+        txt.Alignment  = "SS"
+        txt.Data = -0.1 
+        REM Data = -(value) means that health drop by value when touched
+        AllRects.Add (txt)
+    NEXT i
+
+    FOR i = 1 TO ngood
+        g.Fill = BLACK
+        g.Stroke = BLACK
+        size = minsize + (RND * (maxsize-minsize))
+        x = RND * (g.W - size - THICKNESS*2) + THICKNESS
+        y = RND * (g.H - size - THICKNESS*2) + THICKNESS
+        IF (x < 200 AND y > g.H-150) THEN x = x + 300
+        txt  = g.Text (x, y, x+size, y+size, "🛠", SizeToFontSize(size))
+        txt.Alignment  = "CC"
+        txt.Data = .5
+        REM Data = -(value) means that health drop by value when touched
+        AllRects.Add (txt)
+
+        REM Mark the good things with a symbol
+    NEXT i
+
+    FOR i = 1 TO ndest
+        g.Fill = BLACK
+        g.Stroke = BLACK
+        size = minsize + (RND * (maxsize-minsize))
+        x = RND * (g.W - size - THICKNESS*2) + THICKNESS
+        y = RND * (g.H - size - THICKNESS*2) + THICKNESS
+        IF (x < 200 AND y > g.H-150) THEN x = x + 300
+        txt  = g.Text (x, y, x+size, y+size, "☄", SizeToFontSize(size))
+        txt.Alignment  = "CC"
+        txt.Data = 9999
+        REM Data = 9999 marks it as a destination
+        AllRects.Add (txt)
+    NEXT i
+
+    REM Make Player one
+    GLOBAL player
+    GLOBAL SIZE
+    player = g.Text (40, 240, 40+SIZE, 240+SIZE, "🚀", SizeToFontSize(SIZE))
+END
+
+FUNCTION SizeToFontSize(size)
+    fontSize = size * 0.7
+RETURN fontSize
+
+REM
+REM Updates the health based on
+REM any collisions.
+REM
+FUNCTION CheckCollision()
+    GLOBAL AllRects
+    GLOBAL player
+    GLOBAL Health
+    GLOBAL NDest
+    GLOBAL PlayedWarning
+
+    nwarn = 0
+    FOR i =1 TO AllRects.Count
+        obj = AllRects(i)
+        IF (obj.Intersect (player))
+            hdelta = obj.Data
+            IF (hdelta = 9999)
+                now = DateTime.GetNow()
+                dtime = 44
+                NDest = NDest + 1
+                obj.Data = 0
+                obj.Opacity = 0.2
+                Space1()
+            ELSE
+                Health = Health + hdelta
+                IF (hdelta < 0)
+                    IF (PlayedWarning = 0) 
+                        Warning1()
+                        PlayedWarning = 10
+                    END IF
+                    nwarn = nwarn + 1
+                ELSE
+                    REM Make it clear that something happened
+                    obj.Opacity = 0.6
+                END IF
+            END IF
+        END IF
+    NEXT i
+
+    REM Turn off once we are out of the way
+    REM of the asteroids
+    IF (nwarn = 0 AND PlayedWarning > 0) THEN PlayedWarning = PlayedWarning - 1
+END
+
+FUNCTION DrawWalls(g)
+    GLOBAL THICKNESS
+
+    g.Fill = BLUE
+    g.Stroke = BLUE
+    g.Rectangle (0, 0, THICKNESS, g.H)
+    g.Rectangle (0, g.H-THICKNESS, g.W, g.H)
+    g.Rectangle (g.W-THICKNESS,  0, g.W, g.H)
+    g.Rectangle (0,  0, g.W, THICKNESS)
+END
+
+
+REM
+REM Is called constantly when the inclinometer
+REM detects that the machie is tilted.
+REM Updates the dx & dy (aka velocity) based
+REM on the tilt and the friction.
+REM
+FUNCTION inclinometer (roll, pitch, yaw, accuracy)
+    GLOBAL FRICTION
+    GLOBAL dx
+    GLOBAL dy
+
+    dx = dx + (-pitch / 10)
+    dx = dx * FRICTION
+    dy = dy + (roll  / 10)
+    dy = dy * FRICTION
+
+    IF dx > 20 THEN dx = 20
+    IF dx < -20 THEN dx = -20
+    IF dy > 20 THEN dy = 20
+    IF dy < -20 THEN dy = -20
+END
+
+FUNCTION UpdatePlayerBasedOnHealth(player, Health, NDest)
+    GLOBAL healthText
+    GLOBAL destText
+    IF (Health <= 0)
+        REM Dead!
+        player.Fill = RED
+    END IF
+
+    IF (Health >= 10)
+        player.Fill = GREEN
+    END IF
+    healthText.Text = Math.Round (Health, 2)
+    destText.Text = NDest
+END
+
+REM If the player (based on x,y values) has
+REM hit a wall, bounce off.
+FUNCTION MaybeBounceOffWalls()
+    GLOBAL THICKNESS 
+    GLOBAL SIZE
+    GLOBAL g
+
+    GLOBAL x
+    GLOBAL y
+    GLOBAL dx
+    GLOBAL dy
+
+    IF (x < THICKNESS)
+        x = THICKNESS+(THICKNESS-x)
+        dx = -dx
+    END IF
+    w = g.W - THICKNESS - SIZE
+    IF (x > w)
+        x = w - (x-w)
+        dx = -dx
+    END IF
+
+    IF (y < THICKNESS)
+        y = THICKNESS+(THICKNESS-y)
+        dy = -dy
+    END IF
+    h = g.H - THICKNESS - SIZE
+    IF (y > h)
+        y = h - (y-h)
+        dy = -dy
+    END IF
+EXIT
+
+REM
+REM Called periodically to update the screen
+REM Move the player, updates the score, etc.
+REM
+FUNCTION frame(arg)
+    GLOBAL x
+    GLOBAL y
+    GLOBAL dx
+    GLOBAL dy
+    GLOBAL player
+    GLOBAL Health
+    GLOBAL NDest
+    GLOBAL GoalNDest
+    GLOBAL Difficulty
+    GLOBAL FramesToPause
+    GLOBAL MustSetup
+
+    IF (FramesToPause > 0)
+        FramesToPause = FramesToPause - 1
+        RETURN
+    END IF
+    IF (MustSetup)
+        MustSetup = 0
+        Setup()
+    END IF
+
+    x = x + dx
+    y = y + dy
+    MaybeBounceOffWalls()
+
+    player.X1 = x
+    player.Y1 = y
+    CheckCollision()
+
+    IF (Health < 0) THEN Health = 0
+    IF (Health > 10) THEN Health = 10
+    UpdatePlayerBasedOnHealth(player, Health, NDest)
+
+    IF (Health = 0)
+        FramesToPause = 50 * 2
+        PRINT "Lost"
+        Death1()
+        Difficulty = Difficulty -1 
+        IF (Difficulty < 1) THEN Difficulty = 1
+        MustSetup=1
+    ELSE
+        IF (NDest = GoalNDest)
+            FramesToPause = 50 * 2
+            PRINT "WIN"
+            Triumph1()
+            Difficulty = Difficulty +1 
+            IF (Difficulty  > 10) THEN Difficulty = 10
+            MustSetup = 1
+        END IF
+    END IF
+END
+```
+### HTML Color output from the rear camera
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT “Show HTML Color”
+
+REM Step 1: make the camera and preview
+cam = Sensor.Camera (“Rear”)
+grf = Screen.Graphics (50, 50, 340, 440)
+img = grf.Image (20, 20, 420, 170)
+cam.Start()
+cam.Image = img
+
+REM Step 2: make the analysis image
+REM and set up callback
+a = cam.Analyze()
+REM Normal radius is .16667
+REM 0.01 will be very zoomed-in
+a.Radius = 0.01
+REM a.CX = 0.5
+REM a.CY = 0.5
+a.AnalysisW = 128
+a.AnalysisH = 128
+imgAnalysis = grf.Image(230, 190, 420, 320)
+a.Image= imgAnalysis
+a.Function = “HtmlColor”
+
+REM Add a partial zoom
+REM so we can see what we're seeing
+imgAnalysisPartial = grf.Image(20, 190, 210, 320)
+a2 = cam.Analyze()
+a2.Image= imgAnalysisPartial
+
+FOREVER 
+
+REM Step three: HTML color output
+REM and set the background color
+FUNCTION HtmlColor (r, g, b)
+    color = String.Escape (“color”, r, g, b)
+    Screen.ClearLine (2)
+    PRINT color
+    GLOBAL grf
+    grf.Background  = color
+END
+```
+### MusicForGames
+Different sounds effects you can use in your games.
+```BASIC
+Warning1()
+PLAY WAIT
+
+FUNCTION Death1()
+    PLAY STOP
+    PLAY "T220 I41 O3 EDC<BA1"
+RETURN
+
+FUNCTION Space1()
+    PLAY STOP
+    PLAY "T100 I102 O7 F8 G8 A2"
+RETURN
+
+FUNCTION Triumph1()
+    PLAY STOP
+    PLAY "T220 I57 O6 C3 C8 C8 C8 C3 D4 E1"
+RETURN
+
+FUNCTION Warning1()
+    PLAY STOP
+    PLAY "T220 I99 O2 A4 A4"
+RETURN
+```

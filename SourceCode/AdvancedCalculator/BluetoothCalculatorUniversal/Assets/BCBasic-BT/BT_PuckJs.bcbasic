@@ -1,0 +1,138 @@
+## BT: Puck.Js
+The Puck.js device is a tiny Espruino-based, Javascript-programmable IOT device from puck-js.com.  Sensors include a light sensor and a magnetometer.  Unlike many other Bluetooth devices, you need to program the puck.js device with a JavaScript program you write before you can use the device.
+### Absolute simplest possible program
+Turns on the red LED with a minimum amount of fuss.  You just need to pick a Bluetooth device, set the specialization to Puck.js, and then call the Tx (transmit) function with the JavaScript that you want the puck.js device to run.
+```BASIC
+CLS BLUE
+PRINT "Turn puck.js LED1 on"
+
+device = ↲
+    Bluetooth.PickDevicesName(“Puck.js*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    puck = device.As (“Puck.js”)
+    status = puck.Tx ("LED1.set();\n")
+    REM The puck will reply to the command,
+    REM but this program won't pick it up.
+END IF
+```
+### Led1 On
+Demonstrates both the Tx (send to puck.js device) and RxSetup (receive from the puck.js device) methods.  The actual JavaScript program send to the puck.js device will turn the red LED on.
+```BASIC
+CLS BLUE
+PRINT "Turn LED1 on"
+
+device = Bluetooth.PickDevicesName(“Puck.js*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    AllRx = ""
+    puck = device.As (“Puck.js”)
+    puck.RxSetup (1, "Rx")
+    REM The Puck works by sending JavaScript to the puck
+    REM to be interpreted and run.
+    Status = puck.Tx("LED1.set();\n")
+    PRINT AT 2,1 “status”, Status
+
+    MAXTIME = 5
+    FOR time = 1 TO MAXTIME
+        PRINT AT 1,1 "TIME", time
+        PAUSE 50
+    NEXT time
+   CLS
+    CONSOLE AllRx
+    PRINT AT 13,1 "FINAL", AllRx
+    puck.RxSetup (0, "Rx")
+END IF
+
+FUNCTION Rx(puck, rx)
+    GLOBAL AllRx
+    AllRx = AllRx + rx
+    REM Screen.ClearLines (3, 10)
+    PRINT AT 5,1 "RX", rx
+    PRINT AT 7,1 "AllRx", AllRx
+END
+```
+### Magnetometer
+A full-blown program that reads data from the puck.js device magnetometer and buttons.  The data is sent as JSON objects which are interpreted by the receive function.
+```BASIC
+CLS BLUE
+PRINT "Get Magnetometer data"
+
+puckReset = "echo(false);\n"
+puckProgram = "Puck.magOn(); Puck.on('mag', function(xyz) { xyz.type='Mag'; console.log(JSON.stringify(xyz)); });\n"
+puckButtonDownProgram = "setWatch(function() {  var value={'type':'Button', 'value':'Down'}; console.log(JSON.stringify(value));}, BTN, {edge:'rising', debounce:50, repeat:true});\n"
+puckButtonUpProgram = "setWatch(function() { var value={'type':'Button', 'value':'Up'}; console.log(JSON.stringify(value));}, BTN, {edge:'falling', debounce:50, repeat:true});\n"
+puckOff = "echo(true);Puck.magOff();\n"
+
+device = Bluetooth.PickDevicesName(“Puck.js*”)
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    puck = device.As (“Puck.js”)
+    puck.RxSetupLine (1, "Rx")
+    REM The Puck works by sending JavaScript to the puck
+    REM to be interpreted and run.
+    Status = puck.Tx(puckReset)
+    Status = puck.Tx(puckProgram)
+    Status = puck.Tx(puckButtonDownProgram)
+    Status = puck.Tx(puckButtonUpProgram)
+    PRINT AT 3,1 “status”, Status
+
+    MAXTIME = 10
+    FOR time = 1 TO MAXTIME
+        PRINT AT 2,1 "TIME", time
+        PAUSE 50
+    NEXT time
+
+    PRINT AT 3,1 "All done!"
+    puck.Tx(puckOff)
+    puck.RxSetupLine (0, "Rx")
+END IF
+
+FUNCTION Rx(puck, rx)
+    Screen.ClearLines (3, 4)
+    PRINT AT 3,1 "RX", rx
+    CONSOLE "RX:"  + rx
+
+    REM data should be JSON
+    REM but stray output won't be
+    data = String.Parse("json", rx)
+    IF (data.type = "Button") 
+        PRINT AT 4,1 "Type", data.type
+        Screen.ClearLine (6)
+        PRINT AT 6,1 "Button", data.value
+    ELSE
+        IF (data.type = "Mag") 
+            PRINT AT 4,1 "type", data.type
+            Screen.ClearLines (7,9)
+            PRINT AT 7,1 "X", data.x
+            PRINT AT 8,1 "Y", data.y
+            PRINT AT 9,1 "Z", data.z
+        END IF
+    END IF
+END
+```
+### Turn Everything Off
+The puck.js device will run your JavaScript program whether or not Best Calculator, IOT edition is listening!  To save battery, you can run this program to turn off many of the JavaScript devices on the device.
+```BASIC
+CLS BLUE
+PRINT "Turn all puck.js devices OFF"
+
+devices = Bluetooth.DevicesName(“Puck.js*”)
+
+FOR i = 1 TO devices.Count
+    device = devices[i]
+    puck = device.As (“Puck.js”)
+    status = puck.Tx ("LED1.reset();\n")
+    status = puck.Tx ("LED2.reset();\n")
+    status = puck.Tx ("LED3.reset();\n")
+    status = puck.Tx ("puck.MagOff();\n")
+    
+    PRINT "Turn off", i
+    PRINT " ", device
+    PRINT " ", puck
+    PRINT " ", status
+NEXT i
+```

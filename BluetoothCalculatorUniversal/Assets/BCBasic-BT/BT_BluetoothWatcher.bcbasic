@@ -1,0 +1,186 @@
+## BT: Bluetooth Watcher including Eddystone and RuuviTag
+Bluetooth devices often broadcast a constant stream of data about how to connect to the device.  BC BASIC, IOT Edition, lets you monitor those broadcasts.  This package includes general watchers for Bluetooth advertisements, Eddystone URL advertisements, and the RuuviTag tag.
+### RuuviTag Weather Graphing Program
+This program builds off of the RuuviTag Watcher program.  Instead of just displaying the weather, this program also graphs it.
+```BASIC
+REM https://github.com/ruuvi/ruuvi-sensor-protocols
+Bluetooth.Watch (“RuuviTag”, “ruuvi”)
+
+CLS WHITE BLACK
+h = 100
+hh = h + 25
+w = 300
+x = 250
+yoffset=25
+algorithm = "Random"
+
+DIM tempData()
+tempData.MaxCount = 100
+tempData.RemoveAlgorithm = algorithm
+tempGraph = Screen.Graphics(x, yoffset, h, w)
+tempGraph.GraphY (tempData)
+tempGraph.Title = "Temperature"
+
+DIM pressureData()
+pressureData.MaxCount = 100
+pressureData.RemoveAlgorithm = algorithm
+pressureGraph = Screen.Graphics(x, yoffset+hh, h, w)
+pressureGraph.GraphY (pressureData)
+pressureGraph.Title = "Pressure"
+
+DIM humidityData()
+humidityData.MaxCount = 100
+humidityData.RemoveAlgorithm = algorithm
+humidityGraph = Screen.Graphics(x, yoffset+2*hh, h, w)
+humidityGraph.GraphY (humidityData)
+humidityGraph.Title = "Humidity"
+
+
+MAXTIME = 100000
+FOR time = 1 TO MAXTIME
+    Screen.ClearLine (1)
+    now = DateTime.GetNow()
+    PRINT now.Time, count
+    PAUSE 50
+NEXT time
+
+FUNCTION ruuvi (address, rssi, txpower, temperature, pressure, humidity)
+Screen.ClearLines (3, 9)
+PRINT “Temperature”, temperature
+PRINT “Pressure”, pressure
+PRINT “Humidity”, humidity
+
+GLOBAL tempData
+tempData.Add (temperature)
+
+GLOBAL pressureData
+pressureData.Add (pressure)
+
+GLOBAL humidityData
+humidityData.Add (humidity)
+
+PRINT AT 7,1 "Address", address
+PRINT "RSSI", rssi
+PRINT "TX", txpower
+
+GLOBAL count
+count = count + 1
+END
+```
+### Watch Bluetooth
+This program watches for all Bluetooth advertisements and displays a little bit of information about each one.  Information includes the Bluetooth address and signal strength and may include more information.
+```BASIC
+CLS BLUE WHITE
+Bluetooth.Watch (“Bluetooth”, “AllBluetooth”)
+
+MAXTIME = 300
+FOR time = 1 TO MAXTIME
+    Screen.ClearLine (1)
+    now = DateTime.GetNow()
+    PRINT now.Time
+    PAUSE 50
+NEXT time
+
+FUNCTION AllBluetooth(address, rssi, data)
+    Screen.ClearLines (3, 5)
+    PRINT "Address", address
+    PRINT "Signal", rssi
+    PRINT "len", data.Count
+END
+```
+### Watch Eddystone
+This program watches for all Eddystone Bluetooth devices and displays a little bit of information about each one.  Information includes the Eddystone frame type.
+```BASIC
+REM Eddystone protocol documentation: 
+REM https://github.com/google/eddystone/blob/master/protocol-specification.md
+
+CLS BLUE WHITE
+Bluetooth.Watch (“Eddystone”, “Eddy”)
+
+MAXTIME = 300
+FOR time = 1 TO MAXTIME
+    Screen.ClearLine (1)
+    now = DateTime.GetNow()
+    PRINT now.Time
+    PAUSE 50
+NEXT time
+
+
+REM rssi = Received signal strength indication
+FUNCTION Eddy(address, rssi, frameType)
+    Screen.ClearLines (5,7)
+    PRINT "Address", address
+    PRINT "Signal", rssi
+    PRINT "Type", frameType
+END
+```
+### Watch Eddystone-URL
+This program watches for all Eddystone-URL Bluetooth devices and displays a little bit of information about each one.  Information includes the URL being advertised.
+```BASIC
+REM Eddystone-URL documentation
+REM https://github.com/google/eddystone/tree/master/eddystone-url
+
+CLS BLUE WHITE
+Bluetooth.Watch (“Eddystone-URL”, “EddyUrl”)
+
+MAXTIME = 300
+FOR time = 1 TO MAXTIME
+    Screen.ClearLine (1)
+    now = DateTime.GetNow()
+    PRINT now.Time
+    PAUSE 50
+NEXT time
+
+
+REM rssi = Received Signal Strength Indication
+FUNCTION EddyUrl(address, ↲
+    rssi, txpower, url)
+    Screen.ClearLines (5,9)
+    PRINT "Address", address
+    PRINT "Signal", rssi
+    PRINT "TX Power", txPower
+    PRINT "URL", url
+END
+
+REM This function is some random internet code.
+REM it would have to be "tweaked" to be correct.
+FUNCTION EstimateDistance(rssi, tx)
+IF (rssi = 0) THEN RETURN -1.0
+REM Convert google-style to ios-style
+tx1meter = tx-41
+ratio = rssi / tx1meter
+IF (ratio  < 1) THEN RETURN Math.Pow(ratio, 10)
+retval = (0.89976)*Math.Pow(ratio,7.7095) + 0.111
+RETURN retval
+END
+```
+### Watch RuuviTag
+The RuuviTag is a large round IOT device that constantly sends temperature, pressure and humidity data via the Eddystone-URL format.  This program will listen for RuuviTag-compatible broadcasts and will display the data on the screen.
+```BASIC
+REM RuuviTag protocol
+REM https://github.com/ruuvi/ruuvi-sensor-protocols
+CLS BLUE WHITE
+Bluetooth.Watch (“RuuviTag”, “ruuvi”)
+
+MAXTIME = 10
+FOR time = 1 TO MAXTIME
+    Screen.ClearLine (1)
+    now = DateTime.GetNow()
+    PRINT now.Time
+    PAUSE 50
+NEXT time
+
+REM rssi = Received Signal Strength Ind.
+FUNCTION ruuvi (address, rssi, txpower, ↲
+    temperature, pressure, humidity)
+
+    Screen.ClearLines (3, 9)
+    PRINT “Temperature”, temperature
+    PRINT “Pressure”, pressure
+    PRINT “Humidity”, humidity
+
+    PRINT AT 7,1 "Address", address
+    PRINT "RSSI", rssi
+    PRINT "TX", txpower
+END
+```

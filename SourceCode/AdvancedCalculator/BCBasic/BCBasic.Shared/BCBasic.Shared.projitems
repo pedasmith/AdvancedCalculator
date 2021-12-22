@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>35944b63-cb5a-4ef9-9110-2117e5a64603</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>BCBasic</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)BCBasic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCBasicMathFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCBasicStringFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCFunctionList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCLibrary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BCLibraryControl.xaml.cs">
+      <DependentUpon>BCLibraryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)BCScreenControl.xaml.cs">
+      <DependentUpon>BCScreenControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)BCValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ButtonListControl.xaml.cs">
+      <DependentUpon>ButtonListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ButtonToProgram.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CalculatorConnectionControl.xaml.cs">
+      <DependentUpon>CalculatorConnectionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)HighlightableTextBox.xaml.cs">
+      <DependentUpon>HighlightableTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ImportConflictControl.xaml.cs">
+      <DependentUpon>ImportConflictControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)MenuIcon.xaml.cs">
+      <DependentUpon>MenuIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Parser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ParseTree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Regex.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SampleCalculatorControl.xaml.cs">
+      <DependentUpon>SampleCalculatorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SampleMemory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scanner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serializable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)BCLibraryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)BCScreenControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)ButtonListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)CalculatorConnectionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)HighlightableTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)ImportConflictControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)MenuIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)SampleCalculatorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

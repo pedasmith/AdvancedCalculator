@@ -1,0 +1,141 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ConversionsEnergyControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Common Energy Conversions</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid x:Name="uiGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Energy</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Ergs</TextBlock>
+                    <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Ergs" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Ergs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Ergs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Joules</TextBlock>
+                    <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Joules" Style="{StaticResource solverbox}" InputScope="Number"  />
+                    <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Joules" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Joules" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Kilowatt-Hours</TextBlock>
+                    <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1KilowattHours" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1KilowattHours" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1KilowattHours" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Calories</TextBlock>
+                    <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1Calories" Style="{StaticResource solverbox}" InputScope="Number"  />
+                    <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1Calories" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1Calories" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center" >Food-related energy</TextBlock>
+                    <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">Food Calories (KCAL)</TextBlock>
+                    <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1KCals" Style="{StaticResource solverbox}" InputScope="Number"  />
+                    <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1KCals" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1KCals" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Donuts</TextBlock>
+                    <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1Donuts" Style="{StaticResource solverbox}" InputScope="Number"  />
+                    <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1Donuts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1Donuts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                    <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center" >Heating-related energy</TextBlock>
+                    <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource solverblock}">BTUs</TextBlock>
+                    <TextBox  Grid.Row="10" Grid.Column="1" Tag="autotbeq1BTUs" Style="{StaticResource solverbox}" InputScope="Number"  />
+                    <Button Grid.Row="10" Grid.Column="2" Tag="autotbeq1BTUs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="10" Grid.Column="3" Tag="autotbeq1BTUs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    <TextBlock Grid.Row="11" Grid.Column="0" Style="{StaticResource solverblock}">Therms</TextBlock>
+                    <TextBox  Grid.Row="11" Grid.Column="1" Tag="autotbeq1Therms" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <Button Grid.Row="11" Grid.Column="2" Tag="autotbeq1Therms" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                    <Button Grid.Row="11" Grid.Column="3" Tag="autotbeq1Therms" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                </Grid>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ConversionsEnergy.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20">About Energy</Bold>
+                        <LineBreak />
+                        Energy is an indirectly observed ability to do work.  It's related to power; in Electrical Engineering power is
+                        an instantanous amount, and energy is simply the sum of power over time.
+                        <LineBreak />
+
+                        <Bold>Ergs</Bold> and <Bold>Joules</Bold> are the primary Metric units of energy.  A Joule is one Newton-meter; a Newton is the
+                        amount of force needed to accelerate a one-kilogram mass by 1 meter per second squared.  An Erg are the cgs system version of 
+                        a Joule, there are 10000000 ergs in a joule.
+                        <LineBreak />
+                        <Bold>KiloWatt-Hours</Bold> are the Electrical Engineering units of energy; a battery in a typical tablet has about 30 Watt-Hours of energy.
+                        <LineBreak />
+                        <Bold>Calories</Bold> here are the chemical (small) calories; one calorie is the amount of energy needed to raise the temperature
+                        of one gram of water by one degree Celcius.  A <Bold>KiloCalorie</Bold>, or <Bold>KCAL</Bold>, is the food calorie; there are 1000 chemical
+                        calories in one KCAL.  Just for fun, one donut (a type of pastry) has 198 KCALs.
+                        <LineBreak />
+                        <Bold>BTUs</Bold> (British Thermal Unit) is used for heating calculations; it's the energy needed to raise the temperature of
+                        one pound of water by 1 degree Fahrenheit.  A <Bold>Therm</Bold> is 10000 BTUs.
+                        <LineBreak />
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+
+    </local:FourPanel>
+
+</UserControl>

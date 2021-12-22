@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.FinancialWACCControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >WACC</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Equity Value</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1EquityValue" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1EquityValue" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1EquityValue" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Debt Value</TextBlock>
+                <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1DebtValue" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1DebtValue" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1DebtValue" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Cost of Equity</TextBlock>
+                <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1CostOfEquity" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1CostOfEquity" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1CostOfEquity" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Cost of Debt</TextBlock>
+                <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1CostOfDebt" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1CostOfDebt" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1CostOfDebt" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Tax Rate</TextBlock>
+                <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1TaxRate" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1TaxRate" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1TaxRate" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">WACC</TextBlock>
+                <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1WACC" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1WACC" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1WACC" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/FinancialWACC.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20" >WACC (Weighted Average Cost of Capital)</Bold>
+                        <LineBreak />
+                        The Weighted Average Cost of Capital is the after-tax cost of a firm's capital sources 
+                        (debt and equity).  WACC is calculated by multiplying the cost of each capital source
+                        by its weight.  The cost of debt is reduced by the tax rate (debt at 8% in an area
+                        where the firm's marginal tax rate is 25% is comes out to 6%)
+                    
+                        <LineBreak />
+                        <LineBreak />
+                        The WACC calculator is a forwards-only calculator: you must provide each of the values,
+                        and the WACC will be calculated.
+                       
+                        <LineBreak />
+                        <LineBreak />
+                        The Cost of Equity, Cost of Debt and Tax Rate are all given as percentages.  For example, 
+                        if the cost of equity is 6%, enter a "6" into the text box.  The WACC result is
+                        also presented as a percent.  The WACC result will always be somewhere between 
+                        the cost of equity and the after-tax cost of debt.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>
+

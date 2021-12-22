@@ -1,0 +1,240 @@
+## EX: PLAY <music>, BEEP and SPEAK commands
+PLAY "CDA" will play music
+BEEP beeps the computer speaker
+SPEAK "hello" will talk to you
+### A Simple scale using the PLAY "CDEFGAB" command to play a scale
+The simplest possible music program uses PLAY "CDEFGAB" to start scale and then PLAY WAIT to wai for the music to finish
+**Default Key**: 🎜
+```BASIC
+CLS BLUE
+
+REM Plays a single scale
+music = "CDEFGAB"
+PRINT "Play a single scale "+ music
+PLAY music
+PLAY WAIT
+
+REM Plays a scale over two octaves
+music = "CDEFGAB > CDEFGAB"
+PRINT "Play two scales " + music
+PLAY music
+PLAY WAIT
+
+REM Plays a scale using 8th notes instead of quarter notes
+music = "L8 CDEFGAB"
+PRINT "Use 8th notes instead of quarter notes " + music
+PLAY music
+PLAY WAIT
+
+REM Plays a scale with quarter notes, but with a 
+REM fast tempo
+music = "T440 CDEFGAB"
+PRINT "Play at a faster tempo " + music
+PLAY music
+PLAY WAIT
+
+REM Play a scale with Tubular Bells
+music = "I15 CDEFGAB"
+PRINT "Play using Tubular Bells " + music
+PLAY music
+PLAY WAIT
+
+REM PLAY doesn't handle the V (volume) command
+```
+### BEEP
+The simplest possible BEEP command.  BEEP all by iteself will beep the computer speaks.  BEEP duration,pitch gives you more control.  But see the PLAY command to play MIDI music.
+**Default Key**: 🖳
+```BASIC
+BEEP
+```
+### BEEP with pitch and duration
+A more complex set of BEEP commands that change both the pitch and duration of the BEEPs
+```BASIC
+REM
+REM 8 very low-pitched BEEPs for 1/8 second each
+REM 4 low-pitched BEEPs for 1/4 second each
+REM 2 BEEPs for 1/2 second each
+REM 1 high-pitched BEEPs for 1 second
+REM
+REM Technically this uses the MIDI square-wave output
+
+BEEP .125, -15
+BEEP .125, -15
+BEEP .125, -15
+BEEP .125, -15
+BEEP .125, -15
+BEEP .125, -15
+BEEP .125, -15
+BEEP .125, -15
+
+BEEP .25, -10
+BEEP .25, -10
+BEEP .25, -10
+BEEP .25, -10
+
+BEEP .5, 0
+BEEP .5, 0
+
+BEEP 1, 10
+```
+### Happy Birthday
+Plays the classic Happy Birthday song with a animation of the candles.
+**Default Key**: 🎂
+```BASIC
+CLS BLUE
+PRINT "HAPPY BIRTHDAY"
+
+g = Screen.Graphics (50, 50, 200, 400)
+ncandle = 9
+DIM flames()
+DrawCake (g, ncandle, flames)
+
+flame = flames[1]
+normaly1 = flame.Y1
+normaly2 = flame.Y2
+jumpy1 = normaly1 + 10
+jumpy2 = normaly2+30
+
+REM Call the onPlay function for each note.
+PLAY ONNOTE "onPlay"
+PLAY "T240 I20 L4 C♯ C♯ D C♯ F♯ F2 C♯C♯ D♯ C♯ A♭ F♯2 C♯ C♯ >C♯ <B♭ F♯ F D♯2 B B♭ F♯ A♭ F♯2"
+PLAY WAIT
+AllFlamesNormal()
+
+FUNCTION AllFlamesNormal()
+    GLOBAL flames
+    GLOBAL normaly1
+    GLOBAL normaly2
+    FOR f  = 1 TO flames.Count
+        flame = flames(f)
+        flame.Y1 = normaly1
+        flame.Y2 = normaly2
+    NEXT f
+END
+
+FUNCTION FlameJump(f)
+    GLOBAL flames
+    GLOBAL jumpy1
+    GLOBAL jumpy2
+    flame = flames(f)
+    flame.Y1 = jumpy1
+    flame.Y2 = jumpy2
+END
+
+FUNCTION DrawCake (g, ncandle, flames)
+    REM Set a nice background
+    g.Background = "#AAAAAA"
+
+    w = g.W / 2
+    h = g.H / 4
+
+    g.Fill = "#4e2e28"
+    g.Stroke = g.Fill
+    x1 = (g.W - w) / 2
+    x2 = g.W - x1
+    cx = (x1 + x2) / 2
+    y1 = 40
+    y2 = y1 + h
+
+    REM Make the cake
+    g.Rectangle (x1, y1, x2, y2)
+    g.Circle (cx, y1, w/2, h/2)
+    g.Stroke = BLACK
+    g.Circle (cx, y2, w/2, h/2)
+
+    REM Add the candles
+    gapw = w / (ncandle+1)
+    candlew = gapw * .66
+    candleh = h * .95
+    candlew = Math.Min (candlew, candleh / 4)
+    g.Fill = BLUE
+
+    flamer = 10
+   
+    FOR i = 1 TO ncandle
+        x = x1 + (i*gapw)
+        cx1 = x -candlew/2
+        cx2 = cx1 + candlew
+        cy1 = y2
+        cy2 = cy1 + candleh
+
+        g.Fill = "#EEEEEE"
+        g.Rectangle (cx1, cy1, cx2, cy2)
+
+        g.Fill = "#e1ad21"
+        flame = g.Circle (x, cy2+flamer+3,  candlew/2, flamer)
+        flames.Add (flame)
+    NEXT i
+END
+
+REM I happen to know exactly what notes are
+REM in "Happy Birthday"
+FUNCTION NoteToCandle(note)
+    IF (note = 61) THEN RETURN 1
+    IF (note = 62) THEN RETURN 2
+    IF (note = 63) THEN RETURN 3
+    IF (note = 65) THEN RETURN 4
+    IF (note = 66) THEN RETURN 5
+    IF (note = 68) THEN RETURN 6
+    IF (note = 70) THEN RETURN 7
+    IF (note = 71) THEN RETURN 8
+    IF (note = 73) THEN RETURN 9
+    RETURN 5
+END
+
+FUNCTION onPlay (note, instrument, duration, str)
+    candle = NoteToCandle (note)
+    Screen.ClearLine(2)
+    REM PRINT note, candle, instrument, duration
+
+    AllFlamesNormal()
+    PAUSE 10
+    FlameJump (candle)
+END
+```
+### KIMIGAYO
+MML (Music Macro Language) version of Kimigayo
+```BASIC
+notes = "T250 O4 D2C2D2E2 G2E2D1 E2G2A2G4A4 O5D2O4B2A2G2 E2G2A1 O5D2C2D1 O4E2G2A2G2 E2R4G4D1 A2O5C2D1 C2D2O4A2G2 A2G4E4D"
+PLAY notes
+PLAY WAIT
+```
+### ODE TO JOY
+From Beethoven's Symphony #9, the classic ODE TO JOY is rendered here in MML (Music Macro Language).  This MML was taken directly from internet and is not a perfect rendition.
+```BASIC
+PLAY "O2 T120 E8 E8 F8 G8 G8 F8 E8 D8 C8 C8 E8 E8 E8 D12 D4"
+PLAY "E8 E8 F8 C8 G8 F8 E8 D8 C8 C8 D8 E8 D8 C12 C4"
+PLAY "D8 D8 E8 C8 D8 E12 F12 E8 C8 D8 E12 F12 E8 D8 C8 D8 P8"
+PLAY "E8 E8 F8 G8 G8 F8 E8 D8 C8 C8 D8 E8 D8 C12 C4"
+
+PLAY WAIT
+```
+### SPEAK "text" will speak to you
+A very simple HELLO WORLD for the SPEAK command.
+```BASIC
+REM The simplest possible speak statement
+SPEAK "Hello world"
+
+REM You have to wait until the last words are done
+REM before starting new ones.
+REM There are several built-in voices
+REM I can use David, Mark and Zira
+REM Different voices are available
+REM in different areas.
+PAUSE 50
+SPEAK VOICE "Zira" "I am Zira!"
+```
+### SPEAK LIST VOICES will list all available voices
+Lists all of the available voices to the screen.  Different voices are present in different parts of the world, and the list changes with different OS releases.
+```BASIC
+CLS BLUE
+PRINT "Available voices for speaking"
+SPEAK LIST VOICES
+```
+### SPEAK the calculator value
+SPEAK the current number in the calculator display!
+**Default Key**: 🗩
+```BASIC
+value = Calculator.ValueString
+SPEAK value
+```

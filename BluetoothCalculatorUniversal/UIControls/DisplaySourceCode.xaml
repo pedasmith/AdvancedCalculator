@@ -1,0 +1,62 @@
+﻿<UserControl
+    x:Class="Shipwreck.UIControls.DisplaySourceCode"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shipwreck.UIControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <TextBlock FontSize="20" Margin="5">Source Code Explorer for this app</TextBlock>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Vertical" x:Name="uiFilenameList">
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" FontSize="18"><Run>File: </Run><Run x:Name="uiFileName"></Run></TextBlock>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button FontSize="8" Content="Copy All" Click="OnCopySourceCode" />
+                    <Button FontSize="8" Content="Save As..." Click="OnSaveSourceCode" />
+                </StackPanel>
+                <Border Grid.Row="2" BorderBrush="White" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="13*" />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer Grid.Row="0" Grid.RowSpan="2" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" x:Name="uiScroll">
+                            <TextBlock FontSize="16" x:Name="uiTextContentA" />
+                        </ScrollViewer>
+                        <TextBlock  Grid.Row="0" Grid.RowSpan="2"  FontSize="16" x:Name="uiTextContentB" TextWrapping="Wrap" />
+                        <Rectangle Grid.Row="1" x:Name="uiHidingRectangle" >
+                            <Rectangle.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#0000" Offset="0.0" />
+                                    <GradientStop Color="#F000" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Grid.Row="1" FontSize="12" Margin="0,0,0,20" VerticalAlignment="Bottom" HorizontalAlignment="Center"   x:Name="uiPaidOnly" Text="Source code is only availible in the paid version" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

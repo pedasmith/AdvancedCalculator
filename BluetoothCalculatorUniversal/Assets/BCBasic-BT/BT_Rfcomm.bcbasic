@@ -1,0 +1,162 @@
+## BT: Rfcomm and support for Ardudroid, Infineon DPS310, Slant Robotics and more
+Support for a set of Rfcomm (Serial Port Protocol, SPP) Bluetooth devices including the Infineon DPS310 on an IFX_NANOHUB device, the Slant Robotics LittleBot and the Ardudroid protocol
+### Ardudroid Arduino Analog Reader
+Reads analog data from an "Ardudroid" device. In the classic Ardudroid system, the parameters for Read are not used; Analog pin 0 is always returned.
+```BASIC
+CLS GREEN
+PRINT "Gets analog value from Ardudoid"
+
+bt = Bluetooth.PickDevicesRfcommName(“”)
+ardu = bt.As (“Ardudroid”)
+FOR i = 1 TO 10
+    Screen.ClearLine (2)
+    PRINT i
+    val = ardu.Read (1, 1)
+    Screen.ClearLine (4)
+    PRINT “value”, val
+    PAUSE 50
+NEXT i
+```
+### Ardudroid Arduino Control Servo Tilt and Pan
+Controls an Arduino-connected tilt and pan device that's powered by two servos.  The Arduino must be programmed with an extension to the Ardudroid system that can control servos.
+```BASIC
+CLS BLUE
+PRINT "Control Tilt and Pan"
+bt = Bluetooth.PickDevicesRfcommName ("HC-06")
+servo = bt.As ("Ardudroid")
+PRINT "NAME", servo.Name
+servo.ServoAttach (0, 2)
+servo.ServoAttach (1, 3)
+
+pan = 90
+tilt = 45
+
+10 REM TOP
+pan = INPUT DEFAULT pan PROMPT "PAN ANGLE"
+tilt =  INPUT DEFAULT tilt PROMPT "TILT ANGLE"
+
+servo.ServoMove (0, pan)
+servo.ServoMove (1, tilt)
+GOTO 10
+```
+### DPS310 on an IFX_NANOHUB board
+The DPS310 is a high-resolution altitude, pressure, and temperature sensor from Infineon.  It's mounted on a Bluetooth Rfcomm (SPP, Serial Port Protocol) Bluetooth IFX_NANOHUB carrier
+```BASIC
+CLS BLUE
+PRINT “Altitude from the DPS310”
+bt = Bluetooth.PickDevicesRfcommName ↲
+    (“IFX_NANOHUB”)
+dps310 = bt.As (“DPS310”, ↲
+    “Dps310Altitude”, “Dps310Pressure”, ↲
+    “Dps310Temp”)
+
+FOREVER
+
+FUNCTION Dps310Altitude (dps310, value)
+    Screen.ClearLine (4)
+    PRINT “Altitude”, value
+END
+
+FUNCTION Dps310Pressure (dps310, value)
+    Screen.ClearLine (5)
+    PRINT “Pressure”, value
+END
+
+FUNCTION Dps310Temp(dps310, value)
+    Screen.ClearLine (6)
+    PRINT “Temp”, value
+END
+```
+### LittleBot Autonomous
+The LittleBot from Slant Robotics is a STEM robot kit.  It runs an Arduino using its own simple Rfcomm (SPP, Serial Port Protocol) protocol.  This program simply puts the robot into autonomous mode
+```BASIC
+CLS BLUE
+PRINT "Connecting to the Robot"
+bt = Bluetooth.PickDevicesRfcommName (“HC-06”)
+ok = bt.ReceiveString (“BtRecv”)
+IF (ok.IsError)
+    PRINT "Error connecting"
+    PRINT ok
+    CONSOLE ok
+    STOP
+ELSE
+    PRINT "Status", ok
+END IF
+PRINT "Ready to sent 256"
+
+bt.Send (“256\r\n”)
+FOR time = 0 TO 10
+    PAUSE 50
+    now =DateTime.GetNow()
+    Screen.ClearLine (8)
+    PRINT “TIME”, now.Time
+NEXT time
+PRINT "Stopping now!"
+bt.Send (“222\r\n”)
+PRINT "All done!"
+
+FUNCTION BtRecv (device, data)
+    CONSOLE “RECV:”, data
+END
+```
+### LittleBot commands
+The LittleBot from Slant Robotics is a STEM robot kit.  It runs an Arduino using its own simple Rfcomm (SPP, Serial Port Protocol) protocol.  This program lets you control the LittleBot.  The commands are: f=forward b=back l=left r=right s=stop a=autonomous x=exit
+```BASIC
+CLS BLUE
+PRINT "Connecting to the Robot"
+bt = Bluetooth.PickDevicesRfcommName (“HC-06”)
+ok = bt.ReceiveString (“BtRecv”)
+IF (ok.IsError)
+    PRINT "Error connecting"
+    PRINT ok
+    CONSOLE ok
+    STOP
+ELSE
+    PRINT "Status", ok
+END IF
+10 REM top
+cmd = INPUT DEFAULT "" PROMPT "command (s f b l r a x)  "
+cmd = String.ToLower (cmd)
+cmd = LEFT(cmd, 1)
+send = ""
+REM Why these amounts?  Because they
+REM seem to work for me!  
+IF (cmd = "s") THEN send = “222\r\n”
+IF (cmd = "f") THEN send = "1 20 20\r\n"
+IF (cmd = "b") THEN send = "1 -10 -10\r\n"
+IF (cmd = "l") THEN send = "1 20 -20\r\n"
+IF (cmd = "r") THEN send = "1 -20 20\r\n"
+IF (cmd = "a") THEN send = "256\r\n"
+IF (cmd = "x") THEN GOTO 20
+IF (send = "")
+    PRINT "I didn't understand that command"
+ELSE
+    PRINT "Sending:", send
+    ok = bt.Send (send)
+    CONSOLE ok
+END IF
+GOTO 10
+
+20 REM all stop
+PRINT "Stopping now!"
+bt.Send (“222\r\n”)
+PRINT "All done!"
+
+FUNCTION BtRecv (device, data)
+    CONSOLE “RECV:” + data
+END
+```
+### Test RFCOMM
+Demonstrates the Rfcomm (otherwise known as the Serial Port Protocol, SPP) capabilities.  The program will write a command to a Bluetooth Rfcomm device and print the reply.
+```BASIC
+CLS BLUE
+PRINT "TEST RFCOMM"
+bt = Bluetooth.PickDevicesRfcommName (“*”)
+bt.ReceiveString (“BtRecv”)
+bt.Send (“$hello\n”)
+FOREVER
+
+FUNCTION BtRecv (device, data)
+    PRINT “RECV:”, data
+END
+```

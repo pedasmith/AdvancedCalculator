@@ -1,0 +1,67 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.TrialPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="400">
+
+    <Border Background="#d030"  Padding="40" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border BorderBrush="White" Background="DarkGreen" BorderThickness="2" Padding="5" Margin="2" MaxWidth="500" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock FontSize="32" FontWeight="Bold" x:Name="uiTitle" Visibility="Collapsed">Welcome</TextBlock>
+                <TextBlock FontSize="32" FontWeight="Bold" x:Name="uiTitleBT" Visibility="Collapsed">Trial Version</TextBlock>
+                <TextBlock FontSize="32" FontWeight="Bold" x:Name="uiTitleBuyNow" Visibility="Visible">Buy Now</TextBlock>
+                <TextBlock Grid.Row="1" x:Name="uiFirstDay" TextWrapping="Wrap" IsTextSelectionEnabled="True" Margin="4,4,4,0" Visibility="Collapsed">
+                    <Run Text="Welcome to the Best Calculator"/>
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="Best Calculator is free with no ads.  All the features including the advanced statistical functions, the solvers and the built-in BC BASIC programming language are available and ready to use." />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="Need help?  There's a complete PDF manual!" />
+                </TextBlock>
+                <TextBlock Grid.Row="1" x:Name="uiFirstDayBT" TextWrapping="Wrap" IsTextSelectionEnabled="True" Margin="4,4,4,0" Visibility="Collapsed">
+                    <Run Text="Welcome to the Best Calculator, Bluetooth Programmable version. "/>
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="While the trial period runs, you have full access to all of the programmable features of the calculator including full access to program Bluetooth devices. After the trial period, you can run programs but" />
+                    <LineBreak />
+                    <LineBreak /><Run Text=" - no access to Bluetooth devices" />
+                    <LineBreak /><Run Text=" - no access to the source code" />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="You will still have access to BC BASIC for all other functions" />
+                </TextBlock>
+                <TextBlock Grid.Row="1" x:Name="uiPurchaseBT" TextWrapping="Wrap" IsTextSelectionEnabled="True" Margin="4,4,4,0" Visibility="Collapsed">
+                    <Run Text="Buy now to continue using the all features" />
+                    <LineBreak />
+                    <LineBreak /><Run Text=" - access to Bluetooth devices" />
+                    <LineBreak /><Run Text=" - access to the source code" />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="You will still have access to BC BASIC for all other functions" />
+                </TextBlock>
+                <TextBlock Grid.Row="1" x:Name="uiTipHolder" TextWrapping="Wrap" IsTextSelectionEnabled="True" Visibility="Visible">
+                    <Run FontSize="22" FontWeight="Bold">Handy Best Calculator Tip</Run>
+                    <LineBreak />
+                    <LineBreak />
+                    <Run x:Name="uiTipText" FontStyle="Italic" />
+                </TextBlock>
+                <Grid Grid.Row="2"  VerticalAlignment="Stretch" Margin="0,20,0,0">
+                    <Button x:Name="uiGoThere" Content="Try It Now!"  HorizontalAlignment="Left" Click="OnGoto" />
+                    <Button Content="OK"  HorizontalAlignment="Right" Click="OnDismissTrial" x:Name="uiOk" />
+                </Grid>
+
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>

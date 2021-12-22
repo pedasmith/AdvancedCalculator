@@ -1,0 +1,73 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.GamesDice6_1Control"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Dice (6-sided)</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain >
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="1" Grid.Column="0" Tag="1|6|dice" Click="onGamesDiceRoll" Content="Roll Dice"  Style="{StaticResource dicebutton}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Tag="dice" FontSize="{Binding cbm.DiceFontSize}"></TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="1" Tag="dice" FontSize="{Binding cbm.DiceFontSize}"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="0" Tag="dice" FontSize="{Binding cbm.DiceFontSize}"></TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="1" Tag="dice" FontSize="{Binding cbm.DiceFontSize}"></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="0" Tag="dice" FontSize="{Binding cbm.DiceFontSize}"></TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1" Tag="dice" FontSize="{Binding cbm.DiceFontSize}"></TextBlock>
+
+                <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <TextBlock Tag="totalTitle" FontSize="{Binding cbm.ResultFontSize}">Total:</TextBlock>
+                    <TextBlock Tag="total" FontSize="{Binding cbm.ResultFontSize}" />
+                </StackPanel>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+
+            </Grid>
+        </local:FourPanel.ItemBottom>
+
+    </local:FourPanel>
+
+</UserControl>

@@ -1,0 +1,104 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.FinancialCAGRControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >CAGR</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Starting Value</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1StartingValue" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1StartingValue" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1StartingValue" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">Ending Value</TextBlock>
+                <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1EndingValue" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1EndingValue" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1EndingValue" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">NYears</TextBlock>
+                <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1NYears" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1NYears" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1NYears" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource solverblock}">CAGR</TextBlock>
+                <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="1" >
+                    <TextBox  Tag="autotbeq1CAGRPercent" Style="{StaticResource solverbox}"  InputScope="Number" />
+                    <TextBlock VerticalAlignment="Center">%</TextBlock>
+                </StackPanel>
+                <Button Grid.Row="9" Grid.Column="2" Tag="autotbeq1CAGRPercent" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="9" Grid.Column="3" Tag="autotbeq1CAGRPercent" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/FinancialCAGR.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20" >CAGR (Compound Annual Growth Rate)</Bold>
+                        <LineBreak />
+                        The Compound Annual Growth rate is the average annual growth rate needed
+                        to grow a value from the <Bold>Starting Value</Bold> up to the <Bold>Ending Value</Bold>
+                        in the given <Bold>Number of Years</Bold>.  
+                        <LineBreak />
+                        <LineBreak />
+                        The calculator can also work backwards: type in the information you know, and it will tell you the information 
+                        you don't know.  (Exception: you always have to provide the number of years).
+                        
+                        <LineBreak />
+                        <LineBreak />
+                        The basic CAGR calculation is: first calculate the <Italic>Value Ratio</Italic>; this is the ending value divided
+                        by the starting value.  The CAGR value is then the Value Ratio raised to the power of (the inverse of the number of 
+                        years), and then subtracting one.
+                        The <Bold>Payment (monthly)</Bold> is the calculated monthly payment
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

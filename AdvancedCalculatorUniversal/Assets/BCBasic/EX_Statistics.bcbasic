@@ -1,0 +1,151 @@
+## EX: Statistics
+Sample programs for statistics
+### Finite Population Correction
+Corrects the Margin of Error calcations when drawing from a finite instead of infinit population.
+**Default Key**: Finite Population Correction
+```BASIC
+IMPORT FUNCTIONS FROM "Sample Size Library"
+
+population = INPUT DEFAULT 1000000 PROMPT "Enter the actual population"
+sample = INPUT DEFAULT 1000 PROMPT "Enter the number of samples"
+fpc = FPC (sample, population)
+Calculator.Message = "Finite Population Correction for population="+population
+STOP fpc
+```
+### Margin of Error
+Calculates the margin of error for samping an infinite population given a sample size
+**Default Key**: Margin of Error
+```BASIC
+IMPORT FUNCTIONS FROM "Sample Size Library"
+
+z = GetZ()
+n = INPUT DEFAULT 1000 PROMPT "How many samples will you take?"
+stddev = 0.5
+REM 0.5 is a very conservative approach and applies a derate factor of .25
+REM chosing .1 would result in a derate of 0.09 which is not wildly different
+
+me = MarginOfError (z, n, stddev)
+Calculator.Message = "Margin of error for sample size "+n
+STOP me
+```
+### Pfail
+Returns the probability of failure by time t given an MTBF (mean time to failure) value.
+**Default Key**: Pfail
+```BASIC
+REM Note: MTBF is 1/lambda
+
+TEST()
+
+MTBF = INPUT DEFAULT 10 PROMPT "MTBF (Mean Time Before Failure)"
+T = INPUT DEFAULT 5 PROMPT "Time to calculate from"
+P = Pfail (T, MTBF)
+Calculator.Message = "Pfailure by time T given MTBF"
+STOP P
+
+FUNCTION Pfail (T, MTBF)
+P = 1 - Math.E ** ( - (T / MTBF))
+RETURN P
+
+FUNCTION TEST_Simple()
+    ASSERT (Pfail (43800, 250000) ≅ 0.16071)
+RETURN nerror
+```
+### Sample Size
+Calculates the sample size required to meet a desired margin of error given a confidence limit.
+**Default Key**: Sample Size
+```BASIC
+REM Calculates a required Sample Size 
+REM You have to enter a Confidence (90, 95 or 99%)
+REM You have to enter a margin of error (e.g., 3 to mean 3%)
+REM
+REM The code assume an infinite populate.  Use the FPC (Finite Population Correction)
+REM if the population size is smaller.
+REM
+REM The code assumes a population stddev of 0.5; this is the most
+REM conservative assumption.
+REM
+
+IMPORT FUNCTIONS FROM "Sample Size Library"
+PRINT "Sample Size"
+
+z = GetZ()
+me = INPUT DEFAULT 5 PROMPT "What is your required margin of error in percent?"
+me = me / 100
+stddev = 0.5
+REM 0.5 is a very conservative approach and applies a derate factor of .25
+REM chosing .1 would result in a derate of 0.09 which is not wildly different
+n = SampleSize(z, me, stddev)
+STOP n
+```
+### Sample Size Library
+Useful functions for calculating sample size
+**Default Key**: Sample Size Library
+```BASIC
+REM A set of functions and tests for sample sizes
+
+
+FUNCTION MarginOfError(z, n, stddev)
+me = SQR ((z**2 * stddev * (1-stddev)) / n)
+RETURN me
+
+
+FUNCTION SampleSize(z, me, stddev)
+n = z**2 * stddev * (1-stddev) / me**2
+RETURN n
+
+
+
+FUNCTION FPC(sample, population)
+REM Finite Population Correction; corrects the Margin of Error
+REM based on drawing from a finite (instead of infinite) population
+ratio = (population - sample) / (population - 1)
+fpc = SQR(ratio)
+RETURN fpc
+
+
+FUNCTION GetZ()
+10 confidence = INPUT DEFAULT 95 PROMPT "Required confidence level (one of 90, 95 or 99)"
+z = Z(confidence)
+IF (z = 0) THEN GOTO 10
+RETURN z
+
+
+FUNCTION Z(confidence)
+IF (confidence = 90) THEN RETURN 1.645
+IF (confidence = 95) THEN RETURN 1.96
+IF (confidence = 99) THEN RETURN 2.576
+RETURN 0
+
+
+FUNCTION TestOne (confidence, n, me, stddev)
+nerror = 0
+z = Z(confidence)
+nactual = SampleSize (z, me, stddev)
+IF (nactual ≅ n) THEN GOTO 20
+PRINT "ERROR: SampleSize (pt1)"
+PRINT "z=";z
+PRINT "me=";me
+PRINT "expected n=";n
+PRINT "actual n=";nactual
+
+20 meactual = MarginOfError (z, n, stddev)
+IF (meactual ≅ me) THEN GOTO 30
+PRINT "ERROR: SampleSize (2)"
+PRINT "z=";z
+PRINT "n=";n
+PRINT "expected me=";me
+PRINT "actual me=";meactual
+
+30 REM all done
+RETURN nerror
+
+
+FUNCTION TEST_Simple()
+    ASSERT (FPC (1000, 1000000) ≅ 0.99950037)
+    ASSERT (FPC (20, 50) ≅ 0.78246)
+    ASSERT (TestOne (99, 1727.34, 0.030990321, 0.5) = 0)
+    ASSERT (TestOne (95, 1000, 0.030990321, 0.5) = 0)
+    ASSERT (TestOne (90, 704.4, 0.030990321, 0.5) = 0)
+    ASSERT (TestOne (95, 1000, 0.026838405, 0.25) = 0)
+RETURN nerror
+```

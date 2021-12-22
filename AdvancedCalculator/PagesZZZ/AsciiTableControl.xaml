@@ -1,0 +1,101 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.AsciiTableControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >ASCII Table</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        <local:FourPanel.ItemMain>
+            <Grid Grid.Row="1" Grid.Column="0" Name="uiConversionsAsciiTableGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition MinWidth="10" Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <!-- The ascii entries are added via code -->
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                        <Bold FontSize="20" >About ASCII</Bold>
+                        <LineBreak />
+                        ASCII (American Standard Code for Information Exchange) is a common
+                        character encoding scheme for numerically representing characters.
+                        First published in 1963, the standard eventually became the most 
+                        common character representation, replacing earlier proprietary 
+                        encodings like EBCDIC.
+                        <LineBreak />
+                        The first 32 characters are <Italic>control</Italic> characters,
+                        and were intended both to control devices and for communications
+                        control.  For example, BEL would ring a bell on a teletype; XON and XOF
+                        would start and stop communications flow.
+                        <LineBreak />
+                        This table includes examples of the wide range of Unicode characters
+                        that are available.
+                        <LineBreak />
+                        Each cell of the table shows the ASCII character, plus (on the left)
+                        the decimal, hex, and octal character values.  The unicode characters
+                        show the unicode number of the character instead of octal.  The safest 
+                        way to encode a character in C# is with the unicode escape: \u1234
+                        where the 1234 is always exactly 4 hex chars (pad them with 0's as 
+                        needed -- e.g., \u0065).
+
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+
+    </local:FourPanel>
+
+</UserControl>

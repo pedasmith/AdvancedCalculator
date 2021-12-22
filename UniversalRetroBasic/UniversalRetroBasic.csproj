@@ -1,0 +1,512 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{1E8DCEEE-52E1-40F2-8413-CA58C2CA1A09}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UniversalRetroBasic</RootNamespace>
+    <AssemblyName>UniversalRetroBasic</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>UniversalRetroBasic_TemporaryKey.pfx</PackageCertificateKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BLUETOOTH,NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
+    <NoWarn>0168</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;BLUETOOTH,NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>0168</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\AutoGraph.cs">
+      <Link>BCBasic\Graphics\AutoGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\AutoGraphXY.cs">
+      <Link>BCBasic\Graphics\AutoGraphXY.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\AutoGraphY.cs">
+      <Link>BCBasic\Graphics\AutoGraphY.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsControl.xaml.cs">
+      <Link>BCBasic\Graphics\GraphicsControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitive.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitive.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveArc.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveArc.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveButton.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveButton.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveEllipse.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveEllipse.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitivePolygon.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitivePolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveRectangle.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveRectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveSlider.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveSlider.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveText.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveText.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\ScreenValues.cs">
+      <Link>BCBasic\Graphics\ScreenValues.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\InterpolationLibrary.cs">
+      <Link>BCBasic\RunTimeLibrary\InterpolationLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\MidiSynth.cs">
+      <Link>BCBasic\RunTimeLibrary\MidiSynth.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\MmlNote.cs">
+      <Link>BCBasic\RunTimeLibrary\MmlNote.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\MmlNotePlayer.cs">
+      <Link>BCBasic\RunTimeLibrary\MmlNotePlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLCsvRfc4180.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLCsvRfc4180.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLDateTime.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLFile.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLFile.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLHttp.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLHttp.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLString.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLString.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLSystem.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Features.cs">
+      <Link>Features.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCBasic.cs">
+      <Link>BCBasic\BCBasic.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCBasicMathFunctions.cs">
+      <Link>BCBasic\BCBasicMathFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCBasicStringFunctions.cs">
+      <Link>BCBasic\BCBasicStringFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCColor.cs">
+      <Link>BCBasic\BCColor.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCContext.cs">
+      <Link>BCBasic\BCContext.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCFunctionList.cs">
+      <Link>BCBasic\BCFunctionList.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCLibrary.cs">
+      <Link>BCBasic\BCLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCLibraryControl.xaml.cs">
+      <Link>BCBasic\BCLibraryControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCObject.cs">
+      <Link>BCBasic\BCObject.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCPackageImport.cs">
+      <Link>BCBasic\BCPackageImport.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCScreenControl.xaml.cs">
+      <Link>BCBasic\BCScreenControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCValue.cs">
+      <Link>BCBasic\BCValue.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCValueList.cs">
+      <Link>BCBasic\BCValueList.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ButtonListControl.xaml.cs">
+      <Link>BCBasic\ButtonListControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ButtonToProgram.cs">
+      <Link>BCBasic\ButtonToProgram.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\CalculatorConnectionControl.xaml.cs">
+      <Link>BCBasic\CalculatorConnectionControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ImportConflictControl.xaml.cs">
+      <Link>BCBasic\ImportConflictControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\MathValues.cs">
+      <Link>BCBasic\MathValues.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\MenuIcon.xaml.cs">
+      <Link>BCBasic\MenuIcon.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\Parser.cs">
+      <Link>BCBasic\Parser.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ParseTree.cs">
+      <Link>BCBasic\ParseTree.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\Regex.cs">
+      <Link>BCBasic\Regex.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\RTFWriter.cs">
+      <Link>BCBasic\RTFWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\Scanner.cs">
+      <Link>BCBasic\Scanner.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\Serializable.cs">
+      <Link>BCBasic\Serializable.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\TestRunner.cs">
+      <Link>BCBasic\TestRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Adapter\BCBasicAdapter.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Adapter\BCBasicAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Color\LanguageEditorColors.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Color\LanguageEditorColors.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditFindDialog.xaml.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\EditFindDialog.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditGotoDialog.xaml.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\EditGotoDialog.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\Editor.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\Editor.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditor.xaml.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\LanguageEditor.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorLine.xaml.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\LanguageEditorLine.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorStatement.xaml.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\LanguageEditorStatement.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\MyKeyEventArgs.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\MyKeyEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Lexer.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Language\Lexer.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\MdPackageFile.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Language\MdPackageFile.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Statement.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Language\Statement.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\UnparsedProgram.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Language\UnparsedProgram.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Word.cs">
+      <Link>BCBasic\SyntaxHighlighEditor\Language\Word.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveCamera.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveCamera.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveImage.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveImage.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\Sensor.cs">
+      <Link>BCBasic\RunTimeLibrary\Sensor.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorCamera.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorCamera.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorCameraAnalysis.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorCameraAnalysis.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorCompass.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorCompass.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorInclinometer.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorInclinometer.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorLight.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorLight.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorLocation.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\BCBasic\RunTimeLibrary\SensorMicrophone.cs">
+      <Link>BCBasic\RunTimeLibrary\SensorMicrophone.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Bluetooth.cs">
+      <Link>Bluetooth\Bluetooth.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\BluetoothDevice.cs">
+      <Link>Bluetooth\BluetoothDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\BluetoothRfcommDevice.cs">
+      <Link>Bluetooth\BluetoothRfcommDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\BluetoothUtilities.cs">
+      <Link>Bluetooth\BluetoothUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\BluetoothWatchAdvertisements.cs">
+      <Link>Bluetooth\BluetoothWatchAdvertisements.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\AbstractRfcommCommandResponse.cs">
+      <Link>Bluetooth\Devices\AbstractRfcommCommandResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\Ardudroid.cs">
+      <Link>Bluetooth\Devices\Ardudroid.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\BbcMicrobit.cs">
+      <Link>Bluetooth\Devices\BbcMicrobit.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\beLightTI.cs">
+      <Link>Bluetooth\Devices\beLightTI.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\DOTTI.cs">
+      <Link>Bluetooth\Devices\DOTTI.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\Hexiwear.cs">
+      <Link>Bluetooth\Devices\Hexiwear.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\Infineon_DPS310.cs">
+      <Link>Bluetooth\Devices\Infineon_DPS310.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\MagicLight.cs">
+      <Link>Bluetooth\Devices\MagicLight.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\MetaWear_MetaMotion.cs">
+      <Link>Bluetooth\Devices\MetaWear_MetaMotion.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\NOTTI.cs">
+      <Link>Bluetooth\Devices\NOTTI.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\PuckJs.cs">
+      <Link>Bluetooth\Devices\PuckJs.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\RuuviTag.cs">
+      <Link>Bluetooth\Devices\RuuviTag.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\SensorTag1350.cs">
+      <Link>Bluetooth\Devices\SensorTag1350.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\SensorTag2541.cs">
+      <Link>Bluetooth\Devices\SensorTag2541.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\SensorTag2650.cs">
+      <Link>Bluetooth\Devices\SensorTag2650.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\Devices\SensorTagWatchDevPack.cs">
+      <Link>Bluetooth\Devices\SensorTagWatchDevPack.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\ObjectList.cs">
+      <Link>Bluetooth\ObjectList.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Bluetooth\PickBluetoothDeviceControl.xaml.cs">
+      <Link>Bluetooth\PickBluetoothDeviceControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BluetoothCalculatorUniversal\Messages.cs">
+      <Link>Messages.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="UniversalRetroBasic_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsControl.xaml">
+      <Link>BCBasic\Graphics\GraphicsControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\BCLibraryControl.xaml">
+      <Link>BCBasic\BCLibraryControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\BCScreenControl.xaml">
+      <Link>BCBasic\BCScreenControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\ButtonListControl.xaml">
+      <Link>BCBasic\ButtonListControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\CalculatorConnectionControl.xaml">
+      <Link>BCBasic\CalculatorConnectionControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\ImportConflictControl.xaml">
+      <Link>BCBasic\ImportConflictControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\MenuIcon.xaml">
+      <Link>BCBasic\MenuIcon.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditFindDialog.xaml">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\EditFindDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditGotoDialog.xaml">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\EditGotoDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditor.xaml">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\LanguageEditor.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorLine.xaml">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\LanguageEditorLine.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorStatement.xaml">
+      <Link>BCBasic\SyntaxHighlighEditor\Editor\LanguageEditorStatement.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BluetoothCalculatorUniversal\Bluetooth\PickBluetoothDeviceControl.xaml">
+      <Link>Bluetooth\PickBluetoothDeviceControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.Midi.GmDls, Version=10.0.14393.0">
+      <Name>Microsoft General MIDI DLS for Universal Windows Apps</Name>
+    </SDKReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,652 @@
+## EX: Examples of BC Basic Programming
+Examples of BC BASIC that you can use to learn all aspects of BC BASIC programming.
+### CALL and FUNCTION
+You can create functions and call them from your code.  CALL is optional.
+**Default Key**: CALL and FUNCTION
+```BASIC
+REM
+REM You can create and call functions
+REM
+
+CALL Hello(“Mom”)
+Hello(“Dad”)
+
+FUNCTION Hello (name)
+PRINT “Hello ”;name
+RETURN
+```
+### CLS
+CLS will clear the screen, possibly to a new color
+**Default Key**: CLS
+```BASIC
+REM The screen only shows up if you PRINT something to it.
+REM CLS (color) will clear the screen and change the color.
+REM PAPER (color) will just change the color and not clear the screen.
+REM PAUSE delay is in "frames"; there are 50 frames per second.
+
+PRINT " "
+delay = 10
+FOR i=1 TO 2
+FOR color = 0 TO 7
+CLS color
+PAUSE delay
+NEXT color
+
+REM You can specify colors with names
+CLS BLACK
+PAUSE delay
+CLS BLUE
+PAUSE delay
+CLS RED
+PAUSE delay
+CLS MAGENTA
+PAUSE delay
+CLS GREEN
+PAUSE delay
+CLS CYAN
+PAUSE delay
+CLS YELLOW
+PAUSE delay
+CLS WHITE
+PAUSE delay
+NEXT i
+CLS BLACK
+```
+### Console and DUMP
+Write data out to the console (unlike PRINT, which prints to the screen).  DUMP lists the value of all variables.
+**Default Key**: Console and DUMP
+```BASIC
+CLS
+angle = 45
+radians = angle * (2*Math.PI) / 360
+radians = Math.DtoR (angle)
+
+REM You have to PRINT to the screen to see the console.
+REM The console is not always visible; press the console button on 
+REM the output screen to see it.
+
+PRINT ""
+CONSOLE "SIN(45 degrees)", SIN(RADIANS)
+
+CONSOLE "DUMP all the variables"
+DUMP
+```
+### DATA and READ
+The DATA statement stores numeric or string data in your program.  READ will read individual items out of a DATA statement.
+**Default Key**: DATA
+```BASIC
+CLS BLUE
+PRINT "Demonstate READ and DATA"
+
+REM READ r will set the 'r' variable to the next
+REM value in the DATA statements.
+READ r
+PRINT "READ", r
+
+REM You can call a function which does a READ
+REM and it uses the gobal DATA statements
+myFunction()
+myFunction()
+myFunction()
+
+REM After reading in the last the data values
+REM wrap around. So this last read will get 
+REM the '11' value.
+myFunction()
+
+
+FUNCTION myFunction()
+    READ r
+    PRINT "READ", r
+RETURN
+
+REM
+REM The data statements let you store a bunch of data
+REM in a convenient way. The first READ statement will read 
+REM the 11 value. The second READ statement will read
+REM the 22 value, and the next will read the 333 value,
+REM and so on.
+REM
+DATA 11, 22
+DATA 333, 444
+
+
+REM This test function will validate the READ and DATA
+REM statements.
+FUNCTION TEST_Simple_Read()
+    READ r1
+    READ r2
+    READ r3
+    READ r4
+    READ wraparound
+
+    ASSERT (r1 = 11)
+    ASSERT (r2 = 22)
+    ASSERT (r3 = 333)
+    ASSERT (r4 = 444)
+    ASSERT (wraparound = 11)
+
+RETURN
+```
+### Expressions
+Numeric expressions to demonstrate addition, subtraction, multiplication, division, roots, exponents, and more.
+**Default Key**: Expressions
+```BASIC
+a = 1 + 2 * 3
+b = 10 - 4  / 2
+
+REM Demonstate cube root and raise to the fourth power
+REM the √ 10 means the square root.
+c = √ 10
+d = 6 ** 4
+
+REM Comparing values with ≅ (approximately equal to).  
+REM PI is not about 22/7, but is about 355/113
+e = PI ≅ 22/7
+f =  PI ≅ 355/113
+
+REM These are all false (except j)
+g =PI > 22/7
+h = PI >= 22/7
+i = PI = 22/7
+j = PI <> 22/7
+
+REM Logical operators
+CLS RED
+k = c >2 AND c < 4
+l = c > 2 OR d < 10
+m = NOT c > 2
+
+REM You can ask for input from the user
+n = INPUT DEFAULT 5 PROMPT "Please enter a number"
+
+
+CLS BLUE
+PRINT "All the variables"
+DUMP
+```
+### FOR ... NEXT
+Loops through the statements between the FOR and the NEXT
+**Default Key**: FOR ... NEXT
+```BASIC
+REM  Use the FOR...NEXT loop statement to loop multiple times.
+REM  You can have nested loops, but always finish the inner loop
+REM before starting the next outer loop.
+REM 
+10 FOR M=0 TO 6
+20 FOR N=0 TO M
+30 PRINT M;":";N;" ";
+40 NEXT N
+50 PRINT " "
+60 NEXT M
+```
+### FUNCTION name ... RETURN
+Creates a new function with arguments that can return a value.  See also CALL.
+**Default Key**: FUNCTION name ... RETURN
+```BASIC
+REM
+REM You can create and call functions
+REM
+
+CALL Hello(“Mom”)
+Hello(“Dad”)
+PRINT Reverse("Reverse a string")
+
+FUNCTION Hello (name)
+PRINT “Hello ”;name
+RETURN
+
+FUNCTION Reverse(str)
+Retval = ""
+RETURN Retval
+```
+### GOSUB and RETURN
+Jumps to a line of code, and later returns.
+**Default Key**: GOSUB and RETURN
+```BASIC
+REM Calculate the hypotenuse of a triangle
+
+CLS BLACK
+PRINT "Demonstrate GOSUB and RETURN"
+PRINT "You should usually make a FUNCTION"
+PRINT "instead of using GOSUB and RETURN"
+PRINT "Set some variables (a and b)"
+A = 3
+B = 4
+PRINT "A="; A; " B="; B
+
+PRINT "Jump to line 100"
+PRINT " "
+GOSUB 100
+
+PRINT "Returned from GOSUB 100; C is now set"
+PRINT "C="; C
+PRINT “ ”
+STOP
+
+100 REM Calculate the hypotenuse from A and B
+PRINT "AT line 100; calculate C and then RETURN"
+PRINT " "
+C= √ (A**2 + B**2)
+RETURN
+```
+### IF expression THEN statement
+If the expression is true, will run the statement
+**Default Key**: IF expression THEN statement
+```BASIC
+REM
+REM Use IF statements to run a statement based on whether a
+REM an expression is true or not.
+REM
+REM In the example, a is greater than 12, so the statement will be printed.
+REM
+a = 15
+
+IF a >= 12 THEN PRINT "A is more than a dozen"
+```
+### INPUT and variable = INPUT
+Lets the user input data into the program.
+**Default Key**: INPUT and variable = INPUT
+```BASIC
+REM The a = INPUT expression lets you specify a prompt and a default.
+REM you will get back the value that is entered.
+
+REM
+REM The INPUT statement will accept a value
+REM
+INPUT taxrate
+
+REM
+REM The INPUT expression lets you specify a default and a prompt
+REM
+income = INPUT DEFAULT 40000 PROMPT “Enter your income for the year”
+
+PRINT "Owe="; taxrate*income
+IF (taxrate*income > 100) THEN PRINT “You owe more than 100”
+```
+### LET variable = expression
+Sets a named variable to a value
+**Default Key**: LET variable = expression
+```BASIC
+REM
+REM Assign a value to a variable with the LET statement.
+REM The word LET is optional.
+REM
+
+LET year = 2015
+birth_year = INPUT DEFAULT year - 15 PROMPT “When were you born?”
+age = year - birth_year
+
+Calculator.Message = "Your age is " + age
+PRINT "Based on a birth year of "; year
+PRINT "Your age is "; age
+DUMP
+```
+### Math Functions, Classic Basic
+How to use the classic BASIC functions (ABS ACS ASN ATN COS EXP INT LN SGN SIN SQR TAN)
+**Default Key**: Math Functions, Classic Basic
+```BASIC
+CLS
+
+REM
+REM Classic BASIC functions
+REM 
+
+REM
+REM Trig functions SIN COS TAN and ASN ACS ATN
+REM
+
+PRINT "CLASSIC BASIC MATH FUNCTIONS"
+
+PRINT "SIN(PI/4) is about .707: "; SIN (PI/4)
+PRINT "COS(PI/3) is .5: "; COS(PI/3)
+PRINT "TAN(PI/4) is 1: "; TAN(PI/4)
+
+PRINT "ASN(1) is PI/2: "; ASN(1)
+PRINT "ACS(1) is 0: "; ACS(1)
+PRINT "ATN(1) is PI/4: "; ATN(1)
+
+REM
+REM EXP and LN use natural logs (power of e)
+REM
+
+PRINT "EXP(2) is about 7.389: "; EXP(2)
+PRINT "EXP(1) is the same as E: "; EXP(1)
+PRINT "LN(10) is about 2.3: "; LN(10)
+PRINT "EXP(LN(20)) is 20: "; EXP(LN(20))
+
+REM
+REM ABS INT SGN SQR
+REM
+PRINT "ABS(77) and -77 are 77: "; ABS(77); " "; ABS(-77)
+
+PRINT "INT(2.8) is 2: "; INT(2.8)
+PRINT "INT(-2.2) is -3: "; INT(-2.2)
+
+PRINT "SGN(77) is 1: "; SGN(77)
+PRINT "SGN(0) is 0: "; SGN(0)
+PRINT "SGN(-7) is 1: "; SGN(-77)
+
+PRINT "SQR(9) is 3: "; SQR(9)
+
+
+REM
+REM There are also functions from the Math.___ set of functions
+REM
+```
+### Memory demonstrations
+Using Memory.<name> and Memory[<expression>] to read and write persistant numeric data.
+**Default Key**: Memory demonstrations
+```BASIC
+CLS
+
+REM
+REM You can use integer index values
+REM
+Memory[0] = Memory[0] + 1
+Memory[1] = Memory[1] +10
+PRINT "Numeric Index: "; Memory[0]; " "; Memory[1]
+
+REM
+REM You can use simple index names
+REM
+Memory.PipeHeight = Memory.PipeHeight + 1
+PRINT "Simple name: "; Memory.PipeHeight
+
+REM
+REM You can use index names with square brackets
+REM
+Memory["PipeHeight"] = Memory["PipeHeight"] + 1
+PRINT "Const Index: "; Memory["PipeHeight"]
+
+REM
+REM You can use variables and expressions in the index name
+REM
+name = "PipeHeight"
+Memory[name] = Memory[name] + 1
+PRINT "Variable Index: "; Memory[name]
+
+prefix = "Pipe"
+suffix = "Height"
+Memory[prefix + suffix] = Memory[prefix + suffix] + 1
+PRINT "Expression Index: "; Memory[prefix + suffix]
+
+REM Some memory isn't set
+a = Memory.NotSet
+isset = Memory.IsSet ("PipeHeight")
+isnotset = Memory.IsSet ("NotSet")
+ns = Memory.NotSet =Memory.NotSet
+
+REM Memory.GetOrDefault returns either the memory value or the
+REM default value (depending on whether the memory was set or not)
+default = Memory.GetOrDefault ("NotSet", 34)
+notdefault = Memory.GetOrDefault ("PipeHeight", 34)
+
+DUMP
+```
+### Modern Math Functions
+How to use the modern set of trig and pwer Math.___() functions  (Abs Acos Asin Atan Atan2 Ceiling Cos Cosh DtoR Exp Floor IsNan Log Log2 Log10 Max Min Pow Round RtoD Sign Sin Sinh Tan Tanh Truncate)
+**Default Key**: Modern Math Functions
+```BASIC
+CLS
+
+REM
+REM Modern  BASIC functions
+REM 
+
+REM
+REM Trig functions Math.Sin, Math.Cos, Math.Tan 
+REM Reverse function Math.Asin Math.Acos Math.Atan Math.Atan2
+REM Conversion functions Math.DtoR and Math.RtoD
+REM
+
+PRINT "MODERN BASIC MATH FUNCTIONS"
+
+PRINT "Math.Sin(PI/4) is .707: "; Math.Sin (PI/4)
+PRINT "Math.Cos(PI/3) is .5: "; Math.Cos(PI/3)
+PRINT "Math.Tan(PI/4) is 1: "; Math.Tan(PI/4)
+
+PRINT "Math.Asin(1) is PI/2: "; Math.Asin(1)
+PRINT "Math.Acos(1) is 0: "; Math.Acos(1)
+PRINT "Math.Atan(1) is PI/4: "; Math.Atan(1)
+PRINT "Math.Atan2(5,5) is PI/4: "; Math.Atan2(5,5)
+
+PRINT "Math.DtoR(180) is PI: "; Math.DtoR(180)
+PRINT "Math.RtoD(PI) is 180: "; Math.RtoD(Math.PI)
+
+REM
+REM Math.Exp and Math.Log use natural logs (power of e)
+REM You can also specify a log base with Math.Log (value, base)
+REM Convenience functions Math.Log2 and Math.Log10 are available
+REM You can raise a number to a power with Math.Pow
+REM
+
+PRINT "Math.Exp(2) is about 7.389"; Math.Exp(2)
+PRINT "Math.Log(10) is about 2.3: "; Math.Log(10)
+PRINT "Math.Log(10, 5) is 1.4: "; Math.Log(10, 5)
+PRINT "Math.Log10(1300) is 3.1: "; Math.Log10(1300)
+PRINT "Math.Log2(256) is 8: "; Math.Log2(256)
+PRINT "Math.Pow(2, 5) is 128: "; Math.Pow(2, 5)
+```
+### Modern Math Functions part 2
+How to use the modern set of Math.___() functions  (Abs Acos Asin Atan Atan2 Ceiling Cos Cosh DtoR Exp Floor IsNan Log Log2 Log10 Max Min Pow Round RtoD Sign Sin Sinh Tan Tanh Truncate)
+**Default Key**: Modern Math Functions part 2
+```BASIC
+CLS
+
+REM
+REM Modern  BASIC functions, part 2
+REM 
+
+PRINT "MODERN BASIC MATH FUNCTIONS 2"
+
+REM
+REM Math.Abs Math.Ceiling Math.Floor Math.Round Math.Sign Math.Truncate
+REM Math.Max and Math.Min (each of which take any number of arguments)
+
+PRINT "Math.Abs(77) & -77 are 77: "; Math.Abs(77); " "; Math.Abs(-77)
+
+PRINT "Math.Ceiling(2.2) is 3: "; Math.Ceiling(2.2)
+PRINT "Math.Ceiling(-2.2) is -2: "; Math.Ceiling(-2.2)
+
+PRINT "Math.Floor(2.8) is 2: "; Math.Floor(2.8)
+PRINT "Math.Floor(-2.8) is -3: "; Math.Floor(-2.2)
+
+PRINT "Math.Round(2.8) is 3: "; Math.Round(2.8)
+PRINT "Math.Round(2.5) is 2: "; Math.Round(2.5)
+PRINT "Math.Round(2.1) is 2: "; Math.Round(2.1)
+PRINT "Math.Round(-2.8) is -3: "; Math.Round(-2.8)
+PRINT "Math.Round(-2.5) is -2: "; Math.Round(-2.5)
+PRINT "Math.Round(-2.1) is -2: "; Math.Round(-2.1)
+
+PRINT "Math.Truncate(2.8) is 2: "; Math.Truncate(2.8)
+PRINT "Math.Truncate(-2.8) is -2: "; Math.Truncate(-2.8)
+
+PRINT "Math.Sign(77) is 1: "; Math.Sign(77)
+PRINT "Math.Sign(0) is 0: "; Math.Sign(0)
+PRINT "Math.Sign(-77) is 1: "; Math.Sign(-77)
+
+PRINT "Math.Max(3, 1, 4, 2) is 4: "; Math.Max(3, 1, 4, 2)
+PRINT "Math.Min(3, 1, 4, 2) is 1: "; Math.Max(3, 1, 4, 2)
+
+PRINT "Math.IsNan(3) is 1: "; Math.IsNaN (3)
+PRINT "Math.Asin(999) is NaN: "; Math.Asin(999)
+PRINT "Math.IsNan(Math.Asin(999)) is 1: "; Math.IsNaN(Math.Asin(999))
+```
+### Numbers String and Variables
+Demonstration of numeric constants, string constants, and variable names
+**Default Key**: Numbers String and Variables
+```BASIC
+LET a = 10
+LET b = a + 3
+LET c = 7.89 / b
+LET bignum = -1.3E23
+LET smallnum = 2.78E-23
+
+LET name = “Person of interest”
+LET information$ = “You can use curly quotes”
+
+LET dog_name = "Sumi"
+LET check9 = 99
+
+CLS GREEN
+PRINT "Sample variables"
+DUMP
+```
+### PRINT [AT row,col] expression
+Prints data to the screen.  See also CONSOLE.
+**Default Key**: PRINT [AT row,col] expression
+```BASIC
+REM
+REM You can print data to the screen.  The screen will automatically show
+REM up when you PRINT to the screen.  Use CLS to clear the screen.
+REM
+
+REM The simplest form: just print a string
+PRINT "The print statement"
+
+REM Comma moves to the next tab.
+PRINT "HELLO","WORLD"
+
+REM Semicolon doesn't move the cursor.
+PRINT "HELLO";"WORLD"
+
+REM You can PRINT to a specific part of the screen
+PRINT AT 7,1 “HELLO”; AT 8,4 “WORLD”
+```
+### REM
+REM (short for REMARK) lets you comment your programs
+**Default Key**: REM
+```BASIC
+REM is short for REMARK.
+REM   ** everything after the REM is ignored **
+REM  (until the next line)
+REM  must be the first thing on the line
+
+10 REM But REM statements can have line numbers.
+a = 20
+
+
+REM It's a best practice to document how to use your programs
+REM and what functionality they have.
+```
+### RND and PAUSE
+Using RND and PAUSE to make animated displays
+**Default Key**: RND and PAUSE
+```BASIC
+CLS BLUE
+COUNT = 0
+10 A = DrawDot()
+COUNT = COUNT + 1
+IF (COUNT > 100) THEN GOTO 20
+PAUSE 1
+GOTO 10
+20 PRINT AT 1,1 "DONE"
+
+FUNCTION DrawDot()
+col = RND * Screen.W
+row = RND * Screen.H
+ch = “*”
+PRINT AT row,col ch
+RETURN
+```
+### Statements Overview
+Statements can optionally include line numbers
+**Default Key**: Statements Overview
+```BASIC
+REM STATEMENTS can includes line numbers
+
+10 CLS
+A = 3
+B  = 4
+20 C = A + B
+```
+### String functions
+How to use LEFT, MID, RIGHT, CHR and more
+**Default Key**: String functions
+```BASIC
+REM Demonstrate how to use LEFT, MID and RIGHT
+myString = "This is my string"
+
+REM LEFT(string, count) returns 'count' characters from the start of the string
+REM Print the word "This"
+PRINT LEFT (myString, 4)
+
+REM RIGHT(string, count) returns 'count' characters from the end of the string
+REM Print the word "string"
+PRINT RIGHT (myString, 6)
+
+REM MID(string, index, count) returns 'count' characters from the 
+REM middle of the string starting at 'index'.  The index starts at 1.
+REM Prints the word "is"
+PRINT MID (myString, 6, 2)
+
+REM If you don't provide a count, then the rest of the string is returned
+REM Prints the words "my string"
+PRINT MID (myString, 9)
+
+REM You can get a single character at a position by calling MID
+REM with a position (index) and a count of 1
+REM Prints the letter "s"
+PRINT MID (myString, 4, 1)
+
+REM Use + to concatenate strings together
+REM Prints "hello, world"
+comma = ","
+PRINT "hello" + comma + " " + "world"
+
+REM LEN returns the length of the string
+REM LEN does not need parenthesis
+REM The example will print 5
+PRINT “LEN  "ABCDE" = ”; LEN "ABCDE"
+PRINT “LEN  ("ABCDE") = ”; LEN ("ABCDE")
+
+REM CHR converts a unicode character number to a string
+REM 65 is the ASCII A
+REM Unicode U+1F60B is "FACE SAVOURING DELICIOUS FOOD".
+REM It is converted into two chars (a surrogate pair).
+REM CHR$ is the same function, but takes in only one parameter
+PRINT “CHR (65) = ”; CHR (65)
+PRINT "CHR Unicode: "; CHR(65, 66, 0x1F60B, 67, 68)
+
+REM CODE converts the first character of a string to a code
+PRINT “CODE "ABC" = ”; CODE "ABC"
+
+REM VAL will evaluate an expression
+a = 1
+b = 2
+PRINT “VAL ("a + b") = ”; VAL ("a + b")
+```
+### TEST functions and ASSERT
+Create a TEST_name() function and use ASSERT (expression) to test your code.  Tap the RUN TEST (✔) command to run all of your test functions quickly and easily.  Creating tests for your code makes it easier to write bug-free code and makes it easier to rewrite your code.
+```BASIC
+REM
+REM The program has a function that does the
+REM right-triangle formula.  It also has some
+REM test cases to prove that the function
+REM is working OK.
+REM 
+REM
+
+CLS BLUE
+PRINT "Demonstrate the TEST function"
+PRINT "Hypotenuse (3,4) is "; hypotenuse(3,4)
+
+FUNCTION hypotenuse (a,b)
+    c = √(a²+b²)
+RETURN c
+
+REM
+REM Call you test function TEST_<something>.  Tap the TEST
+REM command (✔) to run all of the functions in your program
+REM that start with TEST
+REM
+FUNCTION TEST_Simple()
+    REM Call the ASSERT 'function' with an equality
+    REM expression (one that uses =, <>, etc).
+    ASSERT (hypotenuse(3,4) = 5)
+    ASSERT (hypotenuse(3,0) = 3)
+    ASSERT (hypotenuse(0,4) = 4)
+    ASSERT (hypotenuse(0,0) = 0)
+RETURN
+```

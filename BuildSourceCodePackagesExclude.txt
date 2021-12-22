@@ -1,0 +1,12 @@
+.obj
+.exe
+.pdn
+.pfx
+.suo
+.user
+\AppPackages\
+\BundleArtifacts\
+\NetworkInspector\bin\
+\bin\
+\obj\
+\Raw\

@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="BCBasic.SampleCalculatorControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BCBasic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    
+    <Grid>
+        <StackPanel>
+            <TextBox FontSize="24" FontFamily="Berlin Sans FB" Text="{Binding NumericValue, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+            <TextBlock FontSize="12" FontFamily="Calibri Light" Text="{Binding MessageValue, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+            
+            <StackPanel Orientation="Horizontal">
+                <Button Content="PROG" Click="OnProg" />
+                <Button Content="A" Click="OnKey"  Tag="A"/>
+                <Button Content="B" Click="OnKey"  Tag="B"/>
+                <Button Content="C" Click="OnKey"  Tag="C"/>
+                <Button Content="D" Click="OnKey"  Tag="D"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

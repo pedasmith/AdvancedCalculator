@@ -1,0 +1,10 @@
+10	Starts with a familiar and colorful calculator
+20	Advanced calculator includes trig functions, logarithms and more
+30	Customize the calculator with your own programs
+40	Compute statistics and linear regressions
+50	Best Calculator includes many conversion functions
+60	There are lots of solvers to handle common questions
+70	A full-featured programmer's calculator lets you convert between decimal, hex, octal and binary.  And it handles byte-swabbing (handy for network programming) and logical shifts.
+80	Solvers include multiple geometry solvers for circles and triangles, plus solvers for common electrical engineering, finance problems and more!
+90	Search the entire Unicode database for special characters and the latest emoji.  Then easily copy the character to the clipboard!
+92	Calculate time between dates, add days to a date; convert international dates

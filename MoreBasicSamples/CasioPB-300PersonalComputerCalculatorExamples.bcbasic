@@ -1,0 +1,331 @@
+## Casio PB-300 Personal Computer Calculator Examples
+"At last, a personal computer I can use easily!" That's the feeling you get when you first meet the PB-300. This statement has two meanings. First, it means that the PB-300 is easy to understand. Second, it means it's simple to use. As you already know, the work capable of being performed by computer is almost unlimited. In an age when data must be brought to the location where the computer is installed, it would be nice if there was one in every room."The Casio PB-300 is a pocket-size personal computer / calculator with a tiny built-in printer. It's programmable in a version BASIC called PocketBASIC. This set of programs is a re-imagining of the original library of programs from the manual's third chapter. Because the Casio PocketBASIC is so different from modern BASIC, the programs weren't converted line-by-line. Instead, each program was understood and then rewritten using modern syntax and with a modern ability to use a larger screen.Enjoy!
+### 01. Good Child and Bad Child
+This game gives you a chance to see how fast your reflexes are. It can be enjoyed by anyone. Which will you be, good child, bad child, or ordinary child?The display locations are numbers 1 through 9 from the left. "X" marks are displayed one after another in various locations. As quickly as possible, press a numerical key from 0 to 9 which corresponds to the location of the X. If you succeed in pressing the correct key while the X is displayed, GD (good) will be displayed and you will get 10 points. If you press the wrong key or do not press quickly enough, NG (no good) will be displayed ant 10 points will be subtracted from your score. "X" will be displayed a total of 15 times, for a possible score of 150 points.
+```BASIC
+CLS
+PRINT "** GBO GAME**"
+
+total = 0
+FOR i=1 TO 15
+    IF (i>1) THEN
+        Screen.ClearLine(3)
+        PAUSE 100
+    END IF
+
+    Screen.ClearLine(8)
+    PRINT AT 8,1 "Round "; i; " current score="; total
+    total = total + OneRound()
+NEXT i
+
+Screen.ClearLine(8)
+PRINT AT 8,1 "Final score: "; total
+
+FUNCTION OneRound()
+    actual = Math.Floor (RND*10)
+    DisplayPos(actual)
+    guess = GetGuess(50)
+    points = -10
+    IF (actual=guess) points = 10
+
+    Screen.ClearLine(6)
+    IF (points > 0) THEN
+        PRINT AT 6,1 "GD!"
+        BEEP .2, 12
+    ELSE
+        PRINT AT 6,1 "NG"
+        BEEP .2, 0
+    END IF
+RETURN points
+
+FUNCTION DisplayPos(pos)
+    Screen.ClearLine(3)
+    PRINT AT 3,2* pos+1 "X"
+    REM Different underscore types are easier or harder to do
+    PRINT AT 4,1 "_ _ _ _ _ _ _ _ _ _"
+    PRINT AT 4,1 "0 1 2 3 4 5 6 7 8 9"
+    PRINT AT 4,1 "0 _ _ _ _ _ _ _ _ 9"
+RETURN
+
+FUNCTION GetGuess(time)
+
+    Screen.ClearLine(10)
+    FOR i = 1 TO time
+        val = INKEY$
+        PRINT val
+        IF (val <> "") THEN RETURN val
+        PRINT ; ".";
+        PAUSE 10
+    NEXT i
+
+RETURN ""
+```
+### 02. Hiking Game
+Arrow marks area display and they approach one another step by step. The arrow on the left is you and the arrow on the right is the PB-300. Press the keys in time with the blinking symbol. If the input timing matches, the arrow mark will move one step to the right. The trick is to press a key while the signal mark is present, in which case the PB-300's arrow mark will retreat one step.
+```BASIC
+CLS
+PRINT "HIKING"
+You = "→"
+PB = "←"
+Overlap  = "⇿"
+PRINT "You"+You+" versus " + PB + "PB"
+
+total = 0
+FOR i = 1 TO 4
+    IF (i >= 1) THEN
+        BEEP .2, -10
+        PAUSE 20
+       BEEP .2, -4
+       PAUSE 20
+       BEEP .2, -1
+    END IF
+    REM start slower and then go faster
+    Screen.ClearLine(7)
+    points = OneRound(30 - (i*2))
+    total = total + points
+    Screen.ClearLine (7)
+    IF (points > 0) THEN 
+        PRINT AT 7, 1 "Winner!"
+    ELSE 
+        PRINT AT 7,1 "Sorry, PB won"
+    END IF
+NEXT i
+
+Apos = 0
+Bpos = 10
+FUNCTION OneRound(speed)
+    Apos = 1
+    Bpos = 10
+    PrintLine(Apos, Bpos)
+
+    REM Do one key
+    10 REM Loop top
+        IF (Apos > 10 OR Bpos < 1) THEN GOTO 20
+        PRINT AT 5,1 "*"
+        PAUSE speed
+        keyOK = INKEY$
+        IF (keyOK <> "") THEN 
+            Apos = Apos + 1
+            BEEP .1, 1
+        END IF
+        PRINT AT 5,1 " "
+        PAUSE speed
+        keyBad = INKEY$
+        IF (keyBad <> "") THEN 
+            Apos = Apos - 1
+            BEEP .1, 12
+        END IF
+        IF Apos < 1 THEN Apos  = 1
+        Bpos = Bpos - .2
+        PrintLine(Apos, Bpos)
+
+    GOTO 10
+
+    20 REM Bottom
+
+    points = -10
+    IF (Apos > 10) THEN points = 10
+RETURN points
+
+FUNCTION PrintLine(Apos, Bpos)
+    GLOBAL You
+    GLOBAL PB
+    GLOBAL Overlap
+    Screen.ClearLine(5)
+    PRINT AT 5,Apos+3 You
+    PRINT AT 5,Bpos+3 PB
+    IF (Math.Round(Apos) = Math.Round(Bpos)) THEN PRINT AT 5,Apos+3 Overlap
+RETURN
+```
+### 03. Number of Days Calculation
+How many days have passed since you were born? This is a program which is used to calculate the number of days from a specific date.Input a specific year (START year). Then input a specific START month and START date. Nonexistent months and dates such as the 13th month or the 30th day of the 2nd month (February) cannot be input. Next input the END year, END month and END date.
+```BASIC
+CLS
+PRINT "Number of Days Calculation:"
+GOSUB 500
+
+REM Get the start date into a,b,c,h,j,t
+A=INPUT DEFAULT 2010 PROMPT "Enter " + W$ + " Year"
+B=INPUT DEFAULT 10 PROMPT "Enter " + W$ + " Month"
+C=INPUT DEFAULT 19 PROMPT "Enter " + W$ + " Day"
+H=DayNumber(A, B, C)
+J=H-Math.Floor(H/7)*7
+PrintDate(W$, A, B, C, J)
+
+
+REM Get the end date into d,e,f,i,k,u
+D=INPUT DEFAULT 2011 PROMPT "Enter " + X$ + " Year"
+E=INPUT DEFAULT 10 PROMPT "Enter " + X$ + " Month"
+F=INPUT DEFAULT 19 PROMPT "Enter " + X$ + " Day"
+I=DayNumber(D, E, F)
+K=I-Math.Floor(I/7)*7
+PrintDate(X$, D, E, F, K)
+PRINT "Number of days:", (I-H)
+
+STOP
+
+
+REM year,month,day were L M N
+REM Originally lines 330..370
+FUNCTION DayNumber(year, month, day)
+    GLOBAL MONLEN
+
+    G = year - 1
+    O=G*365+Math.Floor(G/4)-Math.Floor(G/100)+Math.Floor(G/400)+day
+    IF (month>1) THEN
+        FOR Q=1 TO month-1
+            O=O+MONLEN(Q)
+        NEXT Q
+    END IF
+    IF (month>2) THEN O=O+NLeapDays(year)
+RETURN O
+
+
+400 REM PRINT
+FUNCTION PrintDate(prefix, y, m, d, dayOfWeek)
+    GLOBAL DAY$
+    REM G=3
+    REM G=G-Math.Floor(Math.Log10(y))
+    PRINT prefix;" ";y;".";
+    IF (m<10) THEN PRINT " ";
+    PRINT m;".";
+    IF (d<10) THEN PRINT " ";
+    PRINT d;
+    PRINT " on ";MID(DAY$, dayOfWeek*3+1, 3)
+RETURN
+
+
+
+REM Returns the number of leap days in a given year
+FUNCTION NLeapDays(L)
+    retval = 0
+    IF (L/4 = Math.Floor(L/4) AND ((L/100 <> Math.Floor(L/100)) OR (L/400 = Math.Floor(L/400))))
+        retval = 1
+    END IF
+RETURN retval
+
+500 REM Setup
+W$ = "Start"
+X$ = "End"
+DAY$="SUNMONTUEWEDTHUFRISAT"
+DIM MONLEN(12)
+MONLEN(1)=31
+MONLEN(2)=28
+MONLEN(3)=31
+MONLEN(4)=30
+MONLEN(5)=31
+MONLEN(6)=30
+MONLEN(7)=31
+MONLEN(8)=31
+MONLEN(9)=30
+MONLEN(10)=31
+MONLEN(11)=30
+MONLEN(12)=31
+RETURN
+```
+### 04. Yen to Dollar Conversion
+This program makes currency conversion as easy as one, two three and gives anyone the necessary speed for performaing the work of a bank clerk or stock broker
+```BASIC
+CLS
+PRINT "Currentcy Conversion"
+REM Yen symbol ¥
+Y = INPUT DEFAULT 109.8 PROMPT "1 dollar is how many yen?"
+K = INPUT DEFAULT 100 PROMPT "How much to convert?"
+PRINT "Rate $1="; Y; " ¥ (yen)"
+PRINT "Input "; K; "¥ = $"; Math.Round (K/Y, 4)
+PRINT "Input $"; K; " = ¥ (yen)"; Math.Round(K*Y, 4)
+```
+### 05. Currency Denomination
+This program will help you become a first-rate accountant. Names can be printed out and the totals can be printed out by inputting -999.If the amount is input, the denominations and number of bills required to make up that amount will be displayed. The name can also be printed out at the same time.
+```BASIC
+CLS
+PRINT "Currency Denomination"
+name = "Person"
+GOSUB 1000
+B = 0
+C = 0
+
+100 REM Loop Top
+name = INPUT DEFAULT name  PROMPT "Name"
+IF (name = "-999") THEN     
+    PrintTotals(B, C)
+ELSE
+    A = INPUT DEFAULT 2898 PROMPT "Amount"
+    IF (A > 0) THEN
+        DoAmount(name, A)
+        B = B + A
+        C = C + 1
+    END IF
+END IF
+GOTO 100
+
+
+FUNCTION Fill(value)
+     nspace = 4
+     IF (value > 0) THEN nspace = nspace - Math.Log10(value)
+     IF (nspace < 1) THEN nspace = 1
+     retval = SPC(nspace) + value
+RETURN retval
+
+
+FUNCTION DoAmount(name, A)
+    GLOBAL TotalAmounts
+    GLOBAL Currency
+
+    PRINT "-------------------------"
+    PRINT name; " $"; A
+    PRINT "-------------------------"
+    FOR w = 1 TO 7
+        D=Math.Floor (A/Currency(w))
+        A = A - D*Currency(w)
+        TotalAmounts(w) = TotalAmounts(w)+D
+        PRINT "$  "; Fill(Currency(w)); ": "; Fill(D); " bills"
+    NEXT w
+RETURN
+
+
+200 REM print totals
+FUNCTION PrintTotals(B, C)
+    GLOBAL TotalAmounts
+    GLOBAL Currency
+
+    PRINT ""
+    PRINT ""
+    PRINT ""
+    PRINT ""
+
+    PRINT "-------------------------"
+    PRINT "Total $"; B
+    PRINT "No. of People: ";C
+    PRINT "-------------------------"
+    acc = 0
+    FOR w = 1 TO 7
+        D=TotalAmounts(w)
+        PRINT "$  "; Fill(Currency(w)); ": "; Fill(D); " bills"
+        subtotal = Currency(w)*D
+        acc = acc + subtotal
+        PRINT "     Subtotal  $"; Fill(subtotal)
+    NEXT w
+    PRINT "A. Total $"; Fill(acc)
+RETURN
+
+
+300 REM just chops the name shorter; not needed with Best Calculator BASIC
+
+1000 REM Setup the currency table. The table includes a 2-dollar bill :-)
+DIM Currency(7)
+Currency(1) = 100
+Currency(2) = 50
+Currency(3) = 20
+Currency(4) = 10
+Currency(5) = 5
+Currency(6) = 2
+Currency(7) = 1
+REM M is the total amounts
+DIM TotalAmounts(7)
+FOR i=1 TO 7
+    TotalAmounts(i) = 0
+NEXT i
+
+RETURN
+```

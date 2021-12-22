@@ -1,0 +1,52 @@
+﻿<UserControl
+    x:Class="Shipwreck.UIControls.PurchaseControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Shipwreck.UIControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="700" Loaded="OnLoaded" >
+
+    <StackPanel x:Name="uiMain" MaxWidth="700" Background="DarkBlue">
+        <TextBlock Tag="free" HorizontalAlignment="Center" FontSize="30">BUY NOW!</TextBlock>
+        <TextBlock Tag="paid" HorizontalAlignment="Center" FontSize="24">You have full access to this app</TextBlock>
+        <TextBlock Tag="free" FontSize="16" TextWrapping="Wrap">
+             
+            The "Full Access" package lets you use the Bluetooth capabilities of BC BASIC and examine the 
+            entire source code for this application
+            <LineBreak />
+            <LineBreak />
+            You can program your Bluetooth devices with BC BASIC!  It's easy to connect devices together and 
+            make mini-applications using the simple built-in BC BASIC language.
+            <LineBreak />
+            <LineBreak />
+            Extend or modify the source code!  Do you want to create a customized version of this app?
+            It's easy when you have the full source code to everything -- all of the classes that
+            commmunicate with Bluetooth devices and all the code to manipulate the Bluetooth radio.
+            <LineBreak />
+        </TextBlock>
+        <TextBlock Tag="paid" FontSize="16" TextWrapping="Wrap">
+            You have full access to this app, including:
+            <LineBreak />
+            <LineBreak />
+            You can program your Bluetooth devices with BC BASIC!  It's easy to connect devices together and 
+            make mini-applications using the simple built-in BC BASIC language.
+            <LineBreak />
+            <LineBreak />
+            You can examine the source code!  Do you want to create a customized version of this app?
+            It's easy when you have the full source code to everything -- all of the classes that
+            commmunicate with specialized Bluetooth devices and all the code to manipulate the Bluetooth radio.
+            <LineBreak />
+        </TextBlock>
+        
+        
+        <StackPanel Tag="free" Orientation="Horizontal">
+            <Button Content="Purchase Now" Click="OnPurchaseNow" />
+            <TextBlock VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0">or enter an Access Code: </TextBlock>
+            <TextBox Margin="10,0,10,0" x:Name="uiAccessCode" MinWidth="100" />
+            <Button Content="OK" Click="OnTryAccessCode" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

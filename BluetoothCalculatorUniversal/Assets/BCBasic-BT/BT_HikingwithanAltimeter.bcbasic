@@ -1,0 +1,220 @@
+## BT: Hiking with an Altimeter
+This set of programs controls the altimeter function of a mbientlab.com Metawear MetaMotion sensor device.  The Altimeter program displays two graphs, both of which are kept up-to-date: a current altitude graph showing the last several minutes of altitude and a summary graph showing altitude over the entire run of the program.  The programs are designed to fit on a Lumia 650 phone.  The Tare program lets you calibrate the altitude either to an absolute altitude or simply relative to your starting point.
+
+The programs uses the data.Add() method and the graphics.GraphY(data) functions to manage the volume of data and automatically create useful graphs.
+### Altitude
+Shows you your current altitude based on the tare zero-offset that you set earlier
+```BASIC
+REM
+CLS GREEN
+devices = Bluetooth.DevicesName (“MetaWear”)
+IF (devices.Count < 1)
+    CLS RED
+    PRINT "ERROR: no MetaWear devices found"
+END IF
+
+device = devices[1]
+meta = device.As ("MetaMotion")
+
+meta.AltimeterSetup (1, "Altitude", 0.5)
+meta.ButtonSetup (1, "Button")
+
+REM
+REM The main loop.  It will just go around a few
+REM times and then exit.
+REM
+MAXTIME = 3
+FOR time = 1 TO MAXTIME
+    IF (exitRequested > 0) THEN time = MAXTIME
+    PAUSE 60
+    dt = DateTime.GetNow()
+     Screen.ClearLine (1)
+    PRINT AT 1, 1 "TIME", dt.Time
+NEXT time
+
+
+msg="done!"
+meta.AltimeterSetup (0, "Altitude", 0.5)
+meta.ButtonSetup (0, "Button")
+
+
+REM called when new Altimeter data comes in.
+FUNCTION Altitude(meta, height)
+    currentRawAltitudeInFeet = height * 3.2808399
+    currentHeightInFeet = currentRawAltitudeInFeet  - Memory.AltitudeTare
+    PRINT AT 3,1 "Current", Math.Round (currentHeightInFeet, 1)
+END
+
+FUNCTION Button(meta, value)
+    GLOBAL exitRequested
+    IF (value = 1) THEN exitRequested = 1
+END
+```
+### Graph
+Graphs your current altitude (over the last several minutes) plus a summary of your altitude since the program was started.  Uses the altitude data from a single mbientlab.com MetaWear MetaMotion tracker device.  You can set the "zero point" using the accompanying Tare program.
+**Default Key**: 🌄
+```BASIC
+REM
+CLS BLUE
+PRINT "Looking for a MetaWear.."
+devices = Bluetooth.DevicesName (“MetaWear”)
+IF (devices.Count < 1)
+    CLS RED
+    PRINT "ERROR: no MetaWear devices found"
+END IF
+CLS BLACK
+
+device = devices[1]
+meta = device.As ("MetaMotion")
+
+REM The program will stop when this is set to > 0
+exitRequested = 0
+
+REM Set up the curr and full data arrays and graph
+DIM currData()
+currData.MaxCount = 100
+currData.RemoveAlgorithm = "First"
+
+currGraph = Screen.Graphics()
+currGraph.Title = "Current Height"
+currGraph.SetPosition (60,60)
+currGraph.SetSize(100, 275)
+currGraph.GraphY(currData)
+
+DIM fullData()
+fullData.MaxCount = 200
+fullData.RemoveAlgorithm = "Random"
+
+fullGraph = Screen.Graphics()
+fullGraph.Title = "Height History"
+fullGraph.SetPosition (60,185)
+fullGraph.SetSize(100, 275)
+fullGraph.GraphY(fullData)
+
+REM
+REM Set up the altimeter
+REM
+meta.AltimeterSetup (1, "Altitude", 0.5)
+meta.ButtonSetup (1, "Button")
+
+REM
+REM Main loop
+REM
+Screen.RequestActive()
+
+10 REM LOOP_TOP
+
+    IF (exitRequested > 0) THEN GOTO 20
+    PAUSE 60
+    dt = DateTime.GetNow()
+     Screen.ClearLine (1)
+    PRINT AT 1, 1 "TIME", dt.Time
+
+GOTO 10
+20 REM LOOP_BOTTOM
+
+REM
+REM All done; undo the setup
+REM
+Screen.RequestRrlease()
+
+msg="done!"
+meta.AltimeterSetup (0, "Altitude", 0.5)
+meta.ButtonSetup (0, "Button")
+
+
+REM
+REM Altitude is called whenever altitude data comes in.
+REM
+FUNCTION Altitude(meta, height)
+    REM The main loop only exits about once per minute.  When the 
+    REM user presses the button to exit, they don't want to see the
+    REM graph keep on updating.
+    GLOBAL exitRequested
+    IF (exitRequested > 0) THEN RETURN
+
+    REM the meter-->feet conversion was copied from Bing.
+    currentRawAltitudeInFeet = height * 3.2808399
+    currentHeightInFeet = currentRawAltitudeInFeet  - Memory.AltitudeTare
+
+    REM
+    REM Just Add'ing data to the arrays and doing a PAUSE
+    REM will upate the graphs on the screen.
+    REM
+    GLOBAL currData
+    GLOBAL fullData
+    currData.Add (currentHeightInFeet)
+    fullData.Add (currentHeightInFeet)
+    PAUSE 1
+
+    REM
+    REM Display some basis data on the screen.
+    REM
+    Screen.ClearLine (2)
+    Screen.ClearLine (3)
+    Screen.ClearLine (6)
+    Screen.ClearLine (8)
+    Screen.ClearLine (12)
+
+    PRINT AT 2,1 "Current", Math.Round (currentHeightInFeet, 1)
+    PRINT AT 3,1 Math.Round(currData.Max) 
+    PRINT AT 6,1 Math.Round(currData.Min)
+    PRINT AT 8,1 Math.Round(fullData.Max)
+    PRINT AT 12,1 Math.Round(fullData.Min)
+
+END
+
+FUNCTION Button(meta, value)
+    GLOBAL exitRequested
+    IF (value = 1) THEN exitRequested = 1
+END
+```
+### Tare
+Sets a "zero point" for the Altimeter program.  It will read the current raw altitude data from an mbientlab.com MetaWear MetaMotion tracker and will ask you for a current height.  You can either enter your actual height above sea level or just 0 and get a relative height.  The data is stored in the permanent Memory.AltitudeTare memory cell.
+**Default Key**: 🅃
+```BASIC
+REM
+devices = Bluetooth.DevicesName (“MetaWear”)
+IF (devices.Count < 1)
+    CLS RED
+    PRINT "ERROR: no MetaWear devices found"
+END IF
+
+device = devices[1]
+meta = device.As ("MetaMotion")
+
+currentHeightInFeet = INPUT DEFAULT 203 PROMPT "What is your elevation in feet?"
+exitRequested = 0
+meta.AltimeterSetup (1, "Tare", 0.5)
+
+REM Wait for a callback
+MAXTIME = 100
+FOR time = 1 TO MAXTIME
+    IF (exitRequested) THEN time = MAXTIME
+    PAUSE 60
+    PRINT AT 2, 1 "TIME", time
+NEXT time
+
+IF (time = MAXTIME)
+    PAPER RED
+    PRINT "Sorry, could not get the elevation"
+ELSE
+    PAPER GREEN
+    PRINT "Adjust", Memory.AltitudeTare
+END IF
+
+result = Memory.AltitudeTare
+
+FUNCTION Tare(meta, height)
+    GLOBAL currentHeightInFeet
+    REM Pasted from BING
+    currentRawAltitudeInFeet = height * 3.2808399
+    Memory.AltitudeTare = currentRawAltitudeInFeet - currentHeightInFeet
+    PRINT AT 3,1 "Got an altitude"
+    PRINT AT 4,1 "Current", currentHeightInFeet
+    PRINT AT 5,1 "Raw", currentRawAltitudeInFeet 
+    PRINT AT 6,1 "Adjust", Memory.AltitudeTare
+    GLOBAL exitRequested
+    exitRequested = 1
+END
+```

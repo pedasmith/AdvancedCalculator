@@ -1,0 +1,455 @@
+## EX: Sensor Camera, Location Microphone and more
+Shows how to get input from different sensors including the camera, the microphone, location and more.
+### Camera: a first program
+The simplest possible camera demonstration program.  Creates an image on a graphics screen, then a camera, and tells the camera to connect to the graphics screen.
+```BASIC
+REM Very simple camera program
+CLS BLUE
+PRINT “Simple camera program”
+
+REM graphic size is x, y, h, w
+g = Screen.Graphics (50, 50, 400, 600)
+REM image size is x1, y1, x2, y2
+img = g.Image (0, 0, 600, 400)
+
+REM Cameras include Front and Rear
+camera = Sensor.Camera(“Front”)
+camera.Start()
+camera.Image  = img
+
+FOREVER
+```
+### Camera: channel analysis (posterize)
+Shows how to map the different color channels (R, G and B) for different effects.  This examples shows how to posterize: to convert the fine color shades from 0 to 255 into chunkier shades.
+```BASIC
+REM Posterizing camera program
+CLS BLUE
+PRINT “Posterize camera program”
+
+REM graphic size is x, y, h, w
+g = Screen.Graphics (50, 50, 400, 600)
+REM image size is x1, y1, x2, y2
+img = g.Image (0, 0, 600, 200)
+analysisImg = g.Image(0,200,600,400)
+
+REM Cameras include Front and Rear
+camera = Sensor.Camera(“Front”)
+camera.Start()
+camera.Image  = img
+
+REM Add in analysis
+analysis = camera.Analyze()
+analysis.Image = analysisImg
+REM Posterize
+analysis.AddPoint ("R", 0,0, 85,0, 86,128, 170, 128, 171, 255, 255, 255)
+analysis.AddPoint ("G", 0,0, 85,0, 86,128, 170, 128, 171, 255, 255, 255)
+analysis.AddPoint ("B", 0,0, 85,0, 86,128, 170, 128, 171, 255, 255, 255)
+
+FOREVER
+```
+### Camera: channel analysis (red only)
+An extension of the first camera program with an analysis output window that shows only the red channel of the image.
+```BASIC
+REM Red channel only camera program
+CLS BLUE
+PRINT “Red channel only camera program”
+
+REM graphic size is x, y, h, w
+g = Screen.Graphics (50, 50, 400, 600)
+REM image size is x1, y1, x2, y2
+img = g.Image (0, 0, 600, 200)
+analysisImg = g.Image(0,200,600,400)
+
+REM Cameras include Front and Rear
+camera = Sensor.Camera(“Front”)
+camera.Start()
+camera.Image  = img
+
+REM Add in analysis
+analysis = camera.Analyze()
+analysis.Image = analysisImg
+
+REM Red only
+analysis.AddPoint ("R", 0,0,255,255)
+analysis.AddPoint ("G", 0,0,0,0)
+analysis.AddPoint ("B", 0,0, 0,0)
+
+FOREVER
+```
+### Camera: channel analysis (remove blue channel)
+Shows how to remove only channel only from the image.
+```BASIC
+REM No-blue camera program
+CLS BLUE
+PRINT “No-blue camera program”
+
+REM graphic size is x, y, h, w
+g = Screen.Graphics (50, 50, 400, 600)
+REM image size is x1, y1, x2, y2
+img = g.Image (0, 0, 600, 200)
+analysisImg = g.Image(0,200,600,400)
+
+REM Cameras include Front and Rear
+camera = Sensor.Camera(“Front”)
+camera.Start()
+camera.Image  = img
+
+REM Add in analysis
+analysis = camera.Analyze()
+analysis.Image = analysisImg
+
+REM No blue channel!
+REM The other channels default to 0,0 255,255
+analysis.AddPoint ("B", 0,0, 255, 0)
+
+FOREVER
+```
+### Camera: HTML Color output from the Rear camera
+A full-featured program that shows how zoom in tightly and get the HTML color value for a patch of the screen.
+**Default Key**: HTML
+```BASIC
+CLS BLUE
+PRINT “Show HTML Color”
+
+REM Step 1: make the camera and preview
+cam = Sensor.Camera (“Rear”)
+grf = Screen.Graphics (50, 50, 340, 440)
+img = grf.Image (20, 20, 420, 170)
+cam.Start()
+cam.Image = img
+
+REM Step 2: make the analysis image
+REM and set up callback
+a = cam.Analyze()
+REM Normal radius is .16667
+REM 0.01 will be very zoomed-in
+a.Radius = 0.01
+REM a.CX = 0.5
+REM a.CY = 0.5
+a.AnalysisW = 128
+a.AnalysisH = 128
+imgAnalysis = grf.Image(230, 190, 420, 320)
+a.Image= imgAnalysis
+a.Function = “HtmlColor”
+
+REM Add a partial zoom
+REM so we can see what we're seeing
+imgAnalysisPartial = grf.Image(20, 190, 210, 320)
+a2 = cam.Analyze()
+a2.Image= imgAnalysisPartial
+
+FOREVER 
+
+REM Step three: HTML color output
+REM and set the background color
+FUNCTION HtmlColor (r, g, b)
+    color = String.Escape (“color”, r, g, b)
+    Screen.ClearLine (2)
+    PRINT color
+    GLOBAL grf
+    grf.Background  = color
+END
+```
+### Camera: using analysis callback
+Demonstrates the analysis callback function.  The callback will get the average red, green and blue values from the analysis area.
+```BASIC
+REM Analysis callback camera program
+CLS BLUE
+PRINT “Analysis callback camera program”
+
+REM graphic size is x, y, h, w
+g = Screen.Graphics (50, 50, 400, 600)
+REM image size is x1, y1, x2, y2
+img = g.Image (0, 0, 600, 200)
+analysisImg = g.Image(0,200,600,400)
+
+REM Cameras include Front and Rear
+camera = Sensor.Camera(“Front”)
+camera.Start()
+camera.Image  = img
+
+REM Add in analysis
+analysis = camera.Analyze()
+analysis.Image = analysisImg
+REM Don't change the analysis image.
+REM But do add a callback
+analysis.Function = "AnalysisCallback"
+
+FOREVER
+
+REM The calback is called with the average 
+REM r, g, b values
+REM Print the HTML color value
+FUNCTION AnalysisCallback (r, g, b)
+    color  = String.Escape ("color", r, g, b)
+    Screen.ClearLine (3)
+    PRINT color, LEN(color)
+END
+```
+### Compass
+Demonstrates how to use the System.Compass method that reports on the direction the system is pointed in.
+```BASIC
+CLS GREEN
+PRINT "Compass"
+PRINT "(not all computers have these)"
+
+startTime  = DateTime.GetNow()
+sensor = Sensor.Compass()
+sensor.Start ("Compass")
+
+System.SetInterval ("Timer", 2000, "")
+
+FOREVER
+
+REM Sets us up to wait for 10 seconds
+REM and then call FOREVER STOP to
+REM stop the 'FOREVER' statement.
+FUNCTION Timer (arg)
+    curr = DateTime.GetNow()
+    GLOBAL startTime
+    delta = curr.Subtract (startTime)
+    Screen.ClearLine (4)
+    PRINT "TIME", curr.Time,
+    IF (delta > 10) THEN  FOREVER STOP
+END
+
+FUNCTION Compass (direction, accuracy, trueNortHeading)
+    Screen.ClearLine (6)
+    PRINT "Heading", direction, accuracy, trueNorthHeading
+END
+```
+### Compass with graphics
+A graphical compass that uses data from the System.Compass() method
+```BASIC
+CLS BLUE
+PRINT "Graphical Compass"
+
+compass = Sensor.Compass()
+compass.Start ("DrawCompass")
+g = Screen.Graphics(100, 100, 200, 200)
+g.Background = BLUE
+g.Stroke = WHITE
+g.Fill = CLEAR
+System.Trace (1)
+FOREVER
+
+FUNCTION DrawCompass (north, accuracy, truenorth)
+    GLOBAL g
+    cx = 100
+    cy = 100
+    r = 80
+    g.Cls()
+    g.Circle (cx, cy, r)
+    rad = Math.DtoR (north)
+    x2 = cx + 1.2 * r *COS (rad)
+    y2 = cy + 1.2 * r *SIN(rad)
+    g.Line (cx, cy, x2, y2)
+END
+```
+### Inclinometer
+Demonstrates how the System.Inclinometer method will return pitch, roll, and yaw data.
+```BASIC
+CLS GREEN
+PRINT "Inclinometer"
+PRINT "(not all computers have these)"
+
+startTime  = DateTime.GetNow()
+sensor = Sensor.Inclinometer()
+sensor.Start ("Inclinometer")
+
+System.SetInterval ("Timer", 2000, "")
+
+FOREVER
+
+REM Sets us up to wait for 10 seconds
+REM and then call FOREVER STOP to
+REM stop the 'FOREVER' statement.
+FUNCTION Timer (arg)
+    curr = DateTime.GetNow()
+    GLOBAL startTime
+    delta = curr.Subtract (startTime)
+    Screen.ClearLine (4)
+    PRINT "TIME", curr.Time,
+    IF (delta > 10) THEN  FOREVER STOP
+END
+
+FUNCTION Inclinometer (pitch, roll, yaw, accuracy)
+    Screen.ClearLine (7)
+    PRINT "Inclin.", Math.Round(roll), Math.Round(pitch), Math.Round(yaw)
+END
+```
+### Light Sensor
+Demonstrates how to use the Sensor.Light to get information on the ambient light values.
+```BASIC
+CLS GREEN
+PRINT "Light Sensor"
+PRINT "(not all computers have these)"
+
+startTime  = DateTime.GetNow()
+sensor = Sensor.Light()
+sensor.Start ("Light")
+
+System.SetInterval ("Timer", 2000, "")
+
+FOREVER
+
+REM Sets us up to wait for 10 seconds
+REM and then call FOREVER STOP to
+REM stop the 'FOREVER' statement.
+FUNCTION Timer (arg)
+    curr = DateTime.GetNow()
+    GLOBAL startTime
+    delta = curr.Subtract (startTime)
+    Screen.ClearLine (4)
+    PRINT "TIME", curr.Time,
+    IF (delta > 10) THEN  FOREVER STOP
+END
+
+FUNCTION Light (lux)
+    Screen.ClearLine (5)
+    PRINT "Light", lux
+END
+```
+### Location
+Creates a 2D map of your position based on data from the Sensor.Location object.  The callback will return your latitude, longitude, altitude and your location accuracy.
+```BASIC
+CLS BLUE
+PRINT “Location data”
+DIM position()
+position.MaxCount = 100
+position.RemoveAlgorithm = “First”
+
+g = Screen.Graphics (50, 150, 400, 400)
+g.GraphXY (position)
+loc = Sensor.Location()
+loc.Start(“location”)
+MAXTIME = 100
+FOR time = 1 TO MAXTIME
+    PRINT AT 3,1 time
+    PAUSE 10
+NEXT time
+
+FUNCTION location(latitude, longitude, altitude, accuracy)
+    GLOBAL position
+    position.AddRow (latitude, longitude)
+    Screen.ClearLine (4)
+    PRINT latitude, longitude, accuracy
+END
+```
+### Microphone Volume
+Calculates the microphone loudness (volume) using the Sensor.Microphone object.  The callback will provide full sound data; the loudness is calculated using the data's SumOfSquares property.
+```BASIC
+CLS BLUE
+PRINT “Microphone data volume”
+DIM volume()
+volume.MaxCount = 100
+volume.RemoveAlgorithm = “First”
+maxVolume = 0
+
+g = Screen.Graphics (50, 150, 150, 600)
+g.GraphY (volume)
+mic = Sensor.Microphone()
+mic.Start(“microphone”)
+MAXTIME = 100
+FOR time = 1 TO MAXTIME
+    PRINT AT 3,1 time
+    PAUSE 10
+NEXT time
+
+FUNCTION microphone (data)
+    GLOBAL volume
+    v = data.SumOfSquares / data.Count
+    v = SQR(v)
+    volume.Add (v)
+    Screen.ClearLine (4)
+    PRINT “Volume”, v
+    GLOBAL maxVolume
+    maxVolume = Math.Max(maxVolume, v)
+    Screen.ClearLine (5)
+    PRINT “Max”, maxVolume
+END
+```
+### Stress test with all sensors
+Includes callbacks for all the sensors at once
+```BASIC
+CLS GREEN
+PRINT "All sensors"
+PRINT "(not all computers have these)"
+
+maxVolume  = 0
+
+REM MAXTIME is the max time to run
+MAXTIME = 30
+
+startTime  = DateTime.GetNow()
+compass = Sensor.Compass("Compass")
+inclin = Sensor.Inclinometer("Inclinometer")
+light = Sensor.Light("Light")
+location = Sensor.Location("Location")
+mic = Sensor.Microphone("Microphone")
+
+System.Trace (1)
+System.SetInterval ("Timer", 2000, "")
+
+
+FOREVER
+
+PRINT AT 12,1 "All done!"
+
+FUNCTION Compass (direction, accuracy,↲
+         trueNortHeading)
+    Screen.ClearLine (5)
+    PRINT "Heading", ↲
+        Math.Round(direction), ↲
+        accuracy, ↲
+        Math.Round (trueNorthHeading)
+END
+
+FUNCTION Inclinometer (pitch, roll, yaw, accuracy)
+    Screen.ClearLine (6)
+    PRINT "Inclin.", ↲
+        Math.Round(roll), ↲
+        Math.Round(pitch), ↲
+        Math.Round(yaw)
+END
+
+FUNCTION Light (lux)
+    Screen.ClearLine (7)
+    PRINT "Light", lux
+END
+
+FUNCTION Location(latitude, longitude, altitude, accuracy)
+    Screen.ClearLine (8)
+    PRINT "Position", ↲
+        Math.Round(latitude, 2), ↲
+        Math.Round(longitude, 2),↲
+        accuracy
+END
+
+FUNCTION Microphone (data)
+    v = data.SumOfSquares / data.Count
+    v = SQR(v)
+    Screen.ClearLine (9)
+    PRINT “Volume”, Math.Round (v, 4)
+    GLOBAL maxVolume
+    maxVolume = Math.Max(maxVolume, v)
+    Screen.ClearLine (10)
+    PRINT “Max Vol.”, ↲
+        Math.Round (maxVolume, 4)
+END
+
+REM Sets us up to wait for 10 seconds
+REM and then call FOREVER STOP to
+REM stop the 'FOREVER' statement.
+FUNCTION Timer (arg)
+    curr = DateTime.GetNow()
+    GLOBAL startTime
+    delta = curr.Subtract (startTime)
+    Screen.ClearLine (4)
+    PRINT "TIME", curr.Time,
+
+    GLOBAL MAXTIME
+    IF (delta > MAXTIME) THEN ↲
+         FOREVER STOP
+END
+```

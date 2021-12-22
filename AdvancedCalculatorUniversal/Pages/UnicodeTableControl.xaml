@@ -1,0 +1,110 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.UnicodeTableControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <StackPanel>
+                    <TextBlock Style="{StaticResource titletext}" >Unicode Data</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Style="{StaticResource aboutboxtext}" Margin="0,0,10,0">Search for:</TextBlock>
+                        <TextBox Height="40" MinWidth="200"  TextChanged="OnSearchUnicodeTextChanged" x:Name="uiSearchBox" />
+                        <TextBlock VerticalAlignment="Center" Style="{StaticResource aboutboxtext}" FontWeight="Bold" FontSize="28" Margin="10,0,10,0" >🔎</TextBlock>
+                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Prev" Click="OnSearchUnicodePrev" Visibility="Visible" Name="uiSearchUnicodePrev" />
+                        <Button Grid.Column="1" Content="Next" Click="OnSearchUnicodeNext" Visibility="Visible" Name="uiSearchUnicodeNext"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid x:Name="uiMainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0"  x:Name="uiUnicodeSearchInfo" />
+                <StackPanel MinHeight="50" Grid.Row="1" Grid.Column="0" Name="uiUnicodeList" Tapped="OnUnicodeListClicked" MinWidth="300" HorizontalAlignment="Left"  Margin="4,0,0,0" />
+                <!-- SelectionChanged="OnUnicodeSelectionChanged" -->
+                <!-- The unicode entries are added via code -->
+
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                        <Bold FontSize="20" >About Unicode</Bold>
+                        <LineBreak />
+                        The Unicode standard is the primary international standard for
+                        encoding characters.  It contains letters for the most
+                        common languages, plus a large set of math symbols and other ideographs.
+                        It also includes musical symbols and symbols for languages that
+                        are no longer spoken.
+                        
+                        <LineBreak />
+                        <LineBreak />
+                        The Unicode consortium has an official description of each letter.
+                        For example, the letter "A" is described as LATIN CAPITAL LETTER A (all 
+                        in uppercase).  Each letter also has a unicode character number, written as
+                        U+ and a number.  For example, the letter "A" is character number U+41.
+                        
+                        <LineBreak />
+                        <LineBreak />
+                        To use this Unicode data page, simply type in some part of the description
+                        of the character you are looking for.  For example, type in "moon" and
+                        you'll see all of the characters where the description includes the
+                        word "moon".  If you enter several words, all of the words must be in the
+                        descriptions.  You can also enter a Unicode character number with a U+.
+                        
+                        <LineBreak />
+                        <LineBreak />
+                        If you tap on a description, it's selected.  Selected characters will
+                        be shared with the share charm.  You can also right-click or swipe-up
+                        and select "copy to clipboard" to copy the character to the clipboard.
+                        
+                        <LineBreak />
+                        <LineBreak />
+                        To make life confusing, some of the more recent Unicode characters
+                        are "big" characters.  You can tell a character is "big" because
+                        it's Unicode number is more than 10000 (that is, it's 5 or more 
+                        letters long).  For example, the Unicode "CAT FACE WITH TEARS OF JOY"
+                        (😹) is character U+1f639.  1f639 is 5 characters, and therefore this is 
+                        a "big" character.  
+                        
+                        <LineBreak />
+                        <LineBreak />
+                        Many systems (including Windows) cannot directly display these characters.  
+                        Instead, there's a clever scheme where the one "big" character is divided
+                        into two regular Unicode character.  In the case of CAT FACE WITH TEARS OF JOY, 
+                        U+1f639 is also the two characters U+D83D U+DE39.
+
+                        <LineBreak />
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

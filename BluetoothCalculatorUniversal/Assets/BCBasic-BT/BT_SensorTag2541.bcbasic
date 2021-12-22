@@ -1,0 +1,429 @@
+## BT: SensorTag 2541
+Demonstrates how to use the TI SensorTag 2541 (the original version).  The model 2541 SensorTag from Texas Instruments is a small, battery-powered sensor platform from TI.  The sensors include an accelerometer, gyroscope, IR contactless thermometer, humidity sensor, magnetometer, barometer and on-chip temperature sensor.
+### Accelerometer
+Demonstrates the basics of the AccelometerSetup and using a callback routine.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Accelerometer"
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    PRINT AT 6,1 "Got a device", device.Name
+    REM 1=turn on the on-device accelerometer
+    REM 20=accelerometer update speed (in milliseconds)
+    PRINT AT 7,1 "SETUP", tag.AccelerometerSetup(1, 20, “Acc”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The Acc routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        Screen.ClearLine(3)
+        PRINT "TIME", time
+        PAUSE 50
+    NEXT time
+    REM Undo the accelerometer
+    status = tag.AccelerometerSetup(0, 0, "")
+    PRINT  AT 9, 1 "FINISH", status
+    tag.Close()
+END IF
+
+FUNCTION Acc(tag, x, y, z)
+    Screen.ClearLine(1)
+    PRINT x, y, z
+END
+```
+### Accelerometer Off
+Turns off the accelerometer
+```BASIC
+CLS BLUE
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    PRINT "Got a device", device.Name
+    tag.SetupAcc(0, 100, “Acc”)
+END IF
+PRINT "All done"
+```
+### Accelerometer to Magic Light
+Uses the TI SensorTag accelerometer to drive a Magic Light
+```BASIC
+CLS BLUE
+PRINT "Demonstrate TI SensorTag Accelerometer"
+
+lights = Bluetooth.DevicesName ("LEDBlue*")
+FOR i=1 TO lights
+    device = lights.Get(i)
+    light = device.As("MagicLight")
+NEXT i
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    PRINT "Got a device", device.Name
+    PRINT tag.SetupAcc(1, 20, “Acc”)
+
+    PRINT "Done with setup"
+    FOR time = 1 TO 20
+        PRINT AT 10, 1 time
+        PAUSE 50
+    NEXT time
+    PRINT tag.SetupAcc(0, 0, "")
+    tag.Close()
+END IF
+PRINT "DONE"
+
+REM The tag.SetupAcc(1, 20, "Acc") call tells the device to call the "Acc"
+REM function when the accelerometer changes.
+FUNCTION Acc(tag, x, y, z)
+    REM Tell the Acc function that the "light" variable is really a
+    REM global variable defined in the main program.
+    GLOBAL light
+
+    Screen.ClearLine(1)
+    PRINT x, y, z
+
+    r = ABS (x*120)
+    g = ABS(y*120)
+    b = ABS (z*120)
+
+    Screen.ClearLine(2)
+    PRINT r, g, b
+
+    light.SetColor (r, g, b)
+END
+```
+### Barometer
+Demonstrates the basics of the BarometerSetup and using a callback routine.
+```BASIC
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag Barometer measurements"
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.BarometerSetup(1,  100, “Barometer”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.BarometerSetup(0, 100, "Barometer")
+END IF
+
+REM Temperatures are in degrees C
+REM pressure is in hpa
+FUNCTION Barometer(tag, temp, pressure)
+    Screen.ClearLine(1)
+    PRINT temp, pressure
+
+    Screen.ClearLine(2)
+    PRINT CTOF(temp), HPATOINCHM(pressure)
+END
+
+FUNCTION CTOF(C)
+    F = C * 9/5 + 32
+    F = Math.Round(F*10) / 10
+RETURN F
+
+FUNCTION HPATOINCHM(HPA)
+   ATM = HPA / 1013.25
+   INCHM = ATM * 29.9213
+   REM INCHM = Math.Round(INCHM*10) / 10
+RETURN INCHM
+
+FUNCTION ROUND(val)
+    val = Math.Round(val*10) / 10
+RETURN val
+```
+### Button
+Demonstrates the "Simple Key Service" on the SensorTag
+```BASIC
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag Buttons"
+PRINT AT 6,1 "Count", devices.Count
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    PRINT AT 7,1 "SETUP", tag.ButtonSetup(1,  “Button”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.ButtonSetup(0, "Button")
+END IF
+
+FUNCTION Button(tag, left, right, side)
+    Screen.ClearLine(1)
+    IF (left) THEN PRINT AT 1,1 "LEFT"
+    IF (right) THEN PRINT AT 1,8 "RIGHT"
+    IF (side) THEN PRINT AT 1,16 "SIDE"
+END
+```
+### Gyroscope
+Demonstrates the basics of the GyroscopeSetup and using a callback routine.
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Demonstrate TI SensorTag Gyroscope"
+
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    PRINT AT 6,1 "Got a device", device.Name
+    REM 7=turn on all axis of the gyroscope
+    REM 20=accelerometer update speed (in milliseconds)
+    PRINT AT 7,1 "SETUP", tag.GyroscopeSetup(7, 20, “Gyroscope”)
+
+    PRINT AT 8,1 "Done with setup"
+
+    REM Now wait a little while.  The Acc routine will
+    REM be called with updates.
+    FOR time = 1 TO 10
+        PRINT AT 3, 1 "TIME", time
+        PAUSE 50
+    NEXT time
+    REM Undo the accelerometer
+    status = tag.GyroscopeSetup(0, 20, "Gyroscope")
+    PRINT  AT 9, 1 "FINISH", status
+    tag.Close()
+END IF
+
+FUNCTION Gyroscope(tag, x, y, z)
+    Screen.ClearLine(1)
+    PRINT ROUND(x), ROUND(y), ROUND(z)
+END
+
+FUNCTION ROUND(val)
+    val = Math.Round(val*10) / 10
+RETURN val
+```
+### Humidity
+Demonstrates the basics of the HumiditySetup and using a callback routine.
+```BASIC
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag Humidity measurements"
+
+FOR i=1 TO devices.Count
+   device = devices.Get(i)
+    tag = device.As(“SensorTag2541”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.HumiditySetup(1,  100, “Humidity”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.HumiditySetup(0, 100, "Humidity")
+NEXT i
+
+REM Temperatures are in degrees C
+FUNCTION Humidity(tag, temp, humidity)
+    Screen.ClearLine(1)
+    PRINT temp, humidity
+
+    Screen.ClearLine(2)
+    PRINT CTOF(temp), ROUND(humidity)
+END
+
+FUNCTION CTOF(C)
+    F = C * 9/5 + 32
+    F = Math.Round(F*10) / 10
+RETURN F
+
+FUNCTION ROUND(val)
+    val = Math.Round(val*10) / 10
+RETURN val
+```
+### IR
+Demonstrates the basics of the IRSetup and using a callback routine.
+```BASIC
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag IR measurements"
+PRINT AT 6,1 "Count", devices.Count
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.IRSetup(1,  100, “IR”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.IRSetup(0, 100, "IR")
+END IF
+
+REM Temperatures are in degrees C
+FUNCTION IR(tag, objTemp, ambTemp)
+    Screen.ClearLine(1)
+    PRINT objTemp, ambTemp
+
+    Screen.ClearLine(2)
+    PRINT CTOF(objTemp), CTOF(ambTemp)
+END
+
+FUNCTION CTOF(C)
+    F = C * 9/5 + 32
+    F = Math.Round(F*10) / 10
+RETURN F
+```
+### Magnetometer
+Demonstrates the basics of the MagnetometerSetup and using a callback routine.
+```BASIC
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+CLS BLUE
+PRINT AT 5,1 "Demonstrate SensorTag Magnetometer measurements"
+
+device = Bluetooth.PickDevicesName("SensorTag*,TI BLE Sensor Tag")
+IF (device.IsError)
+    PRINT "No device was picked"
+ELSE
+    tag = device.As(“SensorTag2541”)
+    REM 100=1000ms=1 second
+    PRINT AT 7,1 "SETUP", tag.MagnetometerSetup(1,  100, “Magnetometer”)
+
+    FOR time = 1 TO 30
+        PAUSE 50
+        PRINT AT 3,1 "TIME", time
+    NEXT time
+
+    PRINT AT 8,1 "CLOSE", tag.MagnetometerSetup(0, 100, "Magnetometer")
+END IF
+
+FUNCTION Magnetometer(tag, x, y, z)
+    Screen.ClearLine(1)
+    PRINT ROUND(x), ROUND(y), ROUND(z)
+END
+
+
+FUNCTION ROUND(val)
+    val = Math.Round(val*10) / 10
+RETURN val
+```
+### Raw access to SensorTag
+Shows how to access the SensorTag using just the low-level Bluetooth functions and without using the specialization
+```BASIC
+CLS BLUE
+devices = Bluetooth.DevicesName("SensorTag*,TI BLE Sensor Tag")
+ACCSERVICE ="f000aa10-0451-4000-b000-000000000000"
+ACCCONFIG ="f000aa12-0451-4000-b000-000000000000"
+ACCDATA ="f000aa11-0451-4000-b000-000000000000"
+
+
+PRINT "COUNT", devices.Count
+
+FOR i=1 TO devices.Count
+    device = devices.Get(i)
+    PRINT "DEVICE", device.Name
+
+    address= device.Init()
+    PRINT "Address", address
+
+    REM Tell the device to send me some acc. data
+    PRINT "ACC ON", device.WriteBytes(ACCSERVICE, ACCCONFIG, 1)
+
+    PRINT "COUNT", "X", "Y", "Z"
+    FOR time = 1 TO 15
+        PAUSE 50
+        data = device.ReadRawBytes(ACCSERVICE, ACCDATA)
+        PRINT data.Count, data.Get(1), data.Get(2), data.Get(3)
+    NEXT time
+
+    REM Turn it back off
+    PRINT "ACC OFF", device.WriteBytes(ACCSERVICE, ACCCONFIG, 0)
+    PRINT " "
+NEXT i
+```
+### Raw callback with the SensorTag
+A new program for you to edit
+```BASIC
+CLS BLUE
+PRINT AT 5,1 "Acceleration Data"
+
+devices = Bluetooth.DevicesName ("SensorTag*,TI BLE Sensor Tag")
+
+REM
+REM Constants for TI SensorTag 2541 Accelerometer
+REM These are taken from the data sheets.
+REM
+AccService = "f000aa10-0451-4000-b000-000000000000"
+AccData = "f000aa11-0451-4000-b000-000000000000"
+AccConfig = "f000aa12-0451-4000-b000-000000000000"
+AccPeriod = "f000aa13-0451-4000-b000-000000000000"
+
+PRINT "COUNT", devices.Count
+IF devices.Count < 1 THEN STOP
+
+device = devices.Get(1)
+
+PRINT “SensorTag Address”, device.Init()
+
+REM Tell the SensorTag to enable the Accelerometer
+REM Config=1 means enable
+REM Period=20 means get data fast (50 per second)
+device.WriteBytes(AccService, AccConfig, 1)
+device.WriteBytes(AccService, AccPeriod, 100)
+
+REM 1=Notify (2=Indicate 0=None)
+device.WriteCallbackDescriptor (AccService, AccData, 1)
+device.AddCallback (AccService, AccData, “WriteAcc”)
+
+
+REM
+REM Wait a little while and then turn off the Accelometer
+REM
+
+FOR time = 1 TO 10
+    PAUSE 50
+    PRINT AT 1,1 time
+    PAUSE 50
+    PRINT AT 1,1 "     (clear)"
+NEXT time
+
+REM
+REM Turn off the accelerometer; turn off notify; remove callback
+REM
+device.WriteCallbackDescriptor (AccService, AccData, 0)
+device.WriteBytes(AccService, AccConfig, 0)
+device.RemoveCallback (AccService, AccData, “WriteAcc”)
+
+FUNCTION WriteAcc(device, x, y, z)
+    Screen.ClearLine(3)
+    PRINT x, y, y
+END
+```

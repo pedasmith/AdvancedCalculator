@@ -1,0 +1,118 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.FinancialMortgageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Mortgage</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+        
+        <local:FourPanel.ItemMain>
+            <Grid Tag="AutoWidth|Column=0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Interest (per year)</TextBlock>
+                <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1InterestPerYear" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1InterestPerYear" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1InterestPerYear" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">Principle</TextBlock>
+                <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1Principle" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1Principle" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1Principle" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Years of Payments</TextBlock>
+                <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1YearsOfPayments" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1YearsOfPayments" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1YearsOfPayments" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource solverblock}">Payment (monthly)</TextBlock>
+                <TextBox  Grid.Row="9" Grid.Column="1" Tag="autotbeq1Payment" Style="{StaticResource solverbox}"  InputScope="Number" />
+                <Button Grid.Row="9" Grid.Column="2" Tag="autotbeq1Payment" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                <Button Grid.Row="9" Grid.Column="3" Tag="autotbeq1Payment" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+            </Grid>
+        </local:FourPanel.ItemMain>
+        
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/FinancialMortgage.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+        
+        <local:FourPanel.ItemBottom>
+            <Grid Tag="AutoWidth|Text" Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}">
+                        <Bold FontSize="20" >Mortgage Payments</Bold>
+                        <LineBreak />
+                        This mortgage calculator takes in all values by years, but assumes that you
+                        will make monthly payments.  
+                        <LineBreak />
+                        The <Bold>Interest Per Year</Bold> is given as an interest; for example, an interest
+                        rate of 5.325% is entered as 5.325
+                        <LineBreak />
+                        The <Bold>Principle</Bold> is the starting principle
+                        <LineBreak />
+                        The <Bold>Years of Payment</Bold> is the number of years of payments
+                        <LineBreak />
+                        The <Bold>Payment (monthly)</Bold> is the calculated monthly payment
+                        
+                        <LineBreak />
+                        For example, suppose you want to know how much of a house you can afford.
+                        You know that you can afford to pay $1200 per month for a house, and you see that interest rates are 3.75%,
+                        and you are interested in a standard 30 year mortgage.  Enter in 3.75 for the interest, 30 for the years, and 1200 
+                        for the monthly payment.  The result is about 259114, meaning that you can afford about a $260,000 mortgage.
+                            
+                        <LineBreak />
+                        <Bold>Important note</Bold>: this solver uses one particular method of calculating payments.  However,
+                        different banks will have slighly different calculations depending on how they round out payments. 
+                        You should expect that the numbers that your bank gives you will be a little different than this
+                        solver. 
+                       
+                        <LineBreak />
+                        The payment value is calculated with the standard formulae                       
+                        <LineBreak />
+                        Principle / ((1.0 - Math.Pow(1.0 + Interest, -NPayments))/Interest)
+                        <LineBreak />
+
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+
+    </local:FourPanel>
+</UserControl>

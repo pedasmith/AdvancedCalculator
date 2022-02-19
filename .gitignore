@@ -3,3 +3,17 @@
 ################################################################################
 
 /.vs
+/BCBasic/BCBasic.Windows/obj
+/AdvancedCalculator/obj
+/AdvancedCalculatorUniversal/bin
+/AdvancedCalculatorUniversal/obj
+/BCBasic/BCBasic.WindowsPhone/obj
+/BluetoothCalculatorUniversal/bin
+/BluetoothCalculatorUniversal/obj
+/GraphicsSample/Graphics/Graphics/obj
+/SourceCode/AdvancedCalculator/AdvancedCalculatorUniversal/obj
+/SourceCode/AdvancedCalculator/BCBasic/BCBasic.Windows/obj
+/SourceCode/AdvancedCalculator/BCBasic/BCBasic.WindowsPhone/obj
+/SourceCode/AdvancedCalculator/BluetoothCalculatorUniversal/obj
+/UniversalRetroBasic/obj
+/AdvancedCalculatorUniversal/AdvancedCalculatorUniversalVS2019.csproj.user

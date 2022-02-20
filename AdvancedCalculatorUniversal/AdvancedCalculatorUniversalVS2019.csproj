@@ -568,6 +568,10 @@
     <Compile Include="Pages\StringAnalyzerControl.xaml.cs">
       <DependentUpon>StringAnalyzerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\StringConversionControl.xaml.cs">
+      <DependentUpon>StringConversionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StringConvert.cs" />
     <Compile Include="Pages\UnicodeTableControl.xaml.cs">
       <DependentUpon>UnicodeTableControl.xaml</DependentUpon>
     </Compile>
@@ -1109,6 +1113,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\StringAnalyzerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StringConversionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

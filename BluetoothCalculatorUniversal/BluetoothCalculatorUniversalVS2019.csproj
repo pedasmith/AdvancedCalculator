@@ -577,6 +577,12 @@
     <Compile Include="..\AdvancedCalculatorUniversal\Pages\StringAnalyzerControl.xaml.cs">
       <Link>Pages\StringAnalyzerControl.xaml.cs</Link>
     </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\StringConversionControl.xaml.cs">
+      <Link>Pages\StringConversionControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\StringConvert.cs">
+      <Link>Pages\StringConvert.cs</Link>
+    </Compile>
     <Compile Include="..\AdvancedCalculatorUniversal\Pages\UnicodeTableControl.xaml.cs">
       <Link>Pages\UnicodeTableControl.xaml.cs</Link>
     </Compile>
@@ -1415,6 +1421,11 @@
     </Page>
     <Page Include="..\AdvancedCalculatorUniversal\Pages\StringAnalyzerControl.xaml">
       <Link>Pages\StringAnalyzerControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\StringConversionControl.xaml">
+      <Link>Pages\StringConversionControl.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

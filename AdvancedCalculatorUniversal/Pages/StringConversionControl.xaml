@@ -1,0 +1,80 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.StringConversionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource titletext}" >String Conversions</TextBlock>
+                </StackPanel>
+            </Border>
+        </local:FourPanel.ItemTop>
+        <local:FourPanel.ItemMain>
+            <Grid Grid.Row="1" Grid.Column="0" Name="uiConversionsAsciiTableGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0" x:Name="uiFrom" HorizontalAlignment="Stretch" Height="200" Width="500" 
+                         TextChanged="OnTextChanged" 
+                         AcceptsReturn="True" TextWrapping="Wrap"
+                         Header="Text to convert"  PlaceholderText="Enter text to convert here" />
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <ComboBox x:Name="uiInputType" SelectedIndex="0"
+                              Header="Input Type" Width="200"
+                              SelectionChanged="OnConversionChanged">
+                        <ComboBoxItem Content="Character HEX codes" Tag="HEX"/>
+                        <ComboBoxItem Content="String" Tag="string"/>
+                        <ComboBoxItem Content="BASE-64" Tag="BASE64-RFC4648"/>
+                        <ComboBoxItem Content="BASE-64 (MIME)" Tag="BASE64-RFC1421"/>
+                        <ComboBoxItem Content="BASE-64 URL" Tag="BASE64-RFC4648url"/>
+                        <ComboBoxItem Content="URL Encoded" Tag="URL-%20"/>
+                    </ComboBox>
+                    <ComboBox x:Name="uiOutputType" SelectedIndex="0"
+                              Header="Output Type" Width="200" Margin="5,0,0,0"
+                              SelectionChanged="OnConversionChanged">
+                        <ComboBoxItem Content="String" Tag="string"/>
+                        <ComboBoxItem Content="BASE-64" Tag="BASE64-RFC4648"/>
+                        <ComboBoxItem Content="BASE-64 (MIME)" Tag="BASE64-RFC1421"/>
+                        <ComboBoxItem Content="BASE-64 URL" Tag="BASE64-RFC4648url"/>
+                        <ComboBoxItem Content="URL (space=%20)" Tag="URL-%20"/>
+                        <ComboBoxItem Content="URL (space=+)" Tag="URL-+"/>
+                    </ComboBox>
+                </StackPanel>
+                <Border Grid.Row="2" BorderBrush="White" BorderThickness="1" Padding="1" Margin="1"
+                        HorizontalAlignment="Stretch" Height="200" Width="500">
+                    <TextBlock  x:Name="uiTo" 
+                           HorizontalAlignment="Stretch" Height="192" Width="492"
+                           IsTextSelectionEnabled="True" TextWrapping="Wrap"
+                            />
+
+                </Border>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/Blank.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                        <Bold FontSize="20" >About String Conversions</Bold>
+                        <LineBreak />
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

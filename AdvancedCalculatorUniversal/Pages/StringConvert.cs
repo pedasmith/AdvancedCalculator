@@ -27,6 +27,10 @@ namespace AdvancedCalculator.Pages
                     errstr = ConvertInputHex(inputText, ref outputBytes);
                     break;
 
+                case "ROT-13":
+                    errstr = ConvertInputRot13(inputMethod, inputText, ref outputBytes);
+                    break;
+
                 case "URL-%20":
                 case "URL-+":
                     errstr = ConvertInputUrl(inputMethod, inputText, ref outputBytes);
@@ -174,6 +178,43 @@ namespace AdvancedCalculator.Pages
             return retval;
         }
 
+        /// <summary>
+        /// Does an in-place conversion of ROT13 input
+        /// </summary>
+        static private void ConvertBytesRot13(List<byte> outputBytes)
+        {
+            for (int i = 0; i < outputBytes.Count; i++)
+            {
+                var b = outputBytes[i];
+                if (b >= (byte)'a' && b <= (byte)'z')
+                {
+                    b = (byte)(b + 13);
+                    if (b > (byte)'z') b = (byte)(b - 26);
+                    outputBytes[i] = b;
+                }
+                else if (b >= (byte)'A' && b <= (byte)'Z')
+                {
+                    b = (byte)(b + 13);
+                    if (b > (byte)'Z') b = (byte)(b - 26);
+                    outputBytes[i] = b;
+                }
+            }
+        }
+
+        static private string ConvertInputRot13(string inputMethod, string inputText, ref List<byte> outputBytes)
+        {
+            string errstr = "";
+            try
+            {
+                outputBytes = Utf8Encoder.GetBytes(inputText).ToList();
+                ConvertBytesRot13(outputBytes);
+            }
+            catch (Exception)
+            {
+                errstr = "Not a valid URL-encoded input";
+            }
+            return errstr;
+        }
         static private string ConvertInputUrl(string inputMethod, string inputText, ref List<byte> outputBytes)
         {
             string errstr = "";
@@ -198,6 +239,10 @@ namespace AdvancedCalculator.Pages
                 case "BASE64-RFC4648":
                 case "BASE64-RFC4648url":
                     retval = ConvertOutputBase64(outputMethod, bytes);
+                    break;
+
+                case "ROT13":
+                    retval = ConvertOutputRot13(outputMethod, bytes);
                     break;
 
                 case "URL-%20":
@@ -265,6 +310,22 @@ namespace AdvancedCalculator.Pages
             }
             return retval;
         }
+
+        static private string ConvertOutputRot13(string outputMethod, List<byte> bytes)
+        {
+            string retval = "";
+            try
+            {
+                ConvertBytesRot13(bytes);
+                retval = Utf8Encoder.GetString(bytes.ToArray());
+            }
+            catch (Exception)
+            {
+                retval = $"ERROR: input is not a valid UTF8 string";
+            }
+            return retval;
+        }
+
         static private string ConvertOutputUrl(string outputMethod, List<byte> bytes)
         {
             string retval = "";

@@ -40,6 +40,7 @@
                         <ComboBoxItem Content="BASE-64" Tag="BASE64-RFC4648"/>
                         <ComboBoxItem Content="BASE-64 (MIME)" Tag="BASE64-RFC1421"/>
                         <ComboBoxItem Content="BASE-64 URL" Tag="BASE64-RFC4648url"/>
+                        <ComboBoxItem Content="ROT-13" Tag="ROT13"/>
                         <ComboBoxItem Content="URL Encoded" Tag="URL-%20"/>
                     </ComboBox>
                     <ComboBox x:Name="uiOutputType" SelectedIndex="0"
@@ -49,6 +50,7 @@
                         <ComboBoxItem Content="BASE-64" Tag="BASE64-RFC4648"/>
                         <ComboBoxItem Content="BASE-64 (MIME)" Tag="BASE64-RFC1421"/>
                         <ComboBoxItem Content="BASE-64 URL" Tag="BASE64-RFC4648url"/>
+                        <ComboBoxItem Content="ROT-13" Tag="ROT13"/>
                         <ComboBoxItem Content="URL (space=%20)" Tag="URL-%20"/>
                         <ComboBoxItem Content="URL (space=+)" Tag="URL-+"/>
                     </ComboBox>

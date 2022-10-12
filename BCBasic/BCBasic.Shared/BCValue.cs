@@ -24,6 +24,16 @@ namespace BCBasic
             DoubleValue = value ? 1.0 : 0.0;
             CurrentType = ValueType.IsDouble;
         }
+        public BCValue(byte[] value)
+        {
+            var vlist = new BCValueList();
+            foreach (var b in value)
+            {
+                vlist.data.Add(new BCValue(b));
+            }
+            ObjectValue = vlist;
+            CurrentType = ValueType.IsObject;
+        }
         public BCValue(double value)
         {
             DoubleValue = value;

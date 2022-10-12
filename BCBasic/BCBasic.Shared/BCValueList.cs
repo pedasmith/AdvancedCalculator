@@ -57,9 +57,23 @@ namespace BCBasic
             if (_floatArray == null && _data == null) return null;
             if (_floatArray != null) return _floatArray;
             float[] Retval = new float[data.Count];
-            for (int i=0; i<data.Count; i++)
+            for (int i = 0; i < data.Count; i++)
             {
                 Retval[i] = (float)data[i].AsDouble;
+            }
+            return Retval;
+        }
+
+
+        byte[] _byteArray = null;
+        public byte[] AsByteArray()
+        {
+            if (_byteArray == null && _data == null) return null;
+            if (_byteArray != null) return _byteArray;
+            byte[] Retval = new byte[data.Count];
+            for (int i = 0; i < data.Count; i++)
+            {
+                Retval[i] = (byte)data[i].AsDouble;
             }
             return Retval;
         }

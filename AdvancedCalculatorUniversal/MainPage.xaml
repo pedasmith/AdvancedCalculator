@@ -75,7 +75,8 @@
                         <!-- TODO: what happened to the string analyzer?
                         <Button Tag="uiConversionsStringAnalyzerAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}"  Content="String Analyzer"  Click="OnSelectSub" />
                         -->
-                        <Button Tag="uiConversionsUnicodeDataAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}"  Content="Unicode Data"  Click="OnSelectSub" />
+                        <Button Tag="uiConversionsUnicodeDataAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[2]}"  Content="Unicode Data"  Click="OnSelectSub" />
+                        <Button Tag="uiConversionsStringAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[1]}"  Content="String Conversion"  Click="OnSelectSub" />
                     </StackPanel>
                 
                     <Rectangle Height="10" />

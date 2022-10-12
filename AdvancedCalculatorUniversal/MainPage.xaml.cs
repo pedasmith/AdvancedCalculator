@@ -198,6 +198,7 @@ namespace AdvancedCalculator
                 testResult += BCBasic.RunTimeLibrary.RTLCsvRfc4180.TestParseCsv();
                 testResult += SimpleCalculator.TestDoubleToEngineering();
                 testResult += BCBasic.RunTimeLibrary.InterpolationLibrary.Test();
+                testResult += Pages.StringConvert.Test();
                 // testResult += Edit.ParserTest.Test(); //TODO: must not be enabled when for a RELEASE
                 if (testResult == 0)
                 {

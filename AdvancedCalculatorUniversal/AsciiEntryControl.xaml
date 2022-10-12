@@ -9,13 +9,12 @@
     d:DesignHeight="80"
     d:DesignWidth="80">
     
-    <Border Margin="2" Padding="2" Background="Black" Height="52" Width="56" BorderBrush="White" BorderThickness="1">
+    <Border Margin="0,0,0,0" Padding="2,0,0,0" Background="Black" Height="40" Width="56" BorderBrush="White" BorderThickness="1">
         <Grid>
             <TextBlock Name="uiChar" Text="A" FontSize="30"  HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="12,0,0,0" FontFamily="Global User Interface"/>
             <TextBlock Name="uiDec" Text="65" FontSize="8" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0,4,0,0"/>
             <TextBlock Name="uiHex" Text="61" FontSize="8" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
             <TextBlock Name="uiOther" Text="41" FontSize="8" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="0,0,0,4"/>
-
         </Grid>
     </Border>
 </UserControl>

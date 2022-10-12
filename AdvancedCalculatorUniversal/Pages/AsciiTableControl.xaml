@@ -15,7 +15,19 @@
     <local:FourPanel x:Name="uiMain">
         <local:FourPanel.ItemTop>
             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
-                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >ASCII Table</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource titletext}" >ASCII Table</TextBlock>
+                    <Rectangle Width="50" />
+                    <!-- Grabbed from the AsciiEntryControl -->
+                    <Border Margin="0" Padding="2,0,0,0" Background="Black" Height="40" Width="86" BorderBrush="White" BorderThickness="1">
+                        <Grid>
+                            <TextBlock Name="uiChar" Text="A" FontSize="30"  HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="22,0,0,0" FontFamily="Global User Interface"/>
+                            <TextBlock Name="uiDec" Text="65 Decimal" FontSize="8" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="0,4,0,0"/>
+                            <TextBlock Name="uiHex" Text="61 Hex" FontSize="8" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                            <TextBlock Name="uiOther" Text="41 Octal" FontSize="8" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
             </Border>
         </local:FourPanel.ItemTop>
         <local:FourPanel.ItemMain>

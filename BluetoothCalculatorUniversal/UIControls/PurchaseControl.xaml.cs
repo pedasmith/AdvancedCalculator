@@ -61,7 +61,7 @@ namespace Shipwreck.UIControls
         private async void OnPurchaseNow(object sender, RoutedEventArgs e)
         {
             await Features.PurchaseFullAccess();
-            // Init(); // Need to re-initialize the UI -- will be called via the callback.
+            // InitAsync(); // Need to re-initialize the UI -- will be called via the callback.
         }
 
         private async void OnTryAccessCode (object sender, RoutedEventArgs e)
@@ -82,7 +82,7 @@ namespace Shipwreck.UIControls
                 case "beta":
                     Features.InitAccessNow();
                     await Messages.PopupAccessCodeAcceptedAsync();
-                    //Init(); // do not need to call Init(); Init will be called when the feature changes
+                    //InitAsync(); // do not need to call InitAsync(); InitAsync will be called when the feature changes
                     break;
             }
         }

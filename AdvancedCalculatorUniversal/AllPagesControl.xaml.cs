@@ -371,9 +371,9 @@ namespace AdvancedCalculator
                     el = new UnicodeTableControl();
                     DBGUnicode = (UnicodeTableControl)el;
                     break;
-                case "uiConversionsStringAlign":
-                    el = new StringConversionControl();
-                    break;
+                //case "uiConversionsStringAlign":
+                //    el = new StringConversionControl();
+                //    break;
                 case "uiConversionsTemperature":
                     el = new ConversionsTemperatureControl();
                     break;

@@ -39,7 +39,7 @@ namespace AdvancedCalculator
             this.UnhandledException += App_UnhandledException;
         }
 
-        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             var md = new MessageDialog("EXCEPTION");
             var dp = new DataPackage();

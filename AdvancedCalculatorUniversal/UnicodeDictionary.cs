@@ -290,13 +290,14 @@ namespace AdvancedCalculator
         public async Task Init()
         {
             Data.Clear();
-            //UnicodeBlockData = await BlockData.Init();
+            //UnicodeBlockData = await BlockData.InitAsync();
             UnicodeBlockData = new BlockDataDictionary();
             await UnicodeBlockData.InitAsync();
             await InitFile("UnicodeData.txt");
             // Where does the UnicodeData_MicrosoftSymbol.txt file come from?
             // https://msdn.microsoft.com/en-us/windows/uwp/controls-and-patterns/segoe-ui-symbol-font
             await InitFile("UnicodeData_MicrosoftSymbol.txt", "MICROSOFT SYMBOL ", CharacterType.Symbol);
+            await InitFile("UnicodeData_MicrosoftSymbol_Obsolete2023.txt", "MICROSOFT SYMBOL ", CharacterType.Symbol);
         }
 
         public async Task InitFile(string filename, string prefix = "", CharacterType type = CharacterType.Normal)

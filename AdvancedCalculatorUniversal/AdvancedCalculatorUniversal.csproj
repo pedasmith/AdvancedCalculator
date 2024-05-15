@@ -11,8 +11,8 @@
     <AssemblyName>AdvancedCalculatorUniversal</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -20,7 +20,9 @@
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>6063831A5E72F38FAEDDE7648608606AA749AE9A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>F6677B7A9A6D252E140EBCDAA68A0F782DFA6F98</PackageCertificateThumbprint>
+    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -180,7 +182,9 @@
     <None Include="Assets\SolverImages\GeometryCircle.pdn" />
     <None Include="Assets\SolverImages\GeometrySlope.pdn" />
     <None Include="Assets\SolverImages\RightTriangle.pdn" />
-    <None Include="project.json" />
+    <Content Include="Assets\ValueOfMoneyTables\CPIAUCSL.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="project.lock.json" />
   </ItemGroup>
   <ItemGroup>
@@ -580,6 +584,7 @@
     <Compile Include="Solvers\EnergySolver.cs" />
     <Compile Include="Solvers\FinancialCAGR.cs" />
     <Compile Include="Solvers\FinancialMortgageSolver.cs" />
+    <Compile Include="Solvers\FinancialValueOverTime.cs" />
     <Compile Include="Solvers\FinancialWACC.cs" />
     <Compile Include="Solvers\GeometryCircleSolver.cs" />
     <Compile Include="Solvers\GeometryRightTriangleSolver.cs" />
@@ -771,6 +776,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\UnicodeData_MicrosoftSymbol.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\UnicodeData_MicrosoftSymbol_Obsolete2023.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Package.StoreAssociation.xml" />
@@ -1126,14 +1134,24 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="Microsoft.Midi.GmDls, Version=10.0.10586.0">
-      <Name>Microsoft General MIDI DLS for Universal Windows Apps %28Microsoft.Midi.GmDls, Version=10.0.10586.0%29</Name>
+    <SDKReference Include="Microsoft.Midi.GmDls, Version=10.0.18362.0">
+      <Name>Microsoft General MIDI DLS for Universal Windows Apps %28Microsoft.Midi.GmDls, Version=10.0.18362.0%29</Name>
     </SDKReference>
-    <SDKReference Include="WindowsDesktop, Version=10.0.10586.0">
+    <SDKReference Include="WindowsDesktop, Version=10.0.18362.0">
       <Name>Windows Desktop Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics">
+      <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.5</Version>
+    </PackageReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -11,8 +11,8 @@
     <AssemblyName>BluetoothCalculatorUniversal</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -20,9 +20,11 @@
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
-	<AppxBundleAutoResourcePackageQualifiers>DXFeatureLevel</AppxBundleAutoResourcePackageQualifiers>
-	<AppxDefaultResourceQualifiers>Language=en-US</AppxDefaultResourceQualifiers>
-    <PackageCertificateThumbprint>8756F754E7FA9356B83E402852C3E029FF15DABE</PackageCertificateThumbprint>
+    <AppxBundleAutoResourcePackageQualifiers>DXFeatureLevel</AppxBundleAutoResourcePackageQualifiers>
+    <AppxDefaultResourceQualifiers>Language=en-US</AppxDefaultResourceQualifiers>
+    <PackageCertificateThumbprint>6DA3F0ECBFAC97E520A7571A9DAF4A2682A6620E</PackageCertificateThumbprint>
+    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -174,11 +176,19 @@
     <None Include="..\AdvancedCalculatorUniversal\Assets\simpleDictionary.json">
       <Link>Assets\simpleDictionary.json</Link>
     </None>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\ValueOfMoneyTables\CPIAUCSL.csv">
+      <Link>Assets\ValueOfMoneyTables\CPIAUCSL.csv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="..\BCBasic\BCBasic.Shared\BCBasic.Shared.projitems">
       <Link>BCBasic\BCBasic.Shared.projitems</Link>
     </None>
     <Content Include="..\AdvancedCalculatorUniversal\Assets\cities15000.txt">
       <Link>Assets\cities15000.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\UnicodeData_MicrosoftSymbol_Obsolete2023.txt">
+      <Link>Assets\UnicodeData_MicrosoftSymbol_Obsolete2023.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\SourceCode\SourceCode.zip">
@@ -254,7 +264,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="BluetoothCalculatorUniversal_StoreKey.pfx" />
-    <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Mini\Feedback\CommonButtonMeasures.cs">
@@ -616,6 +625,9 @@
     </Compile>
     <Compile Include="..\AdvancedCalculatorUniversal\Solvers\FinancialMortgageSolver.cs">
       <Link>Solvers\FinancialMortgageSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\FinancialValueOverTime.cs">
+      <Link>Solvers\FinancialValueOverTime.cs</Link>
     </Compile>
     <Compile Include="..\AdvancedCalculatorUniversal\Solvers\FinancialWACC.cs">
       <Link>Solvers\FinancialWACC.cs</Link>
@@ -1518,14 +1530,24 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="Microsoft.Midi.GmDls, Version=10.0.10586.0">
-      <Name>Microsoft General MIDI DLS for Universal Windows Apps %28Microsoft.Midi.GmDls, Version=10.0.10586.0%29</Name>
+    <SDKReference Include="Microsoft.Midi.GmDls, Version=10.0.18362.0">
+      <Name>Microsoft General MIDI DLS for Universal Windows Apps %28Microsoft.Midi.GmDls, Version=10.0.18362.0%29</Name>
     </SDKReference>
-    <SDKReference Include="WindowsDesktop, Version=10.0.10586.0">
+    <SDKReference Include="WindowsDesktop, Version=10.0.18362.0">
       <Name>Windows Desktop Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics">
+      <Version>5.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.5</Version>
+    </PackageReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

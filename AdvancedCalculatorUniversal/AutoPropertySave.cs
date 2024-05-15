@@ -68,31 +68,31 @@ namespace AdvancedCalculator
         CalculatorLog Log = new CalculatorLog();
         public void Init(MainPage mainPage)
         {
-            Log.WriteWithTime("APS: Init: MainPage: called\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: called\r\n");
             this.mainPage = mainPage;
             mainPage.PropertyChanged += mainPage_PropertyChanged;
-            Log.WriteWithTime("APS: Init: MainPage: doing Set SelectMain\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: doing Set SelectMain\r\n");
             Set(mainPage, "SelectMain");
-            Log.WriteWithTime("APS: Init: MainPage: doing Set SelectSub\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: doing Set SelectSub\r\n");
             if (mainPage.SelectMain != null && mainPage.SelectMain.Contains("SubMenu"))
             {
                 Set(mainPage, "SelectSub");
             }
-            Log.WriteWithTime("APS: Init: MainPage: doing Alignment\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: doing Alignment\r\n");
             Set(mainPage, "Alignment");
-            Log.WriteWithTime("APS: Init: MainPage: doing ColorScheme\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: doing ColorScheme\r\n");
             Set(mainPage, "ColorScheme");
-            Log.WriteWithTime("APS: Init: MainPage: doing BackgroundColor\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: doing BackgroundColor\r\n");
             Set(mainPage, "BackgroundColor");
-            Log.WriteWithTime("APS: Init: MainPage: doing Font\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: doing Font\r\n");
             Set(mainPage, "Font");
-            Log.WriteWithTime("APS: Init: MainPage: return\r\n");
+            Log.WriteWithTime("APS: InitAsync: MainPage: return\r\n");
         }
 
         Background background;
         public void Init(Background background)
         {
-            Log.WriteWithTime("APS: Init: Background: called\r\n");
+            Log.WriteWithTime("APS: InitAsync: Background: called\r\n");
             this.background = background;
             background.PropertyChanged += background_PropertyChanged;
             Set(background, "TextColor");
@@ -100,7 +100,7 @@ namespace AdvancedCalculator
             Set(background, "NumberOfRows");
             Set(background, "NumberMargin");
             Set(background, "NumberOpacity");
-            Log.WriteWithTime("APS: Init: Background: return\r\n");
+            Log.WriteWithTime("APS: InitAsync: Background: return\r\n");
         }
 
         // e.g. GetSetting (CalculatorInView()+"DisplaySpecifier") for the specialty base10/base16 etc setting for the programmable calculator.

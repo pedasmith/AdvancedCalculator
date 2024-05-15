@@ -108,7 +108,7 @@ namespace AdvancedCalculator
                 Log.WriteWithTime("MainPage: doing: component\r\n");
                 this.InitializeComponent();
 
-                // See https://social.msdn.microsoft.com/Forums/en-US/c7633964-8744-44ae-b5ee-dafc3bb1d534/how-do-i-set-the-default-window-size-of-universal-windows-apps-on-the-desktop?forum=wpdevelop
+                // See https://social.msdn.microsoft.com/Forums/en-US/c7633964-8744-44ae-b5ee-dafc3bb1d534/how-do-rowIndex-set-the-default-window-size-of-universal-windows-apps-on-the-desktop?forum=wpdevelop
                 ApplicationView.PreferredLaunchViewSize = new Size(1080, 1920);
                 ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
@@ -189,7 +189,7 @@ namespace AdvancedCalculator
                 // NOTE: Appearance is a proper button flyout now.
                 //uiAppearancePopup2.SimpleCalculator = simpleCalculator;
                 //uiAppearancePopup2.DoAppearance = this;
-                //uiAppearancePopup2.Init(MainBackground);
+                //uiAppearancePopup2.InitAsync(MainBackground);
 
                 DataTransferManager.GetForCurrentView().DataRequested += OnShareDataRequested;
 
@@ -198,20 +198,21 @@ namespace AdvancedCalculator
                 testResult += BCBasic.RunTimeLibrary.RTLCsvRfc4180.TestParseCsv();
                 testResult += SimpleCalculator.TestDoubleToEngineering();
                 testResult += BCBasic.RunTimeLibrary.InterpolationLibrary.Test();
-                testResult += Pages.StringConvert.Test();
+                //testResult += Pages.StringConvert.Test();
                 // testResult += Edit.ParserTest.Test(); //TODO: must not be enabled when for a RELEASE
                 if (testResult == 0)
                 {
-                    Log.WriteWithTime("MainPage: doing: test results: PASS\r\n");
+                    Log.WriteWithTime("MainPage: doing: moneyHistory results: PASS\r\n");
                 }
                 else
                 {
-                    Log.WriteWithTime("MainPage: doing: test results: FAIL: NError={0}\r\n", testResult);
+                    Log.WriteWithTime("MainPage: doing: moneyHistory results: FAIL: NError={0}\r\n", testResult);
                 }
 
                 Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
 
                 simpleCalculator.ClearDebugKeyString();
+
                 Log.WriteWithTime("MainPage: end\r\n");
             }
             catch (Exception ex)
@@ -237,11 +238,22 @@ namespace AdvancedCalculator
                 };
             }
 #endif
-            this.Loaded += (s, e) =>
+            this.Loaded += async (s, e) =>
             {
                 Log.WriteWithTime("MainPage: Loaded: Start\r\n");
                 Features.Init();
                 ShowCorrectTrialInfo();
+
+                var fvot = new Solvers.FinancialValueOverTime();
+                await fvot.InitAsync();
+                fvot.StartDate = DateTime.Parse("1985-01-01");
+                fvot.EndDate = DateTime.Parse("1994-12-01");
+                fvot.EndDollars = 100.0;
+                //fvot.Calculate();
+                eLog.WriteWithTime($"MainPage: Loaded: report={fvot.report1}\r\n");
+                Log.WriteWithTime($"MainPage: Loaded: report={fvot.report2}\r\n");
+
+
                 Log.WriteWithTime("MainPage: Loaded: End\r\n");
             };
 
@@ -292,7 +304,7 @@ namespace AdvancedCalculator
             new Tip("Linear regression?  Best Calculator makes it easy!", "uiColumnStatsAlign"),
             new Tip("Use the sample standard deviation when your data is just a sample of the entire world.  Use population standard deviation when you've sampled the entire world", "uiColumnStatsAlign"),
             new Tip("RSD (Relative Standard Deviation) tells you how 'spread out' your sample is", "uiColumnStatsAlign"),
-            new Tip("Welch's t-test is more often valid than the Student's t-test (and is never less valid)", "uiColumnStatsAlign"),
+            new Tip("Welch's t-moneyHistory is more often valid than the Student's t-moneyHistory (and is never less valid)", "uiColumnStatsAlign"),
             new Tip("Are you a programmer?  Looking for decimal, hex and more?  Try the Programmer's calculator", "uiCalculatorProgrammerAlign"),
             new Tip("Counting bits? Try the B+ key in the Programmer's calculator", "uiCalculatorProgrammerAlign"),
             new Tip("Byte-swabbing? There's a key for that in the Programmer's calculator", "uiCalculatorProgrammerAlign"),
@@ -314,7 +326,7 @@ namespace AdvancedCalculator
 
 
             new Tip("PRINT \"HELLO WORLD\" is a very short BASIC program", "uiCalculatorQuickConnectionPopupAlign"),
-            new Tip("FOR i=1 TO 10 ... NEXT i is a BC BASIC loop", "uiCalculatorQuickConnectionPopupAlign"),
+            new Tip("FOR rowIndex=1 TO 10 ... NEXT rowIndex is a BC BASIC loop", "uiCalculatorQuickConnectionPopupAlign"),
             new Tip("You don't need line numbers to program in BC BASIC", "uiCalculatorQuickConnectionPopupAlign"),
             new Tip("Your BC BASIC programs will roam to all of your devices", "uiCalculatorQuickConnectionPopupAlign"),
             new Tip("LET a = 10 assigns the value of 10 to variable a in BC BASIC", "uiCalculatorQuickConnectionPopupAlign"),

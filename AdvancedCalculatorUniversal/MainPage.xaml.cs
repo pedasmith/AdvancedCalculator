@@ -250,7 +250,7 @@ namespace AdvancedCalculator
                 fvot.EndDate = DateTime.Parse("1994-12-01");
                 fvot.EndDollars = 100.0;
                 //fvot.Calculate();
-                eLog.WriteWithTime($"MainPage: Loaded: report={fvot.report1}\r\n");
+                Log.WriteWithTime($"MainPage: Loaded: report={fvot.report1}\r\n");
                 Log.WriteWithTime($"MainPage: Loaded: report={fvot.report2}\r\n");
 
 

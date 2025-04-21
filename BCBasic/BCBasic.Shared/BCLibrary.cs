@@ -176,6 +176,12 @@ namespace BCBasic
             {
                 if (item.Name == name) return item;
             }
+            // The packages got renamed 
+            var exname = "EX: " + name;
+            foreach (var item in Packages)
+            {
+                if (item.Name == exname) return item;
+            }
             return null;
         }
 

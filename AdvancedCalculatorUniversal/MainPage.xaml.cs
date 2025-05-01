@@ -281,7 +281,7 @@ namespace AdvancedCalculator
             // The first four tips don't change position.
             new Tip("Please visit the Best Calculator website.  It's got tips and links to help you get the most out of Best Calculator.", "https://bestcalculator.wordpress.com/"),
             new Tip("The calculator comes with a complete PDF version of the manual", "MANUAL"),
-            new Tip("You can buy the Best Calculator manual on Amazon.", "https://www.amazon.com/gp/product/1517450675/sr=1-3/qid=1443976891/ref=olp_product_details?ie=UTF8&me=&qid=1443976891&sr=1-3"),
+            // Not any more! 2025-04-30 but long overdue: new Tip("You can buy the Best Calculator manual on Amazon.", "https://www.amazon.com/gp/product/1517450675/sr=1-3/qid=1443976891/ref=olp_product_details?ie=UTF8&me=&qid=1443976891&sr=1-3"),
             new Tip("Have trouble concentrating on your work?  Try the Low-Distraction work timer, also from Shipwreck Software", "https://www.microsoft.com/en-us/store/p/low-distraction-work-timer/9nblggh5r6z1"),
 
             new Tip("How do percent keys work?  A programmer describes many of the types of percent keys", "https://blogs.msdn.microsoft.com/oldnewthing/20080110-00/?p=23853"),

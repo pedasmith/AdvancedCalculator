@@ -3,39 +3,46 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AdvancedCalculator"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls" 
     RequestedTheme="Dark"
     >
-
+    <!-- Regular AdvancedCalculatorUniversal -->
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-
+        <winui:XamlControlsResources ControlsResourcesVersion="Version2">
+            <winui:XamlControlsResources.MergedDictionaries>
+                <!-- 
+                2025-04-30: Web says to include this, but it's wrong because that file doesn't exist
+                <ResourceDictionary Source="Styles/Styles.xaml"/>
+                -->
+                <!-- Other app resources here -->
                 <!-- 
                     Styles that define common aspects of the platform look and feel
                     Required by Visual Studio project and item templates
                  -->
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
                 <ResourceDictionary Source="Common/CalculatorStyles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+                <!-- TODO: what do these do? Why aren't they part of the Bluetooth calculator? -->
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="ListBoxBorderThemeBrush" Color="White"/>
 
-            
-            <SolidColorBrush x:Key="ListBoxBorderThemeBrush" Color="White"/>
+                    <SolidColorBrush x:Key="ListBoxBackgroundThemeBrush" Color="#111"/>
+                    <SolidColorBrush x:Key="ListBoxFocusBackgroundThemeBrush" Color="#222"/>
+                    <SolidColorBrush x:Key="ListBoxItemPointerOverBackgroundThemeBrush" Color="#333"/>
+                    <SolidColorBrush x:Key="ListBoxItemPressedBackgroundThemeBrush" Color="White"/>
+                    <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="#444"/>
+                    <SolidColorBrush x:Key="ListBoxItemSelectedDisabledBackgroundThemeBrush" Color="DarkCyan"/>
+                    <SolidColorBrush x:Key="ListBoxItemSelectedPointerOverBackgroundThemeBrush" Color="#555"/>
 
-            <SolidColorBrush x:Key="ListBoxBackgroundThemeBrush" Color="#111"/>
-            <SolidColorBrush x:Key="ListBoxFocusBackgroundThemeBrush" Color="#222"/>
-            <SolidColorBrush x:Key="ListBoxItemPointerOverBackgroundThemeBrush" Color="#333"/>
-            <SolidColorBrush x:Key="ListBoxItemPressedBackgroundThemeBrush" Color="White"/>
-            <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="#444"/>
-            <SolidColorBrush x:Key="ListBoxItemSelectedDisabledBackgroundThemeBrush" Color="DarkCyan"/>
-            <SolidColorBrush x:Key="ListBoxItemSelectedPointerOverBackgroundThemeBrush" Color="#555"/>
-
-            <SolidColorBrush x:Key="ListBoxDisabledForegroundThemeBrush" Color="Green"/>
-            <SolidColorBrush x:Key="ListBoxForegroundThemeBrush" Color="#DDD"/>
-            <SolidColorBrush x:Key="ListBoxItemDisabledForegroundThemeBrush" Color="Red"/>
-            <SolidColorBrush x:Key="ListBoxItemPointerOverForegroundThemeBrush" Color="#FFF"/>
-            <SolidColorBrush x:Key="ListBoxItemPressedForegroundThemeBrush" Color="#111"/>
-            <SolidColorBrush x:Key="ListBoxItemSelectedDisabledForegroundThemeBrush" Color="Blue"/>
-            <SolidColorBrush x:Key="ListBoxItemSelectedForegroundThemeBrush" Color="#DDD"/>
-        </ResourceDictionary>
+                    <SolidColorBrush x:Key="ListBoxDisabledForegroundThemeBrush" Color="Green"/>
+                    <SolidColorBrush x:Key="ListBoxForegroundThemeBrush" Color="#DDD"/>
+                    <SolidColorBrush x:Key="ListBoxItemDisabledForegroundThemeBrush" Color="Red"/>
+                    <SolidColorBrush x:Key="ListBoxItemPointerOverForegroundThemeBrush" Color="#FFF"/>
+                    <SolidColorBrush x:Key="ListBoxItemPressedForegroundThemeBrush" Color="#111"/>
+                    <SolidColorBrush x:Key="ListBoxItemSelectedDisabledForegroundThemeBrush" Color="Blue"/>
+                    <SolidColorBrush x:Key="ListBoxItemSelectedForegroundThemeBrush" Color="#DDD"/>
+                </ResourceDictionary>
+                
+            </winui:XamlControlsResources.MergedDictionaries>
+        </winui:XamlControlsResources>
     </Application.Resources>
 </Application>

@@ -56,11 +56,31 @@ namespace AdvancedCalculator
             Equations.Add(new Equation("LegoPlateHeight", "Millimeters", () => { return Millimeters / 3.2; }));
             Equations.Add(new Equation("Millimeters", "LegoPlateHeight", () => { return LegoPlateHeight * 3.2; }));
 
+            // Astronomical distances: AU LightYears (using Mean Julian Years) Parsecs 
+            Equations.Add(new Equation("AU", "Meters", () => { return Meters / 1.4959787E11; }));
+            Equations.Add(new Equation("Meters", "AU", () => { return AU * 1.4959787E11; }));
+
+            Equations.Add(new Equation("LightYears", "Meters", () => { return Meters / 9.4607305E15; }));
+            Equations.Add(new Equation("Meters", "LightYears", () => { return LightYears * 9.4607305E15; }));
+
+            Equations.Add(new Equation("Parsecs", "Meters", () => { return Meters / 3.0856776E16; }));
+            Equations.Add(new Equation("Meters", "Parsecs", () => { return Parsecs * 3.0856776E16; }));
+
 
 
             InitEquivLists();
 
         }
+
+        private double _AU = Double.NaN;
+        public double AU { get { return _AU; } set { if (value == _AU) return; _AU = value; OnPropertyChanged("AU"); } }
+
+        private double _LightYears = Double.NaN;
+        public double LightYears { get { return _LightYears; } set { if (value == _LightYears) return; _LightYears = value; OnPropertyChanged("LightYears"); } }
+
+        private double _Parsecs = Double.NaN;
+        public double Parsecs { get { return _Parsecs; } set { if (value == _Parsecs) return; _Parsecs = value; OnPropertyChanged("Parsecs"); } }
+
 
         private double _Inches = Double.NaN;
         public double Inches { get { return _Inches; } set { if (value == _Inches) return; _Inches = value; OnPropertyChanged("Inches"); } }

@@ -205,6 +205,45 @@
                         </Grid>
                     </muxc:Expander>
 
+                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="5" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Astronomy</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- AU LightYears Parsecs -->
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Astronomical Units (AU)</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1AU" Style="{StaticResource solverbox}" InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1AU" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1AU" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Light Years</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1LightYears" Style="{StaticResource solverbox}" InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1LightYears" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1LightYears" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Parsecs</TextBlock>
+                            <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1Parsecs" Style="{StaticResource solverbox}" InputScope="Number" />
+                            <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1Parsecs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1Parsecs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
+
                 </Grid>
             </Grid>
         </local:FourPanel.ItemMain>

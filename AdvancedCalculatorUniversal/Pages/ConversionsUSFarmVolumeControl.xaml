@@ -5,6 +5,7 @@
     xmlns:local="using:AdvancedCalculator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -27,13 +28,6 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -42,64 +36,108 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
+                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Grain (farm) Volumes</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Grain (farm) Volumes</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Cups</TextBlock>
-                    <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Pints</TextBlock>
-                    <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Cups</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1CupsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Quarts</TextBlock>
-                    <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Pints</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1PintsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Gallons</TextBlock>
-                    <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Quarts</TextBlock>
+                            <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1QuartsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Pecks</TextBlock>
-                    <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Gallons</TextBlock>
+                            <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1GallonsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Bushels</TextBlock>
-                    <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Pecks</TextBlock>
+                            <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1PecksDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Liters</TextBlock>
-                    <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1Liters" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1Liters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1Liters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Bushels</TextBlock>
+                            <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1BushelsDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource solverblock}">Pounds Per Bushel</TextBlock>
-                    <TextBox  Grid.Row="10" Grid.Column="1" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="10" Grid.Column="2" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="10" Grid.Column="3" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Liters</TextBlock>
+                            <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1Liters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1Liters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1Liters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
 
-                    <TextBlock Grid.Row="11" Grid.Column="0" Style="{StaticResource solverblock}">Pounds</TextBlock>
-                    <TextBox  Grid.Row="11" Grid.Column="1" Tag="autotbeq1Pounds" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="11" Grid.Column="2" Tag="autotbeq1Pounds" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="11" Grid.Column="3" Tag="autotbeq1Pounds" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Crop Weight</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Pounds Per Bushel</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1PoundsPerBushelDryUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Pounds</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Pounds" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Pounds" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Pounds" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
                 </Grid>
             </Grid>
         </local:FourPanel.ItemMain>

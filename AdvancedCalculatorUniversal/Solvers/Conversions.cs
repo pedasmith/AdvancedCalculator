@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdvancedCalculator
 {
@@ -66,5 +62,14 @@ namespace AdvancedCalculator
         public static double KCALS_PER_GRAM_FAT = 9.0;
         public static double KCALS_PER_DOUNT = 198; // medium sized donut; 10.8g fat, 23.4g carbo, 2.4g protein
         //public static double KCALS_PER_GRAM_CARBOHYDRATE = 4.0;
+
+        // See https://en.wikipedia.org/wiki/Luminous_efficacy#Lighting_efficiency
+        public static double LUMENS_PER_WATT_MIN_GAS_MANTLE = 1.5;
+        public static double LUMENS_PER_WATT_MIN_TUNGSTEN = 13.33333333; // 60 W=800 lumens, approx. 17.5;
+        public static double LUMENS_PER_WATT_MIN_HALOGEN = 24.0;
+        public static double LUMENS_PER_WATT_MIN_LED = 102.0;
+        public static double LUMENS_PER_WATT_MIN_CARBON_ARC = 2.0; // up to 7 max)
+        public static double LUMENS_PER_WATT_MIN_FLUORESCENT_TUBE = 80;
+        public static double LUMENS_PER_WATT_MIN_SODIUM_HIGH_PRESSURE = 85.0;
     }
 }

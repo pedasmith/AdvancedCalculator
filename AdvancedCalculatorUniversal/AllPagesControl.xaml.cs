@@ -367,6 +367,9 @@ namespace AdvancedCalculator
                 case "uiConversionsLength":
                     el = new ConversionsLengthControl();
                     break;
+                case "uiConversionsLight":
+                    el = new ConversionsLightControl();
+                    break;
                 case "uiConversionsUnicodeDataAlign":
                     el = new UnicodeTableControl();
                     DBGUnicode = (UnicodeTableControl)el;

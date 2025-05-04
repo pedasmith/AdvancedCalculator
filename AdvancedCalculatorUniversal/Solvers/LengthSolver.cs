@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using EquationSolver;
+﻿using EquationSolver;
+using System;
 
 namespace AdvancedCalculator
 {
@@ -66,21 +61,8 @@ namespace AdvancedCalculator
             Equations.Add(new Equation("Parsecs", "Meters", () => { return Meters / 3.0856776E16; }));
             Equations.Add(new Equation("Meters", "Parsecs", () => { return Parsecs * 3.0856776E16; }));
 
-
-
             InitEquivLists();
-
         }
-
-        private double _AU = Double.NaN;
-        public double AU { get { return _AU; } set { if (value == _AU) return; _AU = value; OnPropertyChanged("AU"); } }
-
-        private double _LightYears = Double.NaN;
-        public double LightYears { get { return _LightYears; } set { if (value == _LightYears) return; _LightYears = value; OnPropertyChanged("LightYears"); } }
-
-        private double _Parsecs = Double.NaN;
-        public double Parsecs { get { return _Parsecs; } set { if (value == _Parsecs) return; _Parsecs = value; OnPropertyChanged("Parsecs"); } }
-
 
         private double _Inches = Double.NaN;
         public double Inches { get { return _Inches; } set { if (value == _Inches) return; _Inches = value; OnPropertyChanged("Inches"); } }
@@ -130,6 +112,18 @@ namespace AdvancedCalculator
 
         private double _LegoPlateHeight = Double.NaN;
         public double LegoPlateHeight { get { return _LegoPlateHeight; } set { if (value == _LegoPlateHeight) return; _LegoPlateHeight = value; OnPropertyChanged("LegoPlateHeight"); } }
+
+        // Astronomical values
+        private double _AU = Double.NaN;
+        public double AU { get { return _AU; } set { if (value == _AU) return; _AU = value; OnPropertyChanged("AU"); } }
+
+        private double _LightYears = Double.NaN;
+        public double LightYears { get { return _LightYears; } set { if (value == _LightYears) return; _LightYears = value; OnPropertyChanged("LightYears"); } }
+
+        private double _Parsecs = Double.NaN;
+        public double Parsecs { get { return _Parsecs; } set { if (value == _Parsecs) return; _Parsecs = value; OnPropertyChanged("Parsecs"); } }
+
+
 
     }
 }

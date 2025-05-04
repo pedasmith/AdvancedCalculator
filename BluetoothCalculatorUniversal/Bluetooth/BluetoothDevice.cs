@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Devices.Enumeration;
+#pragma warning disable CS0618 // e.g.  'GattDeviceService.GetCharacteristics(Guid)' is obsolete: 'Use GetCharacteristicsForUuidAsync instead of GetCharacteristics.  For more information, see MSDN.'
 
 namespace AdvancedCalculator.Bluetooth
 {

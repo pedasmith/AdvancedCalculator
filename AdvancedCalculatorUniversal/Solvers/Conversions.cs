@@ -15,6 +15,7 @@ namespace AdvancedCalculator
         public static double INCHES_PER_FOOT = 12;
         public static double FEET_PER_MILE = 5280;
         public static double FEET_PER_YARD = 3;
+        private static double INCHES_PER_YARD = INCHES_PER_FOOT * FEET_PER_YARD;
         public static double CENTIMETERS_PER_INCH = 2.54;
 
         public static double AU_PER_PARSEC = 64800 / Math.PI;
@@ -40,7 +41,12 @@ namespace AdvancedCalculator
         // http://en.wikipedia.org/wiki/Indian_weights_and_measures 
         public static double GRAMS_PER_TOLA = 11.6638038; // Tolä
         public static double TOLA_PER_SER = 80; // Sèr
-        public static double SER_PER_MAUND = 40; 
+        public static double SER_PER_MAUND = 40;
+
+        private static double CM_PER_METER = 100;
+        public static double YARDS_PER_METER = (CM_PER_METER / CENTIMETERS_PER_INCH) / INCHES_PER_YARD;
+        public static double SQUARE_YARDS_PER_SQUARE_METER = YARDS_PER_METER * YARDS_PER_METER;
+        public static double OuncesPerSquareYard_PER_GSM = 1 / (GRAMS_PER_OUNCE * SQUARE_YARDS_PER_SQUARE_METER);
 
 
         public static double DEGREES_PER_RADIAN = (360.0 / (2.0 * Math.PI));

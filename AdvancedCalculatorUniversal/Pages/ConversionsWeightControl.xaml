@@ -28,7 +28,8 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
- 
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
                 <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
@@ -205,6 +206,41 @@
                         <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1Maund" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
                     </Grid>
                 </muxc:Expander>
+
+                <!--Fabric weights -->
+                <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="5" IsExpanded="True">
+                    <muxc:Expander.Header>
+                        <TextBlock Style="{StaticResource solverblocktitleexpander}">Fabric weight conversions</TextBlock>
+                    </muxc:Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Ounces per square yard</TextBlock>
+                        <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1OuncesPerSquareYard" Style="{StaticResource solverbox}" InputScope="Number" />
+                        <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1OuncesPerSquareYard" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                        <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1OuncesPerSquareYard" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Grams per square meter</TextBlock>
+                        <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1GramsPerSquareMeter" Style="{StaticResource solverbox}" InputScope="Number" />
+                        <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1GramsPerSquareMeter" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                        <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1GramsPerSquareMeter" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                    </Grid>
+                </muxc:Expander>
+
             </Grid>
         </local:FourPanel.ItemMain>
         

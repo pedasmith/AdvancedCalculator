@@ -68,6 +68,10 @@ namespace AdvancedCalculator
             Equations.Add(new Equation("Maund", "Ser", () => { return Ser / Conversions.SER_PER_MAUND; }));
             Equations.Add(new Equation("Ser", "Maund", () => { return Maund * Conversions.SER_PER_MAUND; }));
 
+            // GramsPerSquareMeter OuncesPerSquareYard
+            Equations.Add(new Equation("GramsPerSquareMeter", "OuncesPerSquareYard", () => { return OuncesPerSquareYard / Conversions.OuncesPerSquareYard_PER_GSM; }));
+            Equations.Add(new Equation("OuncesPerSquareYard", "GramsPerSquareMeter", () => { return GramsPerSquareMeter * Conversions.OuncesPerSquareYard_PER_GSM; }));
+
             InitEquivLists();
         }
 
@@ -118,6 +122,12 @@ namespace AdvancedCalculator
 
         private double _Maund = Double.NaN;
         public double Maund { get { return _Maund; } set { if (value == _Maund) return; _Maund = value; OnPropertyChanged("Maund"); } }
+
+        private double _GramsPerSquareMeter = Double.NaN;
+        public double GramsPerSquareMeter { get { return _GramsPerSquareMeter; } set { if (value == _GramsPerSquareMeter) return; _GramsPerSquareMeter = value; OnPropertyChanged("GramsPerSquareMeter"); } }
+
+        private double _OuncesPerSquareYard = Double.NaN;
+        public double OuncesPerSquareYard { get { return _OuncesPerSquareYard; } set { if (value == _OuncesPerSquareYard) return; _OuncesPerSquareYard = value; OnPropertyChanged("OuncesPerSquareYard"); } }
 
 
     }

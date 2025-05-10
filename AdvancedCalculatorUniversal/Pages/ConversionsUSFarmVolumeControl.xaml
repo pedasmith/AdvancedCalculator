@@ -37,7 +37,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                    <muxc:Expander Tag="VolumeFarm_Grain" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Grain (farm) Volumes</TextBlock>
                         </muxc:Expander.Header>
@@ -107,7 +107,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                    <muxc:Expander Tag="VolumeFarm_CropWeight" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Crop Weight</TextBlock>
                         </muxc:Expander.Header>

@@ -32,6 +32,8 @@ using Windows.UI.Popups;
 using Windows.Storage;
 using Shipwreck;
 using System.Threading;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.UI.Xaml.Controls;
 
 namespace AdvancedCalculator
 {
@@ -81,6 +83,7 @@ namespace AdvancedCalculator
     {
         void Initialize(IGetAppDetails details);
     }
+
 
 
     public sealed partial class MainPage : Page, INotifyPropertyChanged, IMemoryButtonHandler, IShare, IDoAppearance, IGetAppDetails, ICalculator, IObjectValue, IDoBack, IDoStopProgram
@@ -1853,6 +1856,24 @@ namespace AdvancedCalculator
             {
                 StopProgramCancellationTokenSource.Cancel();
             }
+        }
+
+        private static ApplicationDataContainer ExpanderSettings = Windows.Storage.ApplicationData.Current.RoamingSettings;
+        public static void SaveExpanderState(string tag, bool isExpanded)
+        {
+            var name = "Expander_" + tag;
+            ExpanderSettings.Values[name]= isExpanded;
+        }
+        public static bool GetExpanderState(string tag, bool defaultValue = true)
+        {
+            var name = "Expander_" + tag;
+            var value = ExpanderSettings.Values[name];
+            if (value == null) return defaultValue;
+            if (!(value is Boolean))
+            {
+                return defaultValue;
+            }
+            return (bool)value;
         }
 
     }

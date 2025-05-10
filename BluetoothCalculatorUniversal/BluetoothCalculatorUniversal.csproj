@@ -176,6 +176,10 @@
     <None Include="..\AdvancedCalculatorUniversal\Assets\simpleDictionary.json">
       <Link>Assets\simpleDictionary.json</Link>
     </None>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsVolume.png">
+      <Link>Assets\SolverImages\ConversionsVolume.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\AdvancedCalculatorUniversal\Assets\ValueOfMoneyTables\CPIAUCSL.csv">
       <Link>Assets\ValueOfMoneyTables\CPIAUCSL.csv</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -466,6 +470,9 @@
     </Compile>
     <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsUSFarmVolumeControl.xaml.cs">
       <Link>Pages\ConversionsUSFarmVolumeControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsVolumeControl.xaml.cs">
+      <Link>Pages\ConversionsVolumeControl.xaml.cs</Link>
     </Compile>
     <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsWeightControl.xaml.cs">
       <Link>Pages\ConversionsWeightControl.xaml.cs</Link>
@@ -1229,6 +1236,11 @@
     </Page>
     <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsUSFarmVolumeControl.xaml">
       <Link>Pages\ConversionsUSFarmVolumeControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsVolumeControl.xaml">
+      <Link>Pages\ConversionsVolumeControl.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

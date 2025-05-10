@@ -34,7 +34,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                    <muxc:Expander Tag="Light_Typical" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Typical Values</TextBlock>
                         </muxc:Expander.Header>
@@ -100,7 +100,6 @@
             </Grid>
         </local:FourPanel.ItemMain>
 
-        <!-- TODO: icon and explanation -->
         <local:FourPanel.ItemRight>
             <!-- Re-use the energy picture since it's a light bulb -->
             <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ConversionsEnergy.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>

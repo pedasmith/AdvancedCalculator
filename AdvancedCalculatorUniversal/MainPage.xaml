@@ -71,6 +71,7 @@
                         <Button Tag="uiConversionsTemperature" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[3]}" Content="Temperature ☀"  Click="OnSelectSub"/>
                         <Button Tag="uiConversionsWeight" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[4]}" Content="Weight ⚖"  Click="OnSelectSub"/>
                         <Button Tag="uiConversionsLight" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[4]}" Content="Light 💡"  Click="OnSelectSub"/>
+                        <Button Tag="uiConversionsVolume" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[5]}" Content="Volumes ⏍"  Click="OnSelectSub"/>
                         <Button Tag="uiConversionsUSFarmVolume" Style="{StaticResource menubutton}" Background="{Binding cbc.colorConverterList[5]}" Content="Farm Volumes (USA) 🚜"  Click="OnSelectSub"/>
                         <Button Tag="uiConversionsAsciiTableAlign" Style="{StaticResource menubutton}" Background="{Binding cbc.color3List[0]}"  Content="Ascii Table"  Click="OnSelectSub" />
                         <!-- TODO: what happened to the string analyzer?

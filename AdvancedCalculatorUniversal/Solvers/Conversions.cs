@@ -59,6 +59,14 @@ namespace AdvancedCalculator
 
         public static double DRY_US_QUARTS_PER_LITER = 0.908082984;
 
+        public static double CUPS_PER_GALLON_LIQUID_US = 16.0;
+        public static double PINTS_PER_GALLON_LIQUID_US = 8.0;
+        public static double QUARTS_PER_GALLON_LIQUID_US = 4.0;
+        public static double CUBIC_FEET_PER_CUBIC_YARD = 27.0;
+        public static double LITERS_PER_CUBIC_METER= 1000.0;
+        public static double LITERS_PER_GALLON_LIQUID_USA = 3.7854118;
+        public static double LITERS_PER_CUBIC_FOOT = 28.316847;
+
         public static double ERGS_PER_JOULE = 10000000.0;
         public static double JOULES_PER_KILOWATTHOUR = 3600000;
         public static double JOULES_PER_BTU = 1055.056; // ISO BTU

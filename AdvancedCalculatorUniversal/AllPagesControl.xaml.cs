@@ -387,6 +387,9 @@ namespace AdvancedCalculator
                 case "uiConversionsUSFarmVolume":
                     el = new ConversionsUSFarmVolumeControl();
                     break;
+                case "uiConversionsVolume":
+                    el = new ConversionsVolumeControl();
+                    break;
                 case "uiConversionsWeight":
                     el = new ConversionsWeightControl();
                     break;

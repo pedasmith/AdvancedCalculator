@@ -42,7 +42,7 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                    <muxc:Expander Tag="Length_InchesFeet" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Inches, Feet, and Feet+Inches</TextBlock>
                         </muxc:Expander.Header>
@@ -92,7 +92,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                    <muxc:Expander Tag="Length_YardsMiles" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Yards and Miles</TextBlock>
                         </muxc:Expander.Header>
@@ -127,7 +127,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}"  Grid.Row="3" IsExpanded="True">
+                    <muxc:Expander Tag="Length_Metric" Style="{StaticResource solverblockexpander}"  Grid.Row="3" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Metric</TextBlock>
                         </muxc:Expander.Header>
@@ -166,7 +166,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="4" IsExpanded="True">
+                    <muxc:Expander Tag="Length_LegoBrand" Style="{StaticResource solverblockexpander}" Grid.Row="4" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">LEGO® brand building blocks units</TextBlock>
                         </muxc:Expander.Header>
@@ -205,7 +205,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="5" IsExpanded="True">
+                    <muxc:Expander Tag="Length_Astronomy" Style="{StaticResource solverblockexpander}" Grid.Row="5" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Astronomy</TextBlock>
                         </muxc:Expander.Header>

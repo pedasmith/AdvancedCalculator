@@ -49,7 +49,7 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                    <muxc:Expander Tag="Energy_Energy" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Energy</TextBlock>
                         </muxc:Expander.Header>
@@ -93,7 +93,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                    <muxc:Expander Tag="Energy_Food" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Food-related energy</TextBlock>
                         </muxc:Expander.Header>
@@ -124,7 +124,7 @@
                         </Grid>
                     </muxc:Expander>
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="3" IsExpanded="True">
+                    <muxc:Expander Tag="Energy_Heating" Style="{StaticResource solverblockexpander}" Grid.Row="3" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Heating-related energy</TextBlock>
                         </muxc:Expander.Header>

@@ -32,7 +32,7 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                <muxc:Expander Tag="Weight_OuncePoundsTons" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
                     <muxc:Expander.Header>
                         <TextBlock Style="{StaticResource solverblocktitleexpander}">Ounces, Pounds, and Tons</TextBlock>
                     </muxc:Expander.Header>
@@ -88,7 +88,7 @@
                     </Grid>
                 </muxc:Expander>
 
-                <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                <muxc:Expander Tag="Weight_Metric" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
                     <muxc:Expander.Header>
                         <TextBlock Style="{StaticResource solverblocktitleexpander}">Metric</TextBlock>
                     </muxc:Expander.Header>
@@ -132,7 +132,7 @@
                 </muxc:Expander>
                 
                 <!-- Troy weight -->
-                <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="3" IsExpanded="True">
+                <muxc:Expander Tag="Weight_Gold" Style="{StaticResource solverblockexpander}" Grid.Row="3" IsExpanded="True">
                     <muxc:Expander.Header>
                         <TextBlock Style="{StaticResource solverblocktitleexpander}">Weighing Gold</TextBlock>
                     </muxc:Expander.Header>
@@ -170,7 +170,7 @@
                 </muxc:Expander>
                 
                 <!--India weights -->
-                <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="4" IsExpanded="True">
+                <muxc:Expander Tag="Weight_India" Style="{StaticResource solverblockexpander}" Grid.Row="4" IsExpanded="True">
                     <muxc:Expander.Header>
                         <TextBlock Style="{StaticResource solverblocktitleexpander}">Indian Weights (UN/Metric)</TextBlock>
                     </muxc:Expander.Header>
@@ -208,7 +208,7 @@
                 </muxc:Expander>
 
                 <!--Fabric weights -->
-                <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="5" IsExpanded="True">
+                <muxc:Expander Tag="Weight_Fabric" Style="{StaticResource solverblockexpander}" Grid.Row="5" IsExpanded="True">
                     <muxc:Expander.Header>
                         <TextBlock Style="{StaticResource solverblocktitleexpander}">Fabric weight conversions</TextBlock>
                     </muxc:Expander.Header>

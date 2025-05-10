@@ -49,7 +49,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                    <muxc:Expander Tag="Temperature_CF" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Celsius (Centigrade) and Fahrenheit</TextBlock>
                         </muxc:Expander.Header>
@@ -82,7 +82,7 @@
                     </muxc:Expander>
 
 
-                    <muxc:Expander Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                    <muxc:Expander Tag="Temperature_KR" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
                         <muxc:Expander.Header>
                             <TextBlock Style="{StaticResource solverblocktitleexpander}">Kelvin and Rankine</TextBlock>
                         </muxc:Expander.Header>

@@ -183,6 +183,9 @@
     <None Include="Assets\SolverImages\GeometryCircle.pdn" />
     <None Include="Assets\SolverImages\GeometrySlope.pdn" />
     <None Include="Assets\SolverImages\RightTriangle.pdn" />
+    <Content Include="Assets\SolverImages\ConversionsVolume.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\ValueOfMoneyTables\CPIAUCSL.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -570,6 +573,9 @@
     </Compile>
     <Compile Include="Pages\UnicodeTableControl.xaml.cs">
       <DependentUpon>UnicodeTableControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ConversionsVolumeControl.xaml.cs">
+      <DependentUpon>ConversionsVolumeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultControl.xaml.cs">
@@ -1120,6 +1126,10 @@
     <Page Include="Pages\UnicodeTableControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ConversionsVolumeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ResultControl.xaml">
       <Generator>MSBuild:Compile</Generator>

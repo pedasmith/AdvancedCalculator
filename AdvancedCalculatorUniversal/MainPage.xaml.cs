@@ -798,8 +798,8 @@ namespace AdvancedCalculator
         public SimpleCalculator simpleCalculator { get; set; }
         public Dice dice { get; set; }
 
-        private ColorDefinitions _colorDefinitions = new ColorDefinitions();
-        public ColorDefinitions colorDefinitions { get { return _colorDefinitions; } set { _colorDefinitions = value; } }
+        //private ColorDefinitions _colorDefinitions = new ColorDefinitions();
+        //public ColorDefinitions colorDefinitions { get { return _colorDefinitions; } set { _colorDefinitions = value; } }
 
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.

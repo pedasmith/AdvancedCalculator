@@ -5,6 +5,7 @@
     xmlns:local="using:AdvancedCalculator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -27,13 +28,6 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -55,53 +49,111 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Energy</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Ergs</TextBlock>
-                    <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Ergs" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Ergs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Ergs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                    <muxc:Expander Tag="Energy_Energy" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Energy</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Joules</TextBlock>
-                    <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Joules" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Joules" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Joules" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Ergs</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Ergs" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Ergs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Ergs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-
-
-                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Kilowatt-Hours</TextBlock>
-                    <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1KilowattHours" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1KilowattHours" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1KilowattHours" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
-
-                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Calories</TextBlock>
-                    <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1Calories" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1Calories" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1Calories" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
-
-
-                    <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center" >Food-related energy</TextBlock>
-                    <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource solverblock}">Food Calories (KCAL)</TextBlock>
-                    <TextBox  Grid.Row="7" Grid.Column="1" Tag="autotbeq1KCals" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="7" Grid.Column="2" Tag="autotbeq1KCals" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="7" Grid.Column="3" Tag="autotbeq1KCals" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
-
-                    <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Donuts</TextBlock>
-                    <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1Donuts" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1Donuts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1Donuts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Joules</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Joules" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Joules" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Joules" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
 
-                    <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center" >Heating-related energy</TextBlock>
-                    <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource solverblock}">BTUs</TextBlock>
-                    <TextBox  Grid.Row="10" Grid.Column="1" Tag="autotbeq1BTUs" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="10" Grid.Column="2" Tag="autotbeq1BTUs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="10" Grid.Column="3" Tag="autotbeq1BTUs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="11" Grid.Column="0" Style="{StaticResource solverblock}">Therms</TextBlock>
-                    <TextBox  Grid.Row="11" Grid.Column="1" Tag="autotbeq1Therms" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="11" Grid.Column="2" Tag="autotbeq1Therms" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="11" Grid.Column="3" Tag="autotbeq1Therms" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Kilowatt-Hours</TextBlock>
+                            <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1KilowattHours" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1KilowattHours" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1KilowattHours" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
+                            <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Calories</TextBlock>
+                            <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1Calories" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1Calories" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1Calories" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
+
+                    <muxc:Expander Tag="Energy_Food" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Food-related energy</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Food Calories (KCAL)</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1KCals" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1KCals" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1KCals" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Donuts</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Donuts" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Donuts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Donuts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
+
+                    <muxc:Expander Tag="Energy_Heating" Style="{StaticResource solverblockexpander}" Grid.Row="3" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Heating-related energy</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">BTUs</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1BTUs" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1BTUs" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1BTUs" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Therms</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Therms" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Therms" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Therms" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
                 </Grid>
             </Grid>
         </local:FourPanel.ItemMain>

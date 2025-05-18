@@ -42,6 +42,7 @@ namespace AdvancedCalculator
         }
 
         static FontFamily SymbolFontFamily = null;
+        static FontFamily OtherFontFamily = null;
         public void Set(UnicodeData data)
         {
             uiChar.Text = data.UnicodeString;
@@ -56,10 +57,18 @@ namespace AdvancedCalculator
             {
                 if (SymbolFontFamily == null)
                 {
-                    SymbolFontFamily = new FontFamily("Segoe MDL2 Assets,Segoe UI Symbol");
+                    SymbolFontFamily = new FontFamily("Segoe MDL2 Assets,Segoe UI Symbol,Cascadia Code,Cascadia Code NF");
                 }
                 uiChar.FontFamily = SymbolFontFamily;
                 //uiChar.FontFamily = new FontFamily("Segoe MDL2 Assets");
+            }
+            else
+            {
+                if (OtherFontFamily == null)
+                {
+                    OtherFontFamily = new FontFamily("Segoe UI,Segoe MDL2 Assets,Segoe UI Symbol,Cascadia Code,Cascadia Code NF");
+                }
+                uiChar.FontFamily = OtherFontFamily;
             }
         }
 

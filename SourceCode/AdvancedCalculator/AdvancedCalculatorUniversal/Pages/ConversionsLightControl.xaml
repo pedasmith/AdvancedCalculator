@@ -1,0 +1,138 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ConversionsLightControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Light Lumens and Watts</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <muxc:Expander Tag="Light_Typical" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Typical Values</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Incandescent Watts</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1TungstenWatts" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1TungstenWatts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1TungstenWatts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Lumens</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Lumens" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Lumens" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Lumens" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">LED Watts</TextBlock>
+                            <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1LedWatts" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1LedWatts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1LedWatts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Halogen Watts</TextBlock>
+                            <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1HalogenWatts" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1HalogenWatts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1HalogenWatts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Gas mantle Watt equivalent</TextBlock>
+                            <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1GasMantleWatts" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1GasMantleWatts" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1GasMantleWatts" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                        </Grid>
+                    </muxc:Expander>
+
+                </Grid>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <!-- Re-use the energy picture since it's a light bulb -->
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ConversionsEnergy.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                        <Bold FontSize="20" >Lighting Efficiency</Bold>
+                        <LineBreak />
+                        There are many kinds of lights available, and they all have different efficiencies.The 
+                    brightness of a light is measured in <Italic>lumens</Italic> but often a light will also
+                    indicate that the light is "equivalent" to a typical incandescent bulb.
+                        <LineBreak />
+                        <LineBreak />
+                    
+                    To use this solver, enter the wattage of an ordinary incandescent light (not a halogen one).
+                    The solver will calculate the number of lumens produced for a typical bulb and calculate the
+                    number of watts other kinds of lights would need. 
+                    
+                        <LineBreak />
+                        <LineBreak />
+                    You can can also directly enter the number of lumens you want, and the solver will
+                    calculate the wattage for the different types of lights.
+                    
+                        <LineBreak />
+                        <LineBreak />
+                    Just for fun, the solve also calculate the number of watt equivalents of energy a 
+                    gas-mantle light will use. This is like an old camping light, or the gas lights used
+                    in old areas of some cities.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>
+

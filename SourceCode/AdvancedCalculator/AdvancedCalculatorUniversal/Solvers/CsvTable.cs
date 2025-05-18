@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AdvancedCalculator
 {
+    /// <summary>
+    /// Super trivial (gross) CsvTable for reading very specific CSV tables. Not RFC compliant!
+    /// </summary>
     public class CsvTable
     {
         public CsvTable()
@@ -15,7 +18,13 @@ namespace AdvancedCalculator
         public List<string[]> Data = new List<string[]>();
         public Dictionary<string, List<double>> ColumnDoubleValues = new Dictionary<string,List<double>>();
 
-        public async void Read()
+        /// <summary>
+        /// Initializes a table from a CSV file. The file is assumed to have a header line. This uses a very primative CSV reader and doesn't handle quotes.
+        /// </summary>
+        /// <param name="subfolder"></param>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public async Task ReadAsync(string subfolder = "", string filename="bmiagerev.csv")
         {
             Headers.Clear();
             Data.Clear();
@@ -23,7 +32,11 @@ namespace AdvancedCalculator
 
             // Chart is the CSV from http://www.cdc.gov/growthcharts/cdc_charts.htm
             var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-            var file = await folder.GetFileAsync("bmiagerev.csv");
+            if (!string.IsNullOrEmpty(subfolder))
+            {
+                folder = await folder.GetFolderAsync(subfolder);
+            }
+            var file = await folder.GetFileAsync(filename); // Change: was constant value as "bmiagerev.csv");
             var lines = await Windows.Storage.FileIO.ReadLinesAsync(file);
 
             if (lines.Count > 0)
@@ -69,10 +82,10 @@ namespace AdvancedCalculator
         }
         public void InitColumnDoubleValue(string colName, double defaultValue)
         {
-            if (ColumnDoubleValues.ContainsKey (colName)) return;
+            if (ColumnDoubleValues.ContainsKey(colName)) return;
 
             // Find the column name
-            int col = Col (colName);
+            int col = Col(colName);
             if (col < 0) return;
             List<double> values = new List<double>();
             for (int r = 0; r < Data.Count; r++)
@@ -80,6 +93,32 @@ namespace AdvancedCalculator
                 double val;
                 bool ok = double.TryParse(Data[r][col], out val);
                 if (!ok) val = defaultValue;
+                values.Add(val);
+            }
+            ColumnDoubleValues.Add(colName, values);
+        }
+        public void InitColumnDoubleValueFromDate(string colName, double defaultValue)
+        {
+            if (ColumnDoubleValues.ContainsKey(colName)) return;
+            int ngood=0, nbad = 0;
+
+            // Find the column name
+            int col = Col(colName);
+            if (col < 0) return;
+            List<double> values = new List<double>();
+            for (int r = 0; r < Data.Count; r++)
+            {
+                var value = Data[r][col];
+                DateTime date;
+                var dateOk = DateTime.TryParse(value, out date);
+                if (dateOk) ngood++; else nbad++;
+                long binary = date.ToBinary();
+                double val = dateOk ? (double)date.ToBinary() : defaultValue;
+
+                // Original code from the InitColumnDoubleValue() method.
+                //double val;
+                //bool ok = double.TryParse(Data[r][col], out val);
+                //if (!ok) val = defaultValue;
                 values.Add(val);
             }
             ColumnDoubleValues.Add(colName, values);
@@ -159,11 +198,26 @@ namespace AdvancedCalculator
 
         public double GetDouble(string colName, int row, double defaultValue)
         {
+            var (Retval, ok) = GetDoubleCVD(colName, row, defaultValue);
+            if (ok) return Retval;
+
             string val = Get(colName, row, defaultValue.ToString());
-            double Retval;
-            bool ok = Double.TryParse(val, out Retval);
+            //double Retval;
+            ok = Double.TryParse(val, out Retval);
             if (!ok) return defaultValue;
             return Retval;
+        }
+
+        private (double, bool) GetDoubleCVD(string colName, int row, double defaultValue)
+        {
+            double retval = defaultValue;
+            bool ok = false;
+            if (!ColumnDoubleValues.ContainsKey(colName)) return (retval, ok);
+            var values = ColumnDoubleValues[colName];
+            if (row < 0 || row >= values.Count) return (retval, ok);
+            retval = values[row];
+            ok = true;
+            return (retval, ok);
         }
 
         public double GetDoubleInterpolate(string colName, int rowLow, double interpolateRatio, int rowHigh, double defaultValue)

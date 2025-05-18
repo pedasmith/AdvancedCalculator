@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -43,6 +44,50 @@ namespace AdvancedCalculator
 
             }
             SetOrientation();
+            ExpandFourPanel();
+        }
+
+        /// <summary>
+        /// Handle all of the expanders in the ItemMain
+        /// </summary>
+        public void ExpandFourPanel()
+        {
+            if (ItemMain is Grid mainGrid)
+            {
+                ExpandFourPanelGrid(mainGrid);
+            }
+        }
+
+        private void ExpandFourPanelGrid(Grid grid)
+        {
+            foreach (var child in grid.Children)
+            {
+                if (child is Grid childGrid)
+                {
+                    ExpandFourPanelGrid(childGrid);
+                }
+                else if (child is Expander childExpand)
+                {
+                    var tag = childExpand.Tag as string;
+                    if (tag == null) continue; // not all expanders are marked.
+                    var expand = MainPage.GetExpanderState(tag, true);
+                    childExpand.IsExpanded = expand;
+                    childExpand.Collapsed -= OnCollapsed;
+                    childExpand.Expanding -= OnExpanding;
+
+                    childExpand.Collapsed += OnCollapsed;
+                    childExpand.Expanding += OnExpanding;
+                }
+            }
+        }
+
+        public static void OnCollapsed(Microsoft.UI.Xaml.Controls.Expander sender, Microsoft.UI.Xaml.Controls.ExpanderCollapsedEventArgs args)
+        {
+            MainPage.SaveExpanderState(sender?.Tag as string, false);
+        }
+        public static void OnExpanding(Microsoft.UI.Xaml.Controls.Expander sender, Microsoft.UI.Xaml.Controls.ExpanderExpandingEventArgs args)
+        {
+            MainPage.SaveExpanderState(sender?.Tag as string, true);
         }
 
         enum WidthState {  Narrow, Regular };

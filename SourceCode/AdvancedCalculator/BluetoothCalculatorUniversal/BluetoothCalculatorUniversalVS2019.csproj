@@ -1,0 +1,1562 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{6B3FA63E-9ECB-4B5F-B514-44B6EA47A6D4}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdvancedCalculatorUniversal</RootNamespace>
+    <AssemblyName>BluetoothCalculatorUniversal</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>BluetoothCalculatorUniversalVS2017_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>C41B2116F5E7FEC0417A1327D8F4FC1A8F402CBE</PackageCertificateThumbprint>
+    <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BLUETOOTH</DefineConstants>
+    <NoWarn>;2008;0618</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;BLUETOOTH</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008;0618</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.2</LangVersion>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BLUETOOTH</DefineConstants>
+    <NoWarn>;2008;0618</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;BLUETOOTH</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008;0618</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BLUETOOTH</DefineConstants>
+    <NoWarn>;2008;0618</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;BLUETOOTH</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008;0618</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.2</LangVersion>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="..\AdvancedCalculatorUniversal\ApplicationInsights.config">
+      <Link>ApplicationInsights.config</Link>
+    </None>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\Background.png">
+      <Link>Assets\Background.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\bmiagerev.csv">
+      <Link>Assets\bmiagerev.csv</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_BCBASICExamples.bcbasic">
+      <Link>Assets\BCBasic\EX_BCBASICExamples.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_ExamplesBCBasicProgramming.bcbasic">
+      <Link>Assets\BCBasic\EX_ExamplesBCBasicProgramming.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_Financial.bcbasic">
+      <Link>Assets\BCBasic\EX_Financial.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_RealEstate.bcbasic">
+      <Link>Assets\BCBasic\EX_RealEstate.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_SpaceAndAstronomy.bcbasic">
+      <Link>Assets\BCBasic\EX_SpaceAndAstronomy.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_Statistics.bcbasic">
+      <Link>Assets\BCBasic\EX_Statistics.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_SystemTest.bcbasic">
+      <Link>Assets\BCBasic\EX_SystemTest.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_Graphics.bcbasic">
+      <Link>Assets\BCBasic\EX_Graphics.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BestCalculatorBasicReference.pdf">
+      <Link>Assets\BestCalculatorBasicReference.pdf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_PLAY_BEEP_SPEAK.bcbasic">
+      <Link>Assets\BCBasic\EX_PLAY_BEEP_SPEAK.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\EX_System.bcbasic">
+      <Link>Assets\BCBasic\EX_System.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\FunGames.bcbasic">
+      <Link>Assets\BCBasic\FunGames.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\BCBasic\ChristmasPrograms.bcbasic">
+      <Link>Assets\BCBasic\ChristmasPrograms.bcbasic</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="..\AdvancedCalculatorUniversal\Assets\simpleDictionary.json">
+      <Link>Assets\simpleDictionary.json</Link>
+    </None>
+    <None Include="..\BCBasic\BCBasic.Shared\BCBasic.Shared.projitems">
+      <Link>BCBasic\BCBasic.Shared.projitems</Link>
+    </None>
+    <Content Include="Assets\SourceCode\SourceCode.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_AnOverviewofBluetooth.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_beLight.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_DOTTI.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_Hexiwear.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_MagicLight.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_NOTTI.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_SensorTag2541.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_HikingwithanAltimeter.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_MetaWearMetaMotion.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\EX_CSVandJSON.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_BBCMicrobits.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_SensorTag1350.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_TIDisplayWatchDevPack.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\EX_SensorLocationMicrophones.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_BluetoothWatcher.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_PuckJs.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\BCBasic-BT\BT_Rfcomm.bcbasic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Fonts\ElectricCarriageDots.ttf">
+      <Link>Assets\Fonts\ElectricCarriageDots.ttf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Fonts\Monogram Electric Carriage.ttf">
+      <Link>Assets\Fonts\Monogram Electric Carriage.ttf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Fonts\Segment.ttf">
+      <Link>Assets\Fonts\Segment.ttf</Link>
+    </Content>
+    <None Include="BluetoothCalculatorUniversalVS2017_TemporaryKey.pfx" />
+    <None Include="BluetoothCalculatorUniversal_StoreKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Mini\Feedback\CommonButtonMeasures.cs">
+      <Link>Utilities\CommonButtonMeasures.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Mini\Feedback\FeedbackControl.xaml.cs">
+      <Link>Utilities\FeedbackControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Mini\Feedback\ILog.cs">
+      <Link>Utilities\ILog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Mini\Feedback\NetworkingFeedback.cs">
+      <Link>Utilities\NetworkingFeedback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Mini\Feedback\PrivacyPolicy.cs">
+      <Link>Utilities\PrivacyPolicy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Mini\Utilities\Extensions.cs">
+      <Link>Utilities\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\AllPagesControl.xaml.cs">
+      <Link>AllPagesControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\AppearancePopup.xaml.cs">
+      <Link>AppearancePopup.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\AsciiEntryControl.xaml.cs">
+      <Link>AsciiEntryControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\AsciiPlusUnicodeControl.xaml.cs">
+      <Link>AsciiPlusUnicodeControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\AutoPropertySave.cs">
+      <Link>AutoPropertySave.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Background.cs">
+      <Link>Background.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\AutoGraph.cs">
+      <Link>BCBasic\Graphics\AutoGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\AutoGraphXY.cs">
+      <Link>BCBasic\Graphics\AutoGraphXY.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\AutoGraphY.cs">
+      <Link>BCBasic\Graphics\AutoGraphY.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsControl.xaml.cs">
+      <Link>BCBasic\Graphics\GraphicsControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitive.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitive.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveArc.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveArc.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveButton.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveButton.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveEllipse.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveEllipse.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitivePolygon.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitivePolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveRectangle.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveRectangle.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveSlider.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveSlider.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsPrimitiveText.cs">
+      <Link>BCBasic\Graphics\GraphicsPrimitiveText.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\ScreenValues.cs">
+      <Link>BCBasic\Graphics\ScreenValues.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\DataLocation.cs">
+      <Link>BCBasic\RunTimeLibrary\DataLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\GopherString.cs">
+      <Link>BCBasic\RunTimeLibrary\GopherString.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\InterpolationLibrary.cs">
+      <Link>BCBasic\RunTimeLibrary\InterpolationLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\MidiSynth.cs">
+      <Link>BCBasic\RunTimeLibrary\MidiSynth.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\MmlNote.cs">
+      <Link>BCBasic\RunTimeLibrary\MmlNote.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\MmlNotePlayer.cs">
+      <Link>BCBasic\RunTimeLibrary\MmlNotePlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\NetworkStringUtilities.cs">
+      <Link>BCBasic\RunTimeLibrary\NetworkStringUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\Route.cs">
+      <Link>BCBasic\RunTimeLibrary\Route.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RouteFindResults.cs">
+      <Link>BCBasic\RunTimeLibrary\RouteFindResults.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RouteTable.cs">
+      <Link>BCBasic\RunTimeLibrary\RouteTable.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLCsvRfc4180.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLCsvRfc4180.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLData.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLData.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLDateTime.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLFile.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLFile.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLGopher.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLGopher.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLGopherMenu.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLGopherMenu.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLHttp.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLHttp.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLString.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLString.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RTLSystem.cs">
+      <Link>BCBasic\RunTimeLibrary\RTLSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\BCBasic\RunTimeLibrary\RunResult.cs">
+      <Link>BCBasic\RunTimeLibrary\RunResult.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\CalculatorButtonColors.cs">
+      <Link>CalculatorButtonColors.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\CalculatorButtonMeasures.cs">
+      <Link>CalculatorButtonMeasures.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\ColorDefinitions.cs">
+      <Link>ColorDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\ColorPicker.xaml.cs">
+      <Link>ColorPicker.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Dice.cs">
+      <Link>Dice.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Features.cs">
+      <Link>Features.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\FourPanel.xaml.cs">
+      <Link>FourPanel.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\FourPanelScrollViewer.xaml.cs">
+      <Link>FourPanelScrollViewer.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\FourPanelViewBox.xaml.cs">
+      <Link>FourPanelViewBox.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\JSon.cs">
+      <Link>JSon.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Log.cs">
+      <Link>Log.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\MainPage.xaml.cs">
+      <Link>MainPage.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\MemoryConverter.cs">
+      <Link>MemoryConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\MemoryRegisterControl.xaml.cs">
+      <Link>MemoryRegisterControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\AsciiTableControl.xaml.cs">
+      <Link>Pages\AsciiTableControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ColumnStatsControl.xaml.cs">
+      <Link>Pages\ColumnStatsControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsAreaControl.xaml.cs">
+      <Link>Pages\ConversionsAreaControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsEnergyControl.xaml.cs">
+      <Link>Pages\ConversionsEnergyControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsLengthControl.xaml.cs">
+      <Link>Pages\ConversionsLengthControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsTemperatureControl.xaml.cs">
+      <Link>Pages\ConversionsTemperatureControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsUSFarmVolumeControl.xaml.cs">
+      <Link>Pages\ConversionsUSFarmVolumeControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ConversionsWeightControl.xaml.cs">
+      <Link>Pages\ConversionsWeightControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\DateControl.xaml.cs">
+      <Link>Pages\DateControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringCapacitorControl.xaml.cs">
+      <Link>Pages\ElectricalEngineeringCapacitorControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringColorCodeControl.xaml.cs">
+      <Link>Pages\ElectricalEngineeringColorCodeControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringResistorControl.xaml.cs">
+      <Link>Pages\ElectricalEngineeringResistorControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringVIRControl.xaml.cs">
+      <Link>Pages\ElectricalEngineeringVIRControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\FeedbackFourPanelControl.xaml.cs">
+      <Link>Pages\FeedbackFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\FinancialCAGRControl.xaml.cs">
+      <Link>Pages\FinancialCAGRControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\FinancialMortgageControl.xaml.cs">
+      <Link>Pages\FinancialMortgageControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\FinancialWACCControl.xaml.cs">
+      <Link>Pages\FinancialWACCControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesCoinControl.xaml.cs">
+      <Link>Pages\GamesCoinControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesCoinFlipOneControl.xaml.cs">
+      <Link>Pages\GamesCoinFlipOneControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice12Control.xaml.cs">
+      <Link>Pages\GamesDice12Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice20Control.xaml.cs">
+      <Link>Pages\GamesDice20Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice4Control.xaml.cs">
+      <Link>Pages\GamesDice4Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice6Control.xaml.cs">
+      <Link>Pages\GamesDice6Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice6_1Control.xaml.cs">
+      <Link>Pages\GamesDice6_1Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice6_2Control.xaml.cs">
+      <Link>Pages\GamesDice6_2Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GamesDice8Control.xaml.cs">
+      <Link>Pages\GamesDice8Control.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GeometryCircleControl.xaml.cs">
+      <Link>Pages\GeometryCircleControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GeometryRightTriangleControl.xaml.cs">
+      <Link>Pages\GeometryRightTriangleControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\GeometrySlopeControl.xaml.cs">
+      <Link>Pages\GeometrySlopeControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\HealthBMIAdultControl.xaml.cs">
+      <Link>Pages\HealthBMIAdultControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\HealthBMIChildrenControl.xaml.cs">
+      <Link>Pages\HealthBMIChildrenControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\HealthIdealHeartRateControl.xaml.cs">
+      <Link>Pages\HealthIdealHeartRateControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\HealthPulseCounterControl.xaml.cs">
+      <Link>Pages\HealthPulseCounterControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\HealthPulseCounterOneControl.xaml.cs">
+      <Link>Pages\HealthPulseCounterOneControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardAdvancedControl.xaml.cs">
+      <Link>Pages\KeyboardAdvancedControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardAdvancedNarrowFourPanelControl.xaml.cs">
+      <Link>Pages\KeyboardAdvancedNarrowFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardAdvancedWideFourPanelControl.xaml.cs">
+      <Link>Pages\KeyboardAdvancedWideFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardCalculatorControl.xaml.cs">
+      <Link>Pages\KeyboardCalculatorControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardCalculatorFourPanelControl.xaml.cs">
+      <Link>Pages\KeyboardCalculatorFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardConstantsControl.xaml.cs">
+      <Link>Pages\KeyboardConstantsControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardConstantsFourPanelControl.xaml.cs">
+      <Link>Pages\KeyboardConstantsFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardFormatControl.xaml.cs">
+      <Link>Pages\KeyboardFormatControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardFormatFourPanelControl.xaml.cs">
+      <Link>Pages\KeyboardFormatFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardProgrammerControl.xaml.cs">
+      <Link>Pages\KeyboardProgrammerControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\KeyboardProgrammerFourPanelControl.xaml.cs">
+      <Link>Pages\KeyboardProgrammerFourPanelControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\LogoControl.xaml.cs">
+      <Link>Pages\LogoControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\MemoryControl.xaml.cs">
+      <Link>Pages\MemoryControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\MemoryOneControl.xaml.cs">
+      <Link>Pages\MemoryOneControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\StringAnalyzerControl.xaml.cs">
+      <Link>Pages\StringAnalyzerControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\StringConversionControl.xaml.cs">
+      <Link>Pages\StringConversionControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\StringConvert.cs">
+      <Link>Pages\StringConvert.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Pages\UnicodeTableControl.xaml.cs">
+      <Link>Pages\UnicodeTableControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\ResultControl.xaml.cs">
+      <Link>ResultControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\SimpleCalculator.cs">
+      <Link>SimpleCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\SimpleSettingsNarrow.xaml.cs">
+      <Link>SimpleSettingsNarrow.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\AreaSolver.cs">
+      <Link>Solvers\AreaSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\Conversions.cs">
+      <Link>Solvers\Conversions.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\CsvTable.cs">
+      <Link>Solvers\CsvTable.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\ElectricalEngineeringCapacitorSolver.cs">
+      <Link>Solvers\ElectricalEngineeringCapacitorSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\ElectricalEngineeringResistorSolver.cs">
+      <Link>Solvers\ElectricalEngineeringResistorSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\ElectricalEngineeringVIRSolver.cs">
+      <Link>Solvers\ElectricalEngineeringVIRSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\EnergySolver.cs">
+      <Link>Solvers\EnergySolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\FinancialCAGR.cs">
+      <Link>Solvers\FinancialCAGR.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\FinancialMortgageSolver.cs">
+      <Link>Solvers\FinancialMortgageSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\FinancialWACC.cs">
+      <Link>Solvers\FinancialWACC.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\GeometryCircleSolver.cs">
+      <Link>Solvers\GeometryCircleSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\GeometryRightTriangleSolver.cs">
+      <Link>Solvers\GeometryRightTriangleSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\GeometrySlopeSolver.cs">
+      <Link>Solvers\GeometrySlopeSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\HealthBMSolver.cs">
+      <Link>Solvers\HealthBMSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\HealthIdealHeartRateSolver.cs">
+      <Link>Solvers\HealthIdealHeartRateSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\LengthSolver.cs">
+      <Link>Solvers\LengthSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\RightTriangleSolver.cs">
+      <Link>Solvers\RightTriangleSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\Solver.cs">
+      <Link>Solvers\Solver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\SolverINPC.cs">
+      <Link>Solvers\SolverINPC.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\SolverWPFMetro.cs">
+      <Link>Solvers\SolverWPFMetro.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\StatisticsX.cs">
+      <Link>Solvers\StatisticsX.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\TemperatureSolver.cs">
+      <Link>Solvers\TemperatureSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\TimeCounter.cs">
+      <Link>Solvers\TimeCounter.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\VolumeSolver.cs">
+      <Link>Solvers\VolumeSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Solvers\WeightSolver.cs">
+      <Link>Solvers\WeightSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\BoxplotControl.xaml.cs">
+      <Link>Statistics\BoxplotControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\DrawRange.cs">
+      <Link>Statistics\DrawRange.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\StatisticsClassical.cs">
+      <Link>Statistics\StatisticsClassical.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\StatisticsIQR.cs">
+      <Link>Statistics\StatisticsIQR.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\StatisticsRegression.cs">
+      <Link>Statistics\StatisticsRegression.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\StatisticsTTest.cs">
+      <Link>Statistics\StatisticsTTest.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Statistics\XYGraphControl.xaml.cs">
+      <Link>Statistics\XYGraphControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\TakeScreenshots.cs">
+      <Link>TakeScreenshots.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\TrialPopup.xaml.cs">
+      <Link>TrialPopup.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\UnicodeDictionary.cs">
+      <Link>UnicodeDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Utilities\EnumUtilities.cs">
+      <Link>Utilities\EnumUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\Utilities\Screenshot.cs">
+      <Link>Utilities\Screenshot.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\WordDefinition.cs">
+      <Link>WordDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\AdvancedCalculatorUniversal\WordList.cs">
+      <Link>WordList.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCBasic.cs">
+      <Link>BCBasic\BCBasic.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCBasicMathFunctions.cs">
+      <Link>BCBasic\BCBasicMathFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCBasicStringFunctions.cs">
+      <Link>BCBasic\BCBasicStringFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCColor.cs">
+      <Link>BCBasic\BCColor.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCContext.cs">
+      <Link>BCBasic\BCContext.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCFunctionList.cs">
+      <Link>BCBasic\BCFunctionList.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCLibrary.cs">
+      <Link>BCBasic\BCLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCLibraryControl.xaml.cs">
+      <Link>BCBasic\BCLibraryControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCObject.cs">
+      <Link>BCBasic\BCObject.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCPackageImport.cs">
+      <Link>BCBasic\BCPackageImport.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCScreenControl.xaml.cs">
+      <Link>BCBasic\BCScreenControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCValue.cs">
+      <Link>BCBasic\BCValue.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\BCValueList.cs">
+      <Link>BCBasic\BCValueList.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ButtonListControl.xaml.cs">
+      <Link>BCBasic\ButtonListControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ButtonToProgram.cs">
+      <Link>BCBasic\ButtonToProgram.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\CalculatorConnectionControl.xaml.cs">
+      <Link>BCBasic\CalculatorConnectionControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\ImportConflictControl.xaml.cs">
+      <Link>BCBasic\ImportConflictControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\MathValues.cs">
+      <Link>BCBasic\MathValues.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\MenuIcon.xaml.cs">
+      <Link>BCBasic\MenuIcon.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\RTFWriter.cs">
+      <Link>BCBasic\RTFWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\SampleCalculatorControl.xaml.cs">
+      <Link>BCBasic\SampleCalculatorControl.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\SampleMemory.cs">
+      <Link>BCBasic\SampleMemory.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\BCBasic.Shared\TestRunner.cs">
+      <Link>BCBasic\TestRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Adapter\BCBasicAdapter.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Adapter\BCBasicAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Adapter\BCBasicExpressionAdapter.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Adapter\BCBasicExpressionAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Adapter\BCBasicStatmentAdapter.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Adapter\BCBasicStatmentAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Color\LanguageEditorColors.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Color\LanguageEditorColors.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditFindDialog.xaml.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\EditFindDialog.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditGotoDialog.xaml.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\EditGotoDialog.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\Editor.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\Editor.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditor.xaml.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\LanguageEditor.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorLine.xaml.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorLine.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorStatement.xaml.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorStatement.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Editor\MyKeyEventArgs.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\MyKeyEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Lexer.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\Lexer.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\LexerStream.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\LexerStream.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\MdPackageFile.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\MdPackageFile.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\ParsedResults.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\ParsedResults.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Parser.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\Parser.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\ParserExpression.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\ParserExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\ParserTest.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\ParserTest.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Statement.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\Statement.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\UnparsedProgram.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\UnparsedProgram.cs</Link>
+    </Compile>
+    <Compile Include="..\BCBasic\SyntaxHighlightEditor\Language\Word.cs">
+      <Link>BCBasic\SyntaxHighlightEditor\Language\Word.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BCBasic\Graphics\GraphicsPrimitiveCamera.cs" />
+    <Compile Include="BCBasic\Graphics\GraphicsPrimitiveImage.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\Sensor.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorCamera.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorCameraAnalysis.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorCompass.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorInclinometer.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorLight.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorLocation.cs" />
+    <Compile Include="BCBasic\RunTimeLibrary\SensorMicrophone.cs" />
+    <Compile Include="Bluetooth\BluetoothRfcommDevice.cs" />
+    <Compile Include="Bluetooth\BluetoothWatchAdvertisements.cs" />
+    <Compile Include="Bluetooth\Devices\AbstractRfcommCommandResponse.cs" />
+    <Compile Include="Bluetooth\Devices\Ardudroid.cs" />
+    <Compile Include="Bluetooth\Devices\BbcMicrobit.cs" />
+    <Compile Include="Bluetooth\Devices\Infineon_DPS310.cs" />
+    <Compile Include="Bluetooth\Devices\MetaWear_MetaMotion.cs" />
+    <Compile Include="Bluetooth\Devices\PuckJs.cs" />
+    <Compile Include="Bluetooth\Devices\RuuviTag.cs" />
+    <Compile Include="Bluetooth\Devices\SensorTag1350.cs" />
+    <Compile Include="Bluetooth\Devices\SensorTag2650.cs" />
+    <Compile Include="Bluetooth\Devices\SensorTagWatchDevPack.cs" />
+    <Compile Include="Bluetooth\Devices\Skoobot.cs" />
+    <Compile Include="Bluetooth\PickBluetoothDeviceControl.xaml.cs">
+      <DependentUpon>PickBluetoothDeviceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Messages.cs" />
+    <Compile Include="UIControls\DisplaySourceCode.xaml.cs" />
+    <Compile Include="UIControls\PurchaseControl.xaml.cs" />
+    <Content Include="Assets\SourceCode\Bluetooth.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\BluetoothDevice.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\BluetoothUtilities.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\DOTTI.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\Hexiwear.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\MagicLight.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\NOTTI.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\ObjectList.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SourceCode\SensorTag2541.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Bluetooth\Bluetooth.cs" />
+    <Compile Include="Bluetooth\BluetoothDevice.cs" />
+    <Compile Include="Bluetooth\BluetoothUtilities.cs" />
+    <Compile Include="Bluetooth\Devices\beLightTI.cs" />
+    <Compile Include="Bluetooth\Devices\DOTTI.cs" />
+    <Compile Include="Bluetooth\Devices\Hexiwear.cs" />
+    <Compile Include="Bluetooth\Devices\MagicLight.cs" />
+    <Compile Include="Bluetooth\Devices\NOTTI.cs" />
+    <Compile Include="Bluetooth\Devices\SensorTag2541.cs" />
+    <Compile Include="Bluetooth\ObjectList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="BluetoothCalculatorUniversal_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\Blocks.txt">
+      <Link>Assets\Blocks.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\50yearcalendar.png">
+      <Link>Assets\SolverImages\50yearcalendar.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\50yearcalendarSmall.png">
+      <Link>Assets\SolverImages\50yearcalendarSmall.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\Blank..png">
+      <Link>Assets\SolverImages\Blank..png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\CoinHead.PNG">
+      <Link>Assets\SolverImages\CoinHead.PNG</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\CoinTail.PNG">
+      <Link>Assets\SolverImages\CoinTail.PNG</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsArea.png">
+      <Link>Assets\SolverImages\ConversionsArea.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsEnergy.png">
+      <Link>Assets\SolverImages\ConversionsEnergy.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsFarmVolume.png">
+      <Link>Assets\SolverImages\ConversionsFarmVolume.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsLength.png">
+      <Link>Assets\SolverImages\ConversionsLength.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsTemperature.png">
+      <Link>Assets\SolverImages\ConversionsTemperature.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ConversionsWeight.png">
+      <Link>Assets\SolverImages\ConversionsWeight.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\DiceCube.png">
+      <Link>Assets\SolverImages\DiceCube.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\DiceDoDecaHedron.png">
+      <Link>Assets\SolverImages\DiceDoDecaHedron.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\DiceIcosaHedron.png">
+      <Link>Assets\SolverImages\DiceIcosaHedron.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\DiceOctaHedron.png">
+      <Link>Assets\SolverImages\DiceOctaHedron.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\DiceTetrahedron.png">
+      <Link>Assets\SolverImages\DiceTetrahedron.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ElectricalEngineeringCapacitors.png">
+      <Link>Assets\SolverImages\ElectricalEngineeringCapacitors.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ElectricalEngineeringColorCode.png">
+      <Link>Assets\SolverImages\ElectricalEngineeringColorCode.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ElectricalEngineeringResistors.png">
+      <Link>Assets\SolverImages\ElectricalEngineeringResistors.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\ElectricalEngineeringVIR.png">
+      <Link>Assets\SolverImages\ElectricalEngineeringVIR.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\FinancialCAGR.png">
+      <Link>Assets\SolverImages\FinancialCAGR.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\FinancialMortgage.png">
+      <Link>Assets\SolverImages\FinancialMortgage.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\FinancialWACC.png">
+      <Link>Assets\SolverImages\FinancialWACC.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\GeometryCircle.png">
+      <Link>Assets\SolverImages\GeometryCircle.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\GeometrySlope.png">
+      <Link>Assets\SolverImages\GeometrySlope.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\HealthBMI.PNG">
+      <Link>Assets\SolverImages\HealthBMI.PNG</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\HealthBMIChild.PNG">
+      <Link>Assets\SolverImages\HealthBMIChild.PNG</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\HealthIdealHeartRate.PNG">
+      <Link>Assets\SolverImages\HealthIdealHeartRate.PNG</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\HealthPulseCounter.PNG">
+      <Link>Assets\SolverImages\HealthPulseCounter.PNG</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\SolverImages\RightTriangle.png">
+      <Link>Assets\SolverImages\RightTriangle.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\UnicodeData.txt">
+      <Link>Assets\UnicodeData.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\AdvancedCalculatorUniversal\Assets\UnicodeData_MicrosoftSymbol.txt">
+      <Link>Assets\UnicodeData_MicrosoftSymbol.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Icons\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\Icons\SplashScreen.scale-100.png" />
+    <Content Include="Assets\Icons\SplashScreen.scale-125.png" />
+    <Content Include="Assets\Icons\SplashScreen.scale-150.png" />
+    <Content Include="Assets\Icons\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Icons\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Icons\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Icons\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Icons\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Icons\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Icons\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Icons\Square16x16.png" />
+    <Content Include="Assets\Icons\Square24x24.png" />
+    <Content Include="Assets\Icons\Square256x256.png" />
+    <Content Include="Assets\Icons\Square310x310Logo.scale-100.png" />
+    <Content Include="Assets\Icons\Square310x310Logo.scale-125.png" />
+    <Content Include="Assets\Icons\Square310x310Logo.scale-150.png" />
+    <Content Include="Assets\Icons\Square310x310Logo.scale-200.png" />
+    <Content Include="Assets\Icons\Square310x310Logo.scale-400.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Icons\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\Icons\Square48x48.png" />
+    <Content Include="Assets\Icons\Square71x71Logo.scale-100.png" />
+    <Content Include="Assets\Icons\Square71x71Logo.scale-125.png" />
+    <Content Include="Assets\Icons\Square71x71Logo.scale-150.png" />
+    <Content Include="Assets\Icons\Square71x71Logo.scale-200.png" />
+    <Content Include="Assets\Icons\Square71x71Logo.scale-400.png" />
+    <Content Include="Assets\Icons\StoreLogo.Scale-100.png" />
+    <Content Include="Assets\Icons\StoreLogo.Scale-125.png" />
+    <Content Include="Assets\Icons\StoreLogo.Scale-150.png" />
+    <Content Include="Assets\Icons\StoreLogo.Scale-200.png" />
+    <Content Include="Assets\Icons\StoreLogo.Scale-400.png" />
+    <Content Include="Assets\Icons\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Icons\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Icons\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Icons\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Icons\Wide310x150Logo.scale-400.png" />
+    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Properties\Default.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\..\Mini\Feedback\FeedbackControl.xaml">
+      <Link>Utilities\FeedbackControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\AllPagesControl.xaml">
+      <Link>AllPagesControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\AppearancePopup.xaml">
+      <Link>AppearancePopup.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\AsciiEntryControl.xaml">
+      <Link>AsciiEntryControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\AsciiPlusUnicodeControl.xaml">
+      <Link>AsciiPlusUnicodeControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\BCBasic\Graphics\GraphicsControl.xaml">
+      <Link>BCBasic\Graphics\GraphicsControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\ColorPicker.xaml">
+      <Link>ColorPicker.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Common\CalculatorStyles.xaml">
+      <Link>Common\CalculatorStyles.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Common\StandardStyles.xaml">
+      <Link>Common\StandardStyles.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\FourPanel.xaml">
+      <Link>FourPanel.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\FourPanelScrollViewer.xaml">
+      <Link>FourPanelScrollViewer.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\FourPanelViewBox.xaml">
+      <Link>FourPanelViewBox.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\MainPage.xaml">
+      <Link>MainPage.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\MemoryRegisterControl.xaml">
+      <Link>MemoryRegisterControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\AsciiTableControl.xaml">
+      <Link>Pages\AsciiTableControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ColumnStatsControl.xaml">
+      <Link>Pages\ColumnStatsControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsAreaControl.xaml">
+      <Link>Pages\ConversionsAreaControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsEnergyControl.xaml">
+      <Link>Pages\ConversionsEnergyControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsLengthControl.xaml">
+      <Link>Pages\ConversionsLengthControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsTemperatureControl.xaml">
+      <Link>Pages\ConversionsTemperatureControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsUSFarmVolumeControl.xaml">
+      <Link>Pages\ConversionsUSFarmVolumeControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ConversionsWeightControl.xaml">
+      <Link>Pages\ConversionsWeightControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\DateControl.xaml">
+      <Link>Pages\DateControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringCapacitorControl.xaml">
+      <Link>Pages\ElectricalEngineeringCapacitorControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringColorCodeControl.xaml">
+      <Link>Pages\ElectricalEngineeringColorCodeControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringResistorControl.xaml">
+      <Link>Pages\ElectricalEngineeringResistorControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\ElectricalEngineeringVIRControl.xaml">
+      <Link>Pages\ElectricalEngineeringVIRControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\FeedbackFourPanelControl.xaml">
+      <Link>Pages\FeedbackFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\FinancialCAGRControl.xaml">
+      <Link>Pages\FinancialCAGRControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\FinancialMortgageControl.xaml">
+      <Link>Pages\FinancialMortgageControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\FinancialWACCControl.xaml">
+      <Link>Pages\FinancialWACCControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesCoinControl.xaml">
+      <Link>Pages\GamesCoinControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesCoinFlipOneControl.xaml">
+      <Link>Pages\GamesCoinFlipOneControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice12Control.xaml">
+      <Link>Pages\GamesDice12Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice20Control.xaml">
+      <Link>Pages\GamesDice20Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice4Control.xaml">
+      <Link>Pages\GamesDice4Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice6Control.xaml">
+      <Link>Pages\GamesDice6Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice6_1Control.xaml">
+      <Link>Pages\GamesDice6_1Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice6_2Control.xaml">
+      <Link>Pages\GamesDice6_2Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GamesDice8Control.xaml">
+      <Link>Pages\GamesDice8Control.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GeometryCircleControl.xaml">
+      <Link>Pages\GeometryCircleControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GeometryRightTriangleControl.xaml">
+      <Link>Pages\GeometryRightTriangleControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\GeometrySlopeControl.xaml">
+      <Link>Pages\GeometrySlopeControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\HealthBMIAdultControl.xaml">
+      <Link>Pages\HealthBMIAdultControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\HealthBMIChildrenControl.xaml">
+      <Link>Pages\HealthBMIChildrenControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\HealthIdealHeartRateControl.xaml">
+      <Link>Pages\HealthIdealHeartRateControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\HealthPulseCounterControl.xaml">
+      <Link>Pages\HealthPulseCounterControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\HealthPulseCounterOneControl.xaml">
+      <Link>Pages\HealthPulseCounterOneControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardAdvancedControl.xaml">
+      <Link>Pages\KeyboardAdvancedControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardAdvancedNarrowFourPanelControl.xaml">
+      <Link>Pages\KeyboardAdvancedNarrowFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardAdvancedWideFourPanelControl.xaml">
+      <Link>Pages\KeyboardAdvancedWideFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardCalculatorControl.xaml">
+      <Link>Pages\KeyboardCalculatorControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardCalculatorFourPanelControl.xaml">
+      <Link>Pages\KeyboardCalculatorFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardConstantsControl.xaml">
+      <Link>Pages\KeyboardConstantsControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardConstantsFourPanelControl.xaml">
+      <Link>Pages\KeyboardConstantsFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardFormatControl.xaml">
+      <Link>Pages\KeyboardFormatControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardFormatFourPanelControl.xaml">
+      <Link>Pages\KeyboardFormatFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardProgrammerControl.xaml">
+      <Link>Pages\KeyboardProgrammerControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\KeyboardProgrammerFourPanelControl.xaml">
+      <Link>Pages\KeyboardProgrammerFourPanelControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\LogoControl.xaml">
+      <Link>Pages\LogoControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\MemoryControl.xaml">
+      <Link>Pages\MemoryControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\MemoryOneControl.xaml">
+      <Link>Pages\MemoryOneControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\StringAnalyzerControl.xaml">
+      <Link>Pages\StringAnalyzerControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\StringConversionControl.xaml">
+      <Link>Pages\StringConversionControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Pages\UnicodeTableControl.xaml">
+      <Link>Pages\UnicodeTableControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\ResultControl.xaml">
+      <Link>ResultControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\SimpleSettingsNarrow.xaml">
+      <Link>SimpleSettingsNarrow.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Statistics\BoxplotControl.xaml">
+      <Link>Statistics\BoxplotControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\Statistics\XYGraphControl.xaml">
+      <Link>Statistics\XYGraphControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\AdvancedCalculatorUniversal\TrialPopup.xaml">
+      <Link>TrialPopup.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\BCLibraryControl.xaml">
+      <Link>BCBasic\BCLibraryControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\BCScreenControl.xaml">
+      <Link>BCBasic\BCScreenControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\ButtonListControl.xaml">
+      <Link>BCBasic\ButtonListControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\CalculatorConnectionControl.xaml">
+      <Link>BCBasic\CalculatorConnectionControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\ImportConflictControl.xaml">
+      <Link>BCBasic\ImportConflictControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\MenuIcon.xaml">
+      <Link>BCBasic\MenuIcon.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\BCBasic.Shared\SampleCalculatorControl.xaml">
+      <Link>BCBasic\SampleCalculatorControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditFindDialog.xaml">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\EditFindDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\EditGotoDialog.xaml">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\EditGotoDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditor.xaml">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\LanguageEditor.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorLine.xaml">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorLine.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorStatement.xaml">
+      <Link>BCBasic\SyntaxHighlightEditor\Editor\LanguageEditorStatement.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Bluetooth\PickBluetoothDeviceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UIControls\DisplaySourceCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UIControls\PurchaseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.Midi.GmDls, Version=10.0.10586.0">
+      <Name>Microsoft General MIDI DLS for Universal Windows Apps %28Microsoft.Midi.GmDls, Version=10.0.10586.0%29</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsDesktop, Version=10.0.17134.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics">
+      <Version>4.5.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.0-Preview1-26502-02</Version>
+    </PackageReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

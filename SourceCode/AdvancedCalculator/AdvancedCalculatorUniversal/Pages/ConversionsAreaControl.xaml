@@ -5,6 +5,7 @@
     xmlns:local="using:AdvancedCalculator"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -27,13 +28,6 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -49,54 +43,116 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
+                    <muxc:Expander Tag="Area_InchFeet" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Inches and Feet</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Inches and Feet</TextBlock>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Square Inches</TextBlock>
-                    <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Inches" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Inches" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Inches" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Square Inches</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Inches" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Inches" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Inches" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Square Feet</TextBlock>
-                    <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Feet" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Feet" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Feet" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Square Feet</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Feet" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Feet" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Feet" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center" >Yards, Acres and Miles</TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Square Yards</TextBlock>
-                    <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1Yards" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1Yards" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1Yards" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                    <muxc:Expander Tag="Area_YardAcreMiles" Style="{StaticResource solverblockexpander}" Grid.Row="2" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Yards, Acres and Miles</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Acres</TextBlock>
-                    <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1Acres" Style="{StaticResource solverbox}" InputScope="Number"  />
-                    <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1Acres" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1Acres" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Square Yards</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Yards" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Yards" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Yards" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource solverblock}">Square Miles</TextBlock>
-                    <TextBox  Grid.Row="6" Grid.Column="1" Tag="autotbeq1Miles" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="6" Grid.Column="2" Tag="autotbeq1Miles" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="6" Grid.Column="3" Tag="autotbeq1Miles" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Acres</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Acres" Style="{StaticResource solverbox}" InputScope="Number"  />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Acres" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Acres" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource solverblocktitle}" HorizontalAlignment="Center">Metric</TextBlock>
-                    <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource solverblock}">Square Centimeters</TextBlock>
-                    <TextBox  Grid.Row="8" Grid.Column="1" Tag="autotbeq1Centimeters" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="8" Grid.Column="2" Tag="autotbeq1Centimeters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="8" Grid.Column="3" Tag="autotbeq1Centimeters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Square Miles</TextBlock>
+                            <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1Miles" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1Miles" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1Miles" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
 
-                    <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource solverblock}">Square Meters</TextBlock>
-                    <TextBox  Grid.Row="9" Grid.Column="1" Tag="autotbeq1Meters" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="9" Grid.Column="2" Tag="autotbeq1Meters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="9" Grid.Column="3" Tag="autotbeq1Meters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                    <muxc:Expander Tag="Area_Metric" Style="{StaticResource solverblockexpander}" Grid.Row="3" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Metric</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource solverblock}">Hectares</TextBlock>
-                    <TextBox  Grid.Row="10" Grid.Column="1" Tag="autotbeq1Hectares" Style="{StaticResource solverbox}" InputScope="Number" />
-                    <Button Grid.Row="10" Grid.Column="2" Tag="autotbeq1Hectares" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="10" Grid.Column="3" Tag="autotbeq1Hectares" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Square Centimeters</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Centimeters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Centimeters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Centimeters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
 
-                    <TextBlock Grid.Row="11" Grid.Column="0" Style="{StaticResource solverblock}">Square Kilometers</TextBlock>
-                    <TextBox  Grid.Row="11" Grid.Column="1" Tag="autotbeq1Kilometers" Style="{StaticResource solverbox}"  InputScope="Number" />
-                    <Button Grid.Row="11" Grid.Column="2" Tag="autotbeq1Kilometers" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
-                    <Button Grid.Row="11" Grid.Column="3" Tag="autotbeq1Kilometers" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Square Meters</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1Meters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1Meters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1Meters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Hectares</TextBlock>
+                            <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1Hectares" Style="{StaticResource solverbox}" InputScope="Number" />
+                            <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1Hectares" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1Hectares" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Square Kilometers</TextBlock>
+                            <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1Kilometers" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1Kilometers" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1Kilometers" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
                 </Grid>
             </Grid>
 

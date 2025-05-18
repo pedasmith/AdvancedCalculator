@@ -21,7 +21,9 @@
                  -->
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
                 <ResourceDictionary Source="Common/CalculatorStyles.xaml" />
-                <!-- TODO: what do these do? Why aren't they part of the Bluetooth calculator? -->
+                <!-- TODO: what do these do? Why aren't they part of the Bluetooth calculator?
+                A search for "ListBox" just shows commented-out XAML in ColorDefinition.cs
+                -->
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="ListBoxBorderThemeBrush" Color="White"/>
 

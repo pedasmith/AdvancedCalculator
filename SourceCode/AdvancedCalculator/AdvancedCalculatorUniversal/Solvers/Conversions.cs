@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdvancedCalculator
 {
@@ -19,6 +15,7 @@ namespace AdvancedCalculator
         public static double INCHES_PER_FOOT = 12;
         public static double FEET_PER_MILE = 5280;
         public static double FEET_PER_YARD = 3;
+        private static double INCHES_PER_YARD = INCHES_PER_FOOT * FEET_PER_YARD;
         public static double CENTIMETERS_PER_INCH = 2.54;
 
         public static double AU_PER_PARSEC = 64800 / Math.PI;
@@ -44,7 +41,12 @@ namespace AdvancedCalculator
         // http://en.wikipedia.org/wiki/Indian_weights_and_measures 
         public static double GRAMS_PER_TOLA = 11.6638038; // Tolä
         public static double TOLA_PER_SER = 80; // Sèr
-        public static double SER_PER_MAUND = 40; 
+        public static double SER_PER_MAUND = 40;
+
+        private static double CM_PER_METER = 100;
+        public static double YARDS_PER_METER = (CM_PER_METER / CENTIMETERS_PER_INCH) / INCHES_PER_YARD;
+        public static double SQUARE_YARDS_PER_SQUARE_METER = YARDS_PER_METER * YARDS_PER_METER;
+        public static double OuncesPerSquareYard_PER_GSM = 1 / (GRAMS_PER_OUNCE * SQUARE_YARDS_PER_SQUARE_METER);
 
 
         public static double DEGREES_PER_RADIAN = (360.0 / (2.0 * Math.PI));
@@ -57,6 +59,14 @@ namespace AdvancedCalculator
 
         public static double DRY_US_QUARTS_PER_LITER = 0.908082984;
 
+        public static double CUPS_PER_GALLON_LIQUID_US = 16.0;
+        public static double PINTS_PER_GALLON_LIQUID_US = 8.0;
+        public static double QUARTS_PER_GALLON_LIQUID_US = 4.0;
+        public static double CUBIC_FEET_PER_CUBIC_YARD = 27.0;
+        public static double LITERS_PER_CUBIC_METER= 1000.0;
+        public static double LITERS_PER_GALLON_LIQUID_USA = 3.7854118;
+        public static double LITERS_PER_CUBIC_FOOT = 28.316847;
+
         public static double ERGS_PER_JOULE = 10000000.0;
         public static double JOULES_PER_KILOWATTHOUR = 3600000;
         public static double JOULES_PER_BTU = 1055.056; // ISO BTU
@@ -66,5 +76,14 @@ namespace AdvancedCalculator
         public static double KCALS_PER_GRAM_FAT = 9.0;
         public static double KCALS_PER_DOUNT = 198; // medium sized donut; 10.8g fat, 23.4g carbo, 2.4g protein
         //public static double KCALS_PER_GRAM_CARBOHYDRATE = 4.0;
+
+        // See https://en.wikipedia.org/wiki/Luminous_efficacy#Lighting_efficiency
+        public static double LUMENS_PER_WATT_MIN_GAS_MANTLE = 1.5;
+        public static double LUMENS_PER_WATT_MIN_TUNGSTEN = 13.33333333; // 60 W=800 lumens, approx. 17.5;
+        public static double LUMENS_PER_WATT_MIN_HALOGEN = 24.0;
+        public static double LUMENS_PER_WATT_MIN_LED = 102.0;
+        public static double LUMENS_PER_WATT_MIN_CARBON_ARC = 2.0; // up to 7 max)
+        public static double LUMENS_PER_WATT_MIN_FLUORESCENT_TUBE = 80;
+        public static double LUMENS_PER_WATT_MIN_SODIUM_HIGH_PRESSURE = 85.0;
     }
 }

@@ -110,7 +110,7 @@ namespace Shipwreck
             }
 #endif
 
-            // Init to default-false
+            // InitAsync to default-false
             HasSaveToClipboard = false;
             HasSourceCode = false;
             HasNoAds = false;

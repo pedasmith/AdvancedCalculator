@@ -7,6 +7,10 @@
 # just in case this process goes sideways, we should have a 
 # nice backup
 
+# THIRDLY: make sure you have ImageMagick installed
+# https://imagemagick.org/script/download.php#windows
+#
+
 # Get the .docx etc. files into this directory
 #   - also expands the .docx file into a temp directory
 #     called mydoc

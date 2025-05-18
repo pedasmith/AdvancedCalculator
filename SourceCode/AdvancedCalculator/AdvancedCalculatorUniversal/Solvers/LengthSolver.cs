@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using EquationSolver;
+﻿using EquationSolver;
+using System;
 
 namespace AdvancedCalculator
 {
@@ -37,14 +32,36 @@ namespace AdvancedCalculator
             Equations.Add(new Equation("Yards", "Feet", () => { return Feet / Conversions.FEET_PER_YARD; }));
             Equations.Add(new Equation("Feet", "Yards", () => { return Yards * Conversions.FEET_PER_YARD; }));
 
+            Equations.Add(new Equation("Meters", "Millimeters", () => { return Millimeters / 1000; }));
+            Equations.Add(new Equation("Millimeters", "Meters", () => { return Meters * 1000; }));
+
             Equations.Add(new Equation("Meters", "Centimeters", () => { return Centimeters / 100; }));
             Equations.Add(new Equation("Centimeters", "Meters", () => { return Meters * 100; }));
 
             Equations.Add(new Equation("Meters", "Kilometers", () => { return Kilometers * 1000; }));
             Equations.Add(new Equation("Kilometers", "Meters", () => { return Meters / 1000; }));
 
-            InitEquivLists();
+            // LegoBrickStuds LegoBrickHeight LegoPlateHeight
+            Equations.Add(new Equation("LegoBrickStuds", "Millimeters", () => { return Millimeters / 8; }));
+            Equations.Add(new Equation("Millimeters", "LegoBrickStuds", () => { return LegoBrickStuds * 8; }));
 
+            Equations.Add(new Equation("LegoBrickHeight", "Millimeters", () => { return Millimeters / 9.6; }));
+            Equations.Add(new Equation("Millimeters", "LegoBrickHeight", () => { return LegoBrickHeight * 9.6; }));
+
+            Equations.Add(new Equation("LegoPlateHeight", "Millimeters", () => { return Millimeters / 3.2; }));
+            Equations.Add(new Equation("Millimeters", "LegoPlateHeight", () => { return LegoPlateHeight * 3.2; }));
+
+            // Astronomical distances: AU LightYears (using Mean Julian Years) Parsecs 
+            Equations.Add(new Equation("AU", "Meters", () => { return Meters / 1.4959787E11; }));
+            Equations.Add(new Equation("Meters", "AU", () => { return AU * 1.4959787E11; }));
+
+            Equations.Add(new Equation("LightYears", "Meters", () => { return Meters / 9.4607305E15; }));
+            Equations.Add(new Equation("Meters", "LightYears", () => { return LightYears * 9.4607305E15; }));
+
+            Equations.Add(new Equation("Parsecs", "Meters", () => { return Meters / 3.0856776E16; }));
+            Equations.Add(new Equation("Meters", "Parsecs", () => { return Parsecs * 3.0856776E16; }));
+
+            InitEquivLists();
         }
 
         private double _Inches = Double.NaN;
@@ -68,11 +85,45 @@ namespace AdvancedCalculator
         private double _Centimeters = Double.NaN;
         public double Centimeters { get { return _Centimeters; } set { if (value == _Centimeters) return; _Centimeters = value; OnPropertyChanged("Centimeters"); } }
 
+        private double _Millimeters = Double.NaN;
+        public double Millimeters { get { return _Millimeters; } set { if (value == _Millimeters) return; _Millimeters = value; OnPropertyChanged("Millimeters"); } }
+
         private double _Meters = Double.NaN;
         public double Meters { get { return _Meters; } set { if (value == _Meters) return; _Meters = value; OnPropertyChanged("Meters"); } }
 
         private double _Kilometers = Double.NaN;
         public double Kilometers { get { return _Kilometers; } set { if (value == _Kilometers) return; _Kilometers = value; OnPropertyChanged("Kilometers"); } }
+
+        // https://www.lego.com/en-us/legal/notices-and-policies/fair-play?locale=en-us
+        // LEGO® brand building blocks units include
+        //      LegoBrickStud is 8mm and is the distance from the center of a "stud" to the nexts stud
+        //      LegoBrickHeight is 9.6mm (1.2 times the BlockStud size). This is the height of a brick without the stud height.
+        //      LegoPlateHeight is 3.2mm (0.4 times the BlockStud size). Three plates are the height of a block (without the stud height)
+        //
+        // Sources include:
+        // https://www.bartneck.de/2019/04/21/lego-brick-dimensions-and-measurements/
+        // https://www.brickingohio.com/blog/lego-geometry-101
+
+        private double _LegoBrickStuds = Double.NaN;
+        public double LegoBrickStuds { get { return _LegoBrickStuds; } set { if (value == _LegoBrickStuds) return; _LegoBrickStuds = value; OnPropertyChanged("LegoBrickStuds"); } }
+
+        private double _LegoBrickHeight = Double.NaN;
+        public double LegoBrickHeight { get { return _LegoBrickHeight; } set { if (value == _LegoBrickHeight) return; _LegoBrickHeight = value; OnPropertyChanged("LegoBrickHeight"); } }
+
+        private double _LegoPlateHeight = Double.NaN;
+        public double LegoPlateHeight { get { return _LegoPlateHeight; } set { if (value == _LegoPlateHeight) return; _LegoPlateHeight = value; OnPropertyChanged("LegoPlateHeight"); } }
+
+        // Astronomical values
+        private double _AU = Double.NaN;
+        public double AU { get { return _AU; } set { if (value == _AU) return; _AU = value; OnPropertyChanged("AU"); } }
+
+        private double _LightYears = Double.NaN;
+        public double LightYears { get { return _LightYears; } set { if (value == _LightYears) return; _LightYears = value; OnPropertyChanged("LightYears"); } }
+
+        private double _Parsecs = Double.NaN;
+        public double Parsecs { get { return _Parsecs; } set { if (value == _Parsecs) return; _Parsecs = value; OnPropertyChanged("Parsecs"); } }
+
+
 
     }
 }

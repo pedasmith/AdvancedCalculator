@@ -254,7 +254,7 @@ namespace EquationSolver
             return Retval;
         }
 #if NEVER_EVER_DEFINED
-        // Two values are equivilent is one is set strictly by the other
+        // Two values are equivalent is one is set strictly by the other
         // e.g. packetsize and packetsizeinbits
         public bool AreEquiv(string a, string b)
         {

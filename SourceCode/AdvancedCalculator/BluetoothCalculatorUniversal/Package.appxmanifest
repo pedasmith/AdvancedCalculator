@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="48425ShipwreckSoftware.BestCalculatorIOTedition" Publisher="CN=9A3276B6-661B-463D-9598-EFFF0974120A" Version="3.20.54.0" />
+  <Identity Name="48425ShipwreckSoftware.BestCalculatorIOTedition" Publisher="CN=9A3276B6-661B-463D-9598-EFFF0974120A" Version="3.21.57.0" />
   <mp:PhoneIdentity PhoneProductId="932aa1b2-cd93-4558-ae6a-be9444e67dfd" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Best Calculator, IOT edition</DisplayName>

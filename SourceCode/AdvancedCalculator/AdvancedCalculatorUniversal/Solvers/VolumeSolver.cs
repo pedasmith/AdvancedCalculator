@@ -37,6 +37,19 @@ namespace AdvancedCalculator
             Equations.Add(new Equation("PoundsPerBushelDryUSA", new List<string>() { "BushelsDryUSA", "Pounds" }, () => { return Pounds / BushelsDryUSA; }));
             Equations.Add(new Equation("BushelsDryUSA", new List<string>() { "Pounds", "PoundsPerBushelDryUSA" }, () => { return Pounds/ PoundsPerBushelDryUSA; }));
 
+            // 2025-05-06: Adding GallonsLiquidUSA CubicFeet CubicYards
+            Equations.Add(new Equation("Liters", "CubicMeters", () => { return CubicMeters * Conversions.LITERS_PER_CUBIC_METER; }));
+            Equations.Add(new Equation("CubicMeters", "Liters", () => { return Liters / Conversions.LITERS_PER_CUBIC_METER; }));
+
+            Equations.Add(new Equation("Liters", "GallonsLiquidUSA", () => { return GallonsLiquidUSA * Conversions.LITERS_PER_GALLON_LIQUID_USA; }));
+            Equations.Add(new Equation("GallonsLiquidUSA", "Liters", () => { return Liters / Conversions.LITERS_PER_GALLON_LIQUID_USA; }));
+
+            Equations.Add(new Equation("Liters", "CubicFeet", () => { return CubicFeet * Conversions.LITERS_PER_CUBIC_FOOT; }));
+            Equations.Add(new Equation("CubicFeet", "Liters", () => { return Liters / Conversions.LITERS_PER_CUBIC_FOOT; }));
+
+            Equations.Add(new Equation("CubicYards", "CubicFeet", () => { return CubicFeet / Conversions.CUBIC_FEET_PER_CUBIC_YARD; }));
+            Equations.Add(new Equation("CubicFeet", "CubicYards", () => { return CubicYards * Conversions.CUBIC_FEET_PER_CUBIC_YARD; }));
+
             InitEquivLists();
 
         }
@@ -53,6 +66,9 @@ namespace AdvancedCalculator
         private double _GallonsDryUSA = Double.NaN;
         public double GallonsDryUSA { get { return _GallonsDryUSA; } set { if (value == _GallonsDryUSA) return; _GallonsDryUSA = value; OnPropertyChanged("GallonsDryUSA"); } }
 
+        private double _GallonsLiquidUSA = Double.NaN;
+        public double GallonsLiquidUSA { get { return _GallonsLiquidUSA; } set { if (value == _GallonsLiquidUSA) return; _GallonsLiquidUSA = value; OnPropertyChanged("GallonsLiquidUSA"); } }
+
         private double _PecksDryUSA = Double.NaN;
         public double PecksDryUSA { get { return _PecksDryUSA; } set { if (value == _PecksDryUSA) return; _PecksDryUSA = value; OnPropertyChanged("PecksDryUSA"); } }
 
@@ -61,6 +77,16 @@ namespace AdvancedCalculator
 
         private double _Liters = Double.NaN;
         public double Liters { get { return _Liters; } set { if (value == _Liters) return; _Liters = value; OnPropertyChanged("Liters"); } }
+
+        private double _CubicMeters = Double.NaN;
+        public double CubicMeters { get { return _CubicMeters; } set { if (value == _CubicMeters) return; _CubicMeters = value; OnPropertyChanged("CubicMeters"); } }
+
+        private double _CubicFeet = Double.NaN;
+        public double CubicFeet { get { return _CubicFeet; } set { if (value == _CubicFeet) return; _CubicFeet = value; OnPropertyChanged("CubicFeet"); } }
+
+        private double _CubicYards = Double.NaN;
+        public double CubicYards { get { return _CubicYards; } set { if (value == _CubicYards) return; _CubicYards = value; OnPropertyChanged("CubicYards"); } }
+
 
         private double _PoundsPerBushelDryUSA = Double.NaN;
         public double PoundsPerBushelDryUSA { get { return _PoundsPerBushelDryUSA; } set { if (value == _PoundsPerBushelDryUSA) return; _PoundsPerBushelDryUSA = value; OnPropertyChanged("PoundsPerBushelDryUSA"); } }

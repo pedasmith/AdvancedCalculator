@@ -1,0 +1,117 @@
+﻿<UserControl
+    x:Class="AdvancedCalculator.ConversionsVolumeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AdvancedCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Common/CalculatorStyles.xaml" />
+    </UserControl.Resources>
+
+    <local:FourPanel x:Name="uiMain">
+        <local:FourPanel.ItemTop>
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  >
+                <TextBlock Grid.Row="0" Style="{StaticResource titletext}" >Common Volumes</TextBlock>
+            </Border>
+        </local:FourPanel.ItemTop>
+
+        <local:FourPanel.ItemMain>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1" Tag="AutoWidth|Column=0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <muxc:Expander Tag="Volume_Common" Style="{StaticResource solverblockexpander}" Grid.Row="1" IsExpanded="True">
+                        <muxc:Expander.Header>
+                            <TextBlock Style="{StaticResource solverblocktitleexpander}">Common Volumes</TextBlock>
+                        </muxc:Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource solverblock}">Liters</TextBlock>
+                            <TextBox  Grid.Row="1" Grid.Column="1" Tag="autotbeq1Liters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="1" Grid.Column="2" Tag="autotbeq1Liters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="1" Grid.Column="3" Tag="autotbeq1Liters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource solverblock}">Cubic Meters</TextBlock>
+                            <TextBox  Grid.Row="2" Grid.Column="1" Tag="autotbeq1CubicMeters" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="2" Grid.Column="2" Tag="autotbeq1CubicMeters" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="2" Grid.Column="3" Tag="autotbeq1CubicMeters" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource solverblock}">Gallons</TextBlock>
+                            <TextBox  Grid.Row="3" Grid.Column="1" Tag="autotbeq1GallonsLiquidUSA" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="3" Grid.Column="2" Tag="autotbeq1GallonsLiquidUSA" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="3" Grid.Column="3" Tag="autotbeq1GallonsLiquidUSA" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource solverblock}">Cubic Feet</TextBlock>
+                            <TextBox  Grid.Row="4" Grid.Column="1" Tag="autotbeq1CubicFeet" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="4" Grid.Column="2" Tag="autotbeq1CubicFeet" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="4" Grid.Column="3" Tag="autotbeq1CubicFeet" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource solverblock}">Cubic Yards</TextBlock>
+                            <TextBox  Grid.Row="5" Grid.Column="1" Tag="autotbeq1CubicYards" Style="{StaticResource solverbox}"  InputScope="Number" />
+                            <Button Grid.Row="5" Grid.Column="2" Tag="autotbeq1CubicYards" Style="{StaticResource solverfromcalc}"  Click="OnFromCalc"/>
+                            <Button Grid.Row="5" Grid.Column="3" Tag="autotbeq1CubicYards" Style="{StaticResource solvertocalc}"  Click="OnToCalc"/>
+                        </Grid>
+                    </muxc:Expander>
+                </Grid>
+            </Grid>
+        </local:FourPanel.ItemMain>
+
+        <local:FourPanel.ItemRight>
+            <Image Grid.Row="1" Grid.Column="1" Source="/Assets/SolverImages/ConversionsVolume.png"  MaxHeight="400" MaxWidth="400" HorizontalAlignment="Left"/>
+        </local:FourPanel.ItemRight>
+
+        <local:FourPanel.ItemBottom>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource aboutboxstyle}">
+                <TextBlock  Style="{StaticResource aboutboxtext}" >
+                    <Bold FontSize="20" >Volumes</Bold>
+                    <LineBreak />
+                    Converts common volumes used in outdoor work, including conversions
+                    to and from metric sizes.
+                </TextBlock>
+            </Grid>
+        </local:FourPanel.ItemBottom>
+    </local:FourPanel>
+</UserControl>

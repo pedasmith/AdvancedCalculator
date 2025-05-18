@@ -10,7 +10,9 @@
 
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"    
+    >
     
     
     
@@ -45,6 +47,14 @@
     <Style x:Key="solverblocktitle" TargetType="TextBlock" BasedOn="{StaticResource solverblock}">
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Margin" Value="0,15,0,0" />
+    </Style>
+    <Style x:Key="solverblocktitleexpander" TargetType="TextBlock" BasedOn="{StaticResource solverblock}">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0,15,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="solverblockexpander" TargetType="controls:Expander">
+        <Setter Property="MinWidth" Value="500" />
     </Style>
 
     <Style x:Key="solvervalueblock" TargetType="TextBlock" BasedOn="{StaticResource solverblock}">
@@ -107,9 +117,11 @@
         <Setter Property="MinHeight" Value="60" />
         <Setter Property="FontSize" Value="25" />
         <Setter Property="Margin" Value="2" />
-
     </Style>
 
-
-
+    <!-- Note: seems to never be used? Some old cruft? -->
+    <Style x:Key="convertexpander" TargetType="controls:Expander">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    </Style>
 </ResourceDictionary>

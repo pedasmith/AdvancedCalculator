@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Controls;
+
 
 #if DESKTOP
 using System.Windows;
@@ -44,13 +46,13 @@ namespace NetworkToolkit
         {
             foreach (UIElement child in grid.Children)
             {
-                if (child is Panel)
+                if (child is Panel panelChild)
                 {
-                    AutoSetup((Panel)child);
+                    AutoSetup(panelChild);
                 }
-                if (child is TextBox)
+                if (child is TextBox textBoxChild)
                 {
-                    ((TextBox)child).Text = "";
+                    textBoxChild.Text = "";
                 }
             }
         }
@@ -59,27 +61,30 @@ namespace NetworkToolkit
         {
             foreach (UIElement child in grid.Children)
             {
-                if (child is Panel)
+                if (child is Panel panelChild)
                 {
-                    AutoSetup((Panel)child);
+                    AutoSetup(panelChild);
                 }
-                if (child is Control)
+                else if (child is Expander expanderChild)
                 {
-                    Control control = (Control)child;
-                    String fullName = (control.Name.Contains("auto") || control.Tag==null) ? control.Name : control.Tag as string;
+                    var panel = expanderChild.Content as Panel;
+                    AutoSetup(panel);
+                }
+                if (child is Control controlChild)
+                {
+                    String fullName = (controlChild.Name.Contains("auto") || controlChild.Tag == null) ? controlChild.Name : controlChild.Tag as string;
                     String Name = NameFromName(fullName);
                     SolverINPC eq = EqFromName(Name);
                     if (fullName.Contains("auto"))
                     {
-                        if (child is TextBox)
+                        if (child is TextBox textBoxChild)
                         {
-                            eq.AddElement(Name, (TextBox)control);
-                            var tb = control as TextBox;
-                            tb.KeyUp += Textbox_Changed;
+                            eq.AddElement(Name, textBoxChild);
+                            textBoxChild.KeyUp += Textbox_Changed;
                         }
-                        else if (child is ComboBox)
+                        else if (child is ComboBox comboBoxChild)
                         {
-                            ((ComboBox)control).SelectionChanged += ComboBox_SetEq;
+                            comboBoxChild.SelectionChanged += ComboBox_SetEq;
                         }
                     }
                 }
@@ -90,21 +95,20 @@ namespace NetworkToolkit
         {
             foreach (UIElement child in grid.Children)
             {
-                if (child is Panel)
+                if (child is Panel panelChild)
                 {
-                    AutoSetup((Panel)child);
+                    AutoSetup(panelChild);
                 }
-                if (child is Control)
+                if (child is Control controlChild)
                 {
-                    Control control = (Control)child;
-                    //String fullName = control.Name.Contains("auto") ? control.Name : control.Tag as string;
-                    String fullName = (control.Name.Contains("auto") || control.Tag == null) ? control.Name : control.Tag as string;
+                    //String fullName = controlChild.Name.Contains("auto") ? controlChild.Name : controlChild.Tag as string;
+                    String fullName = (controlChild.Name.Contains("auto") || controlChild.Tag == null) ? controlChild.Name : controlChild.Tag as string;
                     String Name = NameFromName(fullName);
                     SolverINPC eq = EqFromName(Name);
-                    if (child is TextBox)
+                    if (child is TextBox textBoxChild)
                     {
                         double Value;
-                        bool ok = Double.TryParse(((TextBox)child).Text, out Value);
+                        bool ok = Double.TryParse((textBoxChild).Text, out Value);
                         if (ok)
                         {
                             SetValue(Name, Value);

@@ -182,12 +182,12 @@ namespace AdvancedCalculator
         public string BMIChildInterpretation { get { return _BMIChildInterpretation; } set { if (value == _BMIChildInterpretation) return; _BMIChildInterpretation = value; OnPropertyChanged("BMIChildInterpretation"); } }
 
         CsvTable childTable = null;
-        private void InitBmiChildTable()
+        private async void InitBmiChildTable()
         {
             if(childTable != null) return;
 
             childTable = new CsvTable();
-            childTable.Read();
+            await childTable.ReadAsync("", "bmiagerev.csv");
         }
     }
 }
